@@ -1,4 +1,5 @@
-import TickManager from './Manager'
+import TickManager from './Manager';
+
 
 export default class TickEntry
 {
@@ -10,20 +11,19 @@ export default class TickEntry
 	{
 		this.context = context;
 		this.listener = listener;
-	};
+	}
 
 }
 
-TickEntry.prototype.callLater = function(){
-	var manager = new TickManager();
-	manager.addEntry(this);
+/*---- Public|Prototype Methods ---*/
+
+TickEntry.prototype.disposableCallLater = function(dispose){
+	if(dispose){
+		this.context = null;
+		this.listener = null;
+	}else{
+		var manager = new TickManager();
+		manager.addEntry(this);
+	}
 };
 
-
-/**
- * Call this when the listener item is no longer needed.
- */
-TickEntry.prototype.dispose = function(){
-	this.context = null;
-	this.listener = null;
-};

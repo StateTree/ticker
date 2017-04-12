@@ -106,17 +106,17 @@ function changeCurrentWorkingDirTemporarily(dirPath, command){
     });
 }
 
-function execute(commands,setNodeEnv,options){
+function execute(commands,setNodeEnv,options,callback){
     if(Array.isArray(commands)){
         commands.map(function(cmdLine){
-            _execute(cmdLine,setNodeEnv,options);
+            _execute(cmdLine,setNodeEnv,options,callback);
         })
     }else {
-        _execute(commands,setNodeEnv,options);
+        _execute(commands,setNodeEnv,options,callback);
     }
 }
 
-function _execute(cmdLine,setNodeEnv,options){
+function _execute(cmdLine,setNodeEnv,options,callback){
 
     if(typeof cmdLine !== 'string'){
         throw new Error("String format expected for commands")
@@ -132,22 +132,47 @@ function _execute(cmdLine,setNodeEnv,options){
 
     var command;
     if(options) {
-        command = exec(cmdLine,options);
+        command = exec(cmdLine,options,(error, stdout, stderr) => {
+            if (error) {
+                console.error(`exec error: ${error}`);
+                return;
+            }
+            console.log(`stdout: ${stdout}`);
+            console.log(`stderr: ${stderr}`);
+            if(callback){
+                callback();
+            }
+        });
     }else {
-        command = exec(cmdLine);
+        command = exec(cmdLine,(error, stdout, stderr) => {
+            if (error) {
+                console.error(`exec error: ${error}`);
+                return;
+            }
+            console.log(`stdout: ${stdout}`);
+            console.log(`stderr: ${stderr}`);
+            if(callback){
+                callback();
+            }
+        });
+    }
+    if(command){
+        /* eslint-disable */
+        command.stdout.on('data', function(data) {
+            process.stdout.write(data);
+        });
+        command.stderr.on('data', function(data) {
+            process.stderr.write(data);
+        });
+        command.on('error', function(err) {
+            process.stderr.write(err);
+        });
+        /* eslint-enable */
     }
 
-    /* eslint-disable */
-    command.stdout.on('data', function(data) {
-        process.stdout.write(data);
-    });
-    command.stderr.on('data', function(data) {
-        process.stderr.write(data);
-    });
-    command.on('error', function(err) {
-        process.stderr.write(err);
-    });
-    /* eslint-enable */
+
+
+
 }
 
 

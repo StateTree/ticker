@@ -1,11 +1,13 @@
+import TickEntry from './TickEntry';
+
 let instance = null;
+let requestAnimationFrameId = NaN;
+let tickEntries = null;
 
 function onTick(entries){
 	if(entries.length > 0) {
 		entries.map( (tickEntry )=> {
 			tickEntry.listener.call(tickEntry.context);
-			tickEntry.dispose();
-			//todo: Investigate setting tickEntry = null
 		});
 		//Clear them once executed
 		entries = [];
@@ -17,10 +19,10 @@ export default class TickManager{
 		if(!instance){
 			instance = this;
 			//callLater entries
-			this._entries= [];
+			tickEntries = [];
 
 			// gets updated 
-			this._tickId = 0; // for Windows Env
+			requestAnimationFrameId = 0; // for Windows Env
 
 			this.start();
 		}
@@ -28,27 +30,31 @@ export default class TickManager{
 	}
 }
 
-TickManager.prototype.addEntry = function (tickEntry) {
-	//todo add a util function to avoid duplicate addition
-	this._entries.push(tickEntry);
+
+TickManager.prototype.requestDisposableCallLater = function (context,listener) {
+	var tickEntry = new TickEntry(context,listener);
+	tickEntries.push(tickEntry); // todo: Stack or Queue
+	return tickEntry.disposableCallLater;
 };
 
 
 // Todo: Support for NodeJS 
 TickManager.prototype.start = function () {
 	if(window){
-		var requestAnimationFrameCallback = (timeStamp) => {
-			onTick(this._entries);
-			this._tickId = window.requestAnimationFrame(requestAnimationFrameCallback)
+		// will receives timestamp as argument
+		//todo: Learn:  the purpose of timestamp
+		var requestAnimationFrameCallback = () => {
+			onTick(tickEntries);
+			requestAnimationFrameId = window.requestAnimationFrame(requestAnimationFrameCallback);
 		};
-		this._tickId = window.requestAnimationFrame(requestAnimationFrameCallback);
+		requestAnimationFrameId = window.requestAnimationFrame(requestAnimationFrameCallback);
 	}
 };
 
 
 TickManager.prototype.stop = function () {
 	if(window){
-		window.cancelAnimationFrame(this._tickId);
+		window.cancelAnimationFrame(requestAnimationFrameId);
 	}
 };
 
