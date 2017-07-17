@@ -1,7 +1,7 @@
 /* eslint no-var: 0 */
-var command = require('./command');
-var configJson = require('./buildConfig.json');
-var utils = require('./utils');
+var command = require("./command");
+var configJson = require("./buildConfig.json");
+var utils = require("./utils");
 
 function doWeHaveSourceFileOrFiles(files){
     if(files){
@@ -10,7 +10,7 @@ function doWeHaveSourceFileOrFiles(files){
                 return true
             }
 
-        } else if(typeof sourceFiles === 'string'){
+        } else if(typeof sourceFiles === "string"){
             if(files.length > 0) {
                 return true
             }
@@ -23,7 +23,7 @@ function doWeHaveSourceFileOrFiles(files){
 }
 
 function isStandardFileType(type){
-    if(type == 'html' || type == 'css' || type == 'json'){
+    if(type == "html" || type == "css" || type == "json"){
         return true;
     }
     return false;
@@ -34,20 +34,20 @@ function isStandardFileType(type){
 
 
 function copy(config,command){
-    if(config['html']){
-        copyType(config['html'],'html',command)
+    if(config["html"]){
+        copyType(config["html"],"html",command)
     }
 
-    if(config['css']){
-        copyType(config['css'],'css',command)
+    if(config["css"]){
+        copyType(config["css"],"css",command)
     }
 
-    if(config['json']){
-        copyType(config['json'],'json',command)
+    if(config["json"]){
+        copyType(config["json"],"json",command)
     }
 
-    if(config['other']){
-        copyType(config['other'],'other',command)
+    if(config["other"]){
+        copyType(config["other"],"other",command)
     }
 }
 
@@ -96,10 +96,10 @@ function copyType(config,type,command){
                 if(destinationDir){
                     command.copyDir(sourceDir,destinationDir);
                 }else{
-                    console.error('Destination Directory Missing')
+                    console.error("Destination Directory Missing")
                 }
             }else{
-               console.error('Source Directory Missing')
+               console.error("Source Directory Missing")
             }
         }
     }
