@@ -2,7 +2,7 @@
   "name":"ticker",
   "version":"0.1.0",
   "description":"Ticker manager for Window request animation frame and NodeJS tick",
-  "main":"lib/Library.js",
+  "main":"lib/ticker.js",
   "scripts":{
     "prebuild":"node scripts/prebuild.js",
     "build":"node scripts/build.js production",

@@ -14,6 +14,11 @@ function onTick(entries){
 	}
 }
 
+function requestAnimationFrameCallback(){
+	onTick(tickEntries);
+	requestAnimationFrameId = window.requestAnimationFrame(requestAnimationFrameCallback);
+}
+
 export default class TickManager{
 	constructor(){
 		if(!instance){
@@ -43,10 +48,6 @@ TickManager.prototype.start = function () {
 	if(window){
 		// will receives timestamp as argument
 		//todo: Learn:  the purpose of timestamp
-		var requestAnimationFrameCallback = () => {
-			onTick(tickEntries);
-			requestAnimationFrameId = window.requestAnimationFrame(requestAnimationFrameCallback);
-		};
 		requestAnimationFrameId = window.requestAnimationFrame(requestAnimationFrameCallback);
 	}
 };

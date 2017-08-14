@@ -1,5 +1,3 @@
-import TickManager from './Manager';
-
 
 export default class TickEntry
 {
@@ -17,13 +15,8 @@ export default class TickEntry
 
 /*---- Public|Prototype Methods ---*/
 
-TickEntry.prototype.disposableCallLater = function(dispose){
-	if(dispose){
-		this.context = null;
-		this.listener = null;
-	}else{
-		var manager = new TickManager();
-		manager.addEntry(this);
-	}
+TickEntry.prototype.disposableCallLater = function(){
+	this.context = null;
+	this.listener = null;
 };
 
