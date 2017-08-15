@@ -1,3 +1,6 @@
+import Manager from './Manager';
+
+const manager = new Manager();
 
 export default class TickEntry
 {
@@ -15,8 +18,13 @@ export default class TickEntry
 
 /*---- Public|Prototype Methods ---*/
 
-TickEntry.prototype.disposableCallLater = function(){
+TickEntry.prototype.dispose = function(){
 	this.context = null;
 	this.listener = null;
 };
+
+TickEntry.prototype.execute = function(){
+	manager.add(this);
+};
+
 

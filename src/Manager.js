@@ -1,5 +1,3 @@
-import TickEntry from './TickEntry';
-
 let instance = null;
 let requestAnimationFrameId = NaN;
 let tickEntries = null;
@@ -7,7 +5,7 @@ let tickEntries = null;
 function onTick(entries){
 	if(entries.length > 0) {
 		entries.map( (tickEntry )=> {
-			tickEntry.listener.call(tickEntry.context);
+			tickEntry.listener.call(tickEntry.context || tickEntry.listener['this']);
 		});
 		//Clear them once executed
 		entries = [];
@@ -36,10 +34,8 @@ export default class TickManager{
 }
 
 
-TickManager.prototype.requestDisposableCallLater = function (context,listener) {
-	var tickEntry = new TickEntry(context,listener);
+TickManager.prototype.add = function (tickEntry) {
 	tickEntries.push(tickEntry); // todo: Stack or Queue
-	return tickEntry.disposableCallLater;
 };
 
 

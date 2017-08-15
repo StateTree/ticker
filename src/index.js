@@ -1,7 +1,3 @@
-import TickManager from './Manager';
-import TickEntry from './TickEntry';
+import Ticker from './TickEntry';
 
-export {
-	TickManager,
-	TickEntry
-};
+export default Ticker;
