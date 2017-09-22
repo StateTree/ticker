@@ -1,40 +1,36 @@
-let instance = null;
+
 let requestAnimationFrameId = NaN;
 let tickEntries = null;
 
-function onTick(entries){
-	if(entries.length > 0) {
-		entries.map( (tickEntry )=> {
+
+function onTick(){
+	if(tickEntries && tickEntries.length > 0) {
+        tickEntries.map( (tickEntry )=> {
 			tickEntry.listener.call(tickEntry.context || tickEntry.listener['this']);
 		});
+
 		//Clear them once executed
-		entries = [];
+        tickEntries = null;
 	}
 }
 
 function requestAnimationFrameCallback(){
-	onTick(tickEntries);
+	onTick();
 	requestAnimationFrameId = window.requestAnimationFrame(requestAnimationFrameCallback);
 }
 
-export default class TickManager{
+class TickManager {
 	constructor(){
-		if(!instance){
-			instance = this;
-			//callLater entries
-			tickEntries = [];
-
-			// gets updated 
-			requestAnimationFrameId = 0; // for Windows Env
-
-			this.start();
-		}
-		return instance;
+        requestAnimationFrameId = 0; // for Windows Env
+        this.start();
 	}
 }
 
 
 TickManager.prototype.add = function (tickEntry) {
+	if(!tickEntries){
+        tickEntries = [];
+	}
 	tickEntries.push(tickEntry); // todo: Stack or Queue
 };
 
@@ -54,6 +50,10 @@ TickManager.prototype.stop = function () {
 		window.cancelAnimationFrame(requestAnimationFrameId);
 	}
 };
+
+const singletonInstance = new TickManager();
+
+export default singletonInstance;
 
 
 
