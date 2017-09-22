@@ -52,7 +52,7 @@ const config = {
 };
 
 if (env === 'prod'){
-    config.devtool =  "hidden-source-map";
+    config.devtool =  "inline-source-map";
     config.plugins.push(new webpack.optimize.UglifyJsPlugin({
         compress: {
             warnings: false,
