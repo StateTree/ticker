@@ -1,7 +1,6 @@
 /* eslint no-var: 0 */
 var command = require("./command");
 var configJson = require("./buildConfig.json");
-var utils = require("./utils");
 
 function doWeHaveSourceFileOrFiles(files){
     if(files){
