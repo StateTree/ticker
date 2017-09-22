@@ -1,6 +1,6 @@
 /* eslint no-var: 0 */
 var command = require("./command");
-var configJson = require("./buildConfig.json");
+var config = require("./buildConfig.js");
 
 function doWeHaveSourceFileOrFiles(files){
     if(files){
@@ -22,7 +22,7 @@ function doWeHaveSourceFileOrFiles(files){
 }
 
 function isStandardFileType(type){
-    if(type == "html" || type == "css" || type == "json"){
+    if(type == "html" || type == "css" || type == "json" || type == "js"){
         return true;
     }
     return false;
@@ -36,75 +36,73 @@ function copy(config,command){
     if(config["html"]){
         copyType(config["html"],"html",command)
     }
-
+    if(config["js"]){
+        copyType(config["js"],"js",command)
+    }
     if(config["css"]){
         copyType(config["css"],"css",command)
     }
-
     if(config["json"]){
         copyType(config["json"],"json",command)
     }
-
     if(config["other"]){
         copyType(config["other"],"other",command)
     }
 }
 
+function getPath(dirPath,filePath,type){
+    var isFileTypeStd = isStandardFileType(type);
+    if(isFileTypeStd){
+        if(dirPath){
+            dirPath = dirPath + "/";
+        }else{
+            dirPath = "";
+        }
+        if(filePath.endsWith("." + type)){
+            return dirPath + filePath;
+        }else{
+            return dirPath + filePath + "." + type;
+        }
+    }
+}
+
 
 function copyType(config,type,command){
-    var obj = config[type];
-    if(obj){
-        const sourceDir = obj.sourceDir;
-        const sourceFiles = obj.sourceFiles;
-        const destinationDir = obj.destinationDir;
-
-        var isFileTypeStd = isStandardFileType(type);
-        var isFileOrFilesGiven = doWeHaveSourceFileOrFiles(sourceFiles);
-        if(isFileOrFilesGiven){
-            var sourceDirPath = "";
-            if(sourceDir){
-                sourceDirPath = sourceDir + "/";
-            }
-
-            if(Array.isArray(sourceFiles)){
-                sourceFiles.map(function(filePath){
-                    if(isFileTypeStd){
-                        if(filePath.endsWith("." + type)){
-                            command.copyFile(sourceDirPath + filePath, destinationDir);
-                        }else{
-                            command.copyFile(sourceDirPath + filePath + "." + type,destinationDir);
-                        }
-                    }else{
-                        command.copyFile(sourceDirPath + filePath, destinationDir);
-                    }
-                })
-            }else{
-                if(isFileTypeStd){
-                    if(filePath.endsWith("." + type)){
-                        command.copyFile(sourceDirPath + filePath, destinationDir);
-                    }else{
-                        command.copyFile(sourceDirPath + filePath + "." + type,destinationDir);
-                    }
+    if(config){
+        const sourceDir = config.sourceDir;
+        const sourceFiles = config.sourceFiles;
+        const destinationDir = config.destinationDir;
+        if (sourceDir || sourceFiles) {
+            var isFileOrFilesGiven = doWeHaveSourceFileOrFiles(sourceFiles);
+            if(isFileOrFilesGiven){
+                if(Array.isArray(sourceFiles)){
+                    sourceFiles.map(function(filePath){
+                        var srcPath = getPath(sourceDir, filePath, type);
+                        var destinationPath = getPath(destinationDir, filePath, type);
+                        command.copyFile(srcPath, destinationPath);
+                    })
                 }else{
-                    command.copyFile(sourceDirPath + filePath, destinationDir);
-                }
-            }
-
-        }else{
-            if(sourceDir){
-                if(destinationDir){
-                    command.copyDir(sourceDir,destinationDir);
-                }else{
-                    console.error("Destination Directory Missing")
+                    var filePath = sourceFiles;
+                    var srcPath = getPath(sourceDir, filePath, type);
+                    var destinationPath = getPath(destinationDir, filePath, type);
+                    command.copyFile(srcPath, destinationPath);
                 }
             }else{
-               console.error("Source Directory Missing")
+                if(sourceDir){
+                    if(destinationDir){
+                        command.copyDir(sourceDir,destinationDir);
+                    }else{
+                        console.error("Destination Directory Missing")
+                    }
+                }else{
+                    console.error("Source Directory Missing")
+                }
             }
         }
     }
 }
 
-copy(configJson.copy,command);
+copy(config.copy,command);
 
 
 

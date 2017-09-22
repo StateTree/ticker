@@ -4,9 +4,16 @@
   "description": "Ticker manager for Window request animation frame and NodeJS tick",
   "main": "lib/ticker.js",
   "scripts": {
-    "prebuild": "rimraf lib",
-    "build": "webpack --progress --config webpack.config.js --env prod",
-    "postbuild": "node scripts/postbuild.js"
+    "start": "webpack-dev-server --progress --config webpack.config.js --open",
+    "lint": "eslint ./src --ext .js --cache --fix --ext .jsx --cache --fix",
+    "prebuild": "rimraf lib && rimraf demo",
+    "build": "./node_modules/.bin/webpack --progress --config webpack.config.js",
+    "postbuild": "node scripts/postbuild.js",
+    "release:master": "git checkout master && git merge --squash develop && git commit -am 'Release Commit'",
+    "release:bugfix": "npm version patch -m 'Bumped patch version number'",
+    "release:feature": "npm version minor -m 'Bumped minor version number'",
+    "release:breakingchange": "npm version major -m 'Bumped major version number'",
+    "postversion": "git push origin HEAD --follow-tags"
   },
   "repository": {
     "type": "git",
@@ -28,7 +35,8 @@
     "eslint-loader": "^1.8.0",
     "fs-extra": "^3.0.1",
     "rimraf": "^2.6.2",
-    "webpack": "^3.0.0"
+    "webpack": "^3.0.0",
+    "webpack-dev-server": "^2.8.2"
   },
   "files": [
     "lib"
