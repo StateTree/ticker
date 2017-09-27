@@ -1,6 +1,7 @@
 
 let requestAnimationFrameId = NaN;
 let tickEntries = null;
+let callLastEntries = null;
 
 
 function onTick(){
@@ -12,6 +13,15 @@ function onTick(){
 		//Clear them once executed
         tickEntries = null;
 	}
+
+    if(callLastEntries && callLastEntries.length > 0) {
+        callLastEntries.map( (tickEntry )=> {
+            tickEntry.listener.call(tickEntry.context || tickEntry.listener['this']);
+        });
+
+        //Clear them once executed
+        callLastEntries = null;
+    }
 }
 
 function requestAnimationFrameCallback(){
@@ -27,11 +37,19 @@ class TickManager {
 }
 
 
-TickManager.prototype.add = function (tickEntry) {
-	if(!tickEntries){
-        tickEntries = [];
+TickManager.prototype.add = function (tickEntry, callLast) {
+	if (callLast) {
+        if(!callLastEntries){
+            callLastEntries = [];
+        }
+        callLastEntries.push(tickEntry); // todo: Stack or Queue
+	} else {
+        if(!tickEntries){
+            tickEntries = [];
+        }
+        tickEntries.push(tickEntry); // todo: Stack or Queue
 	}
-	tickEntries.push(tickEntry); // todo: Stack or Queue
+
 };
 
 

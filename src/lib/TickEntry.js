@@ -21,8 +21,12 @@ TickEntry.prototype.dispose = function(){
 	this.listener = null;
 };
 
-TickEntry.prototype.callLater = function(){
-	manager.add(this);
+TickEntry.prototype.execute = function(){
+	manager.add(this,false);
+};
+
+TickEntry.prototype.executeLast = function(){
+    manager.add(this,true);
 };
 
 
