@@ -6,10 +6,11 @@ export default class TickEntry
 	 * @param {object} context - The "this" argument for the listener function.
 	 * @param {function} listener.
 	 */
-	constructor(context, listener)
+	constructor(context, listener, callback)
 	{
 		this.context = context;
 		this.listener = listener;
+		this.callback = callback;
 	}
 
 }
