@@ -61,6 +61,10 @@ TickManager.prototype.stop = function () {
 	}
 };
 
+TickManager.prototype.getMaxPriority = function () {
+	return priorityEntries.length - 1;
+};
+
 const singletonInstance = new TickManager();
 
 export default singletonInstance;

@@ -30,4 +30,8 @@ TickEntry.prototype.execute = function(){
 	manager.add(this);
 };
 
+TickEntry.prototype.getMaxPriority = function(){
+	return manager.getMaxPriority();
+};
+
 
