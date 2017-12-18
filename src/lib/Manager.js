@@ -8,6 +8,9 @@ function onTick(){
 	if(tickEntries && tickEntries.length > 0) {
         tickEntries.map( (tickEntry )=> {
 			tickEntry.listener.call(tickEntry.context || tickEntry.listener['this']);
+			if (tickEntry.callback) {
+				tickEntry.callback.call(tickEntry.callback['this']);
+			}
 		});
 
 		//Clear them once executed
@@ -17,6 +20,9 @@ function onTick(){
     if(callLastEntries && callLastEntries.length > 0) {
         callLastEntries.map( (tickEntry )=> {
             tickEntry.listener.call(tickEntry.context || tickEntry.listener['this']);
+	        if (tickEntry.callback) {
+		        tickEntry.callback.call(tickEntry.callback['this']);
+	        }
         });
 
         //Clear them once executed
