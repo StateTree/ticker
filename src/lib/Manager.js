@@ -1,33 +1,25 @@
 
 let requestAnimationFrameId = NaN;
-let tickEntries = null;
-let callLastEntries = null;
-
+let priorityEntries = [null, null, null, null];
 
 function onTick(){
-	if(tickEntries && tickEntries.length > 0) {
-        tickEntries.map( (tickEntry )=> {
-			tickEntry.listener.call(tickEntry.context || tickEntry.listener['this']);
-			if (tickEntry.callback) {
-				tickEntry.callback.call(tickEntry.callback['this']);
-			}
-		});
-
-		//Clear them once executed
-        tickEntries = null;
+	for(let index = 0 ; index < priorityEntries.length; index++){
+		let tickEntries = priorityEntries[index];
+		if(tickEntries && tickEntries.length > 0) {
+			executeTickEntries(tickEntries);
+			//Clear them once executed
+			priorityEntries[index] = null;
+		}
 	}
+}
 
-    if(callLastEntries && callLastEntries.length > 0) {
-        callLastEntries.map( (tickEntry )=> {
-            tickEntry.listener.call(tickEntry.context || tickEntry.listener['this']);
-	        if (tickEntry.callback) {
-		        tickEntry.callback.call(tickEntry.callback['this']);
-	        }
-        });
-
-        //Clear them once executed
-        callLastEntries = null;
-    }
+function executeTickEntries(tickEntries){
+	tickEntries.map( (tickEntry , index )=> {
+		tickEntry.listener.call(tickEntry.context || tickEntry.listener['this']);
+		if (tickEntry.callback) {
+			tickEntry.callback.call(tickEntry.callback['this']);
+		}
+	});
 }
 
 function requestAnimationFrameCallback(){
@@ -43,19 +35,13 @@ class TickManager {
 }
 
 
-TickManager.prototype.add = function (tickEntry, callLast) {
-	if (callLast) {
-        if(!callLastEntries){
-            callLastEntries = [];
-        }
-        callLastEntries.push(tickEntry); // todo: Stack or Queue
-	} else {
-        if(!tickEntries){
-            tickEntries = [];
-        }
-        tickEntries.push(tickEntry); // todo: Stack or Queue
+TickManager.prototype.add = function (tickEntry) {
+	const { priority } = tickEntry;
+	if(!priorityEntries[priority]){
+		priorityEntries[priority] = [];
 	}
-
+	const tickEntries = priorityEntries[priority];
+	tickEntries.push(tickEntry); // todo: Stack or Queue
 };
 
 
