@@ -14,12 +14,17 @@ function onTick(){
 }
 
 function executeTickEntries(tickEntries){
-	tickEntries.map( (tickEntry , index )=> {
+	// important to use for-loop
+	// tickEntries grows dynamically by one of its entry
+	// for example: let say we have one entry, and executing that entry might adds another entry
+	// with function we cant execute dynamically growing entries.
+	for(let i = 0; i < tickEntries.length; i++){
+		const tickEntry = tickEntries[i];
 		tickEntry.listener.call(tickEntry.context || tickEntry.listener['this']);
 		if (tickEntry.callback) {
 			tickEntry.callback.call(tickEntry.callback['this']);
 		}
-	});
+	}
 }
 
 function requestAnimationFrameCallback(){
