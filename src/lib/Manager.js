@@ -29,6 +29,20 @@ function executeTickEntries(tickEntries){
 	}
 }
 
+function isAddedAlready(entry,tickEntries){
+	// important to use for-loop
+	// tickEntries grows dynamically by one of its entry
+	// for example: let say we have one entry, and executing that entry might adds another entry
+	// with map function we cant execute dynamically growing entries.
+	for(let i = 0; i < tickEntries.length; i++){
+		const tickEntry = tickEntries[i];
+		if(entry.context === tickEntry.context && entry.listener === tickEntry.listener){
+			return true;
+		}
+	}
+	return false;
+}
+
 function requestAnimationFrameCallback(){
 	onTick();
 	requestAnimationFrameId = window.requestAnimationFrame(requestAnimationFrameCallback);
@@ -43,12 +57,19 @@ class TickManager {
 
 
 TickManager.prototype.add = function (tickEntry) {
-	const { priority } = tickEntry;
+	const { priority, callback } = tickEntry;
 	if(!priorityEntries[priority]){
 		priorityEntries[priority] = [];
+		const tickEntries = priorityEntries[priority];
+		tickEntries.push(tickEntry);
+		return;
 	}
 	const tickEntries = priorityEntries[priority];
-	tickEntries.push(tickEntry); // todo: Stack or Queue
+	if(isAddedAlready(tickEntry,tickEntries)){
+		callback && callback(true);
+	} else {
+		tickEntries.push(tickEntry);
+	}
 };
 
 
