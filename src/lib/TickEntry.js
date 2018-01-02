@@ -13,7 +13,6 @@ export default class TickEntry
 		this.listener = listener;
 		this.callback = callback;
 		this.priority = priority;
-		this.recursionCount = 0; // required to stop calling the same function in recursive call
 	}
 
 }
@@ -28,13 +27,7 @@ TickEntry.prototype.dispose = function(){
 };
 
 TickEntry.prototype.execute = function(){
-	if(this.recursionCount === 0){
-		manager.add(this);
-	} else {
-		if (this.callback) {
-			this.callback.call(tickEntry.callback['this'], true);
-		}
-	}
+	manager.add(this);
 };
 
 TickEntry.prototype.getMaxPriority = function(){
