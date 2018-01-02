@@ -29,15 +29,6 @@ function executeTickEntries(tickEntries){
 	}
 }
 
-function executeTickEntries(tickEntries){
-	tickEntries.map( (tickEntry , index )=> {
-		tickEntry.listener.call(tickEntry.context || tickEntry.listener['this']);
-		if (tickEntry.callback) {
-			tickEntry.callback.call(tickEntry.callback['this']);
-		}
-	});
-}
-
 function requestAnimationFrameCallback(){
 	onTick();
 	requestAnimationFrameId = window.requestAnimationFrame(requestAnimationFrameCallback);
