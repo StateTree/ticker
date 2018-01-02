@@ -30,6 +30,10 @@ TickEntry.prototype.dispose = function(){
 TickEntry.prototype.execute = function(){
 	if(this.recursionCount === 0){
 		manager.add(this);
+	} else {
+		if (this.callback) {
+			this.callback.call(tickEntry.callback['this'], true);
+		}
 	}
 };
 
