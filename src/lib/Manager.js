@@ -20,7 +20,9 @@ function executeTickEntries(tickEntries){
 	// with map function we cant execute dynamically growing entries.
 	for(let i = 0; i < tickEntries.length; i++){
 		const tickEntry = tickEntries[i];
+		tickEntry.recursionCount++;
 		tickEntry.listener.call(tickEntry.context || tickEntry.listener['this']);
+		tickEntry.recursionCount--;
 		if (tickEntry.callback) {
 			tickEntry.callback.call(tickEntry.callback['this']);
 		}
