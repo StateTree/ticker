@@ -55,7 +55,7 @@ class TickManager {
 
 
 TickManager.prototype.add = function (tickEntry) {
-	const { priority, callback } = tickEntry;
+	const { priority, callback, ignoreIfAdded } = tickEntry;
 	if(!priorityEntries[priority]){
 		priorityEntries[priority] = [];
 		const tickEntries = priorityEntries[priority];
@@ -63,7 +63,7 @@ TickManager.prototype.add = function (tickEntry) {
 		return;
 	}
 	const tickEntries = priorityEntries[priority];
-	if(isAddedAlready(tickEntry,tickEntries)){
+	if(ignoreIfAdded && isAddedAlready(tickEntry,tickEntries)){
 		callback && callback(true);
 	} else {
 		tickEntries.push(tickEntry);
