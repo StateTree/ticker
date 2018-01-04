@@ -1,5 +1,6 @@
 
 let requestAnimationFrameId = NaN;
+//[0-HIGH, 1-NORMAL, 2-LOW, 3-WAIT]
 const priorityEntries = [null, null, null, null];
 
 function onTick(){
@@ -29,19 +30,6 @@ function executeTickEntries(tickEntries){
 	}
 }
 
-function isAddedAlready(entry,tickEntries){
-	// important to use for-loop
-	// tickEntries grows dynamically by one of its entry
-	// for example: let say we have one entry, and executing that entry might adds another entry
-	// with map function we cant execute dynamically growing entries.
-	for(let i = 0; i < tickEntries.length; i++){
-		const tickEntry = tickEntries[i];
-		if(entry.context === tickEntry.context && entry.listener === tickEntry.listener){
-			return true;
-		}
-	}
-	return false;
-}
 
 function requestAnimationFrameCallback(){
 	onTick();
@@ -65,11 +53,7 @@ TickManager.prototype.add = function (tickEntry) {
 		return;
 	}
 	const tickEntries = priorityEntries[priority];
-	if(ignoreIfAdded && isAddedAlready(tickEntry,tickEntries)){
-		callback && callback(true);
-	} else {
-		tickEntries.push(tickEntry);
-	}
+	tickEntries.push(tickEntry);
 };
 
 
@@ -87,10 +71,6 @@ TickManager.prototype.stop = function () {
 	if(window){
 		window.cancelAnimationFrame(requestAnimationFrameId);
 	}
-};
-
-TickManager.prototype.getMaxPriority = function () {
-	return priorityEntries.length - 1;
 };
 
 const singletonInstance = new TickManager();

@@ -42,3 +42,7 @@ TickEntry.prototype.getMaxPriority = function(){
 };
 
 
+TickEntry.HIGH = 0;
+TickEntry.NORMAL = 1;
+TickEntry.LOW = 2;
+TickEntry.WAIT = 3;
