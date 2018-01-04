@@ -7,13 +7,12 @@ export default class TickEntry
 	 * @param {object} context - The "this" argument for the listener function.
 	 * @param {function} listener.
 	 */
-	constructor(context, listener, callback = null, priority = 0, ignoreIfAdded = false)
+	constructor(context, listener, callback = null, priority = 0)
 	{
 		this.context = context;
 		this.listener = listener;
 		this.callback = callback;
 		this.priority = priority;
-		this.ignoreIfAdded = ignoreIfAdded;
 	}
 
 }
@@ -36,3 +35,7 @@ TickEntry.prototype.getMaxPriority = function(){
 };
 
 
+TickEntry.HIGH = 0;
+TickEntry.NORMAL = 1;
+TickEntry.LOW = 2;
+TickEntry.WAIT = 3;
