@@ -1,6 +1,6 @@
 {
   "name": "ticker",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "description": "Ticker manager for Window request animation frame and NodeJS tick",
   "main": "lib/ticker.js",
   "scripts": {
