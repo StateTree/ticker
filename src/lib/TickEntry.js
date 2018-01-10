@@ -13,6 +13,7 @@ export default class TickEntry
 		this.listener = listener;
 		this.callback = callback;
 		this.priority = priority;
+		this.executionCount = 0;
 	}
 
 }
@@ -24,18 +25,17 @@ TickEntry.prototype.dispose = function(){
 	this.listener = null;
 	this.callback = null;
 	this.priority = null;
+	this.executionCount = NaN;
 };
 
 TickEntry.prototype.execute = function(){
 	manager.add(this);
 };
 
-TickEntry.prototype.getMaxPriority = function(){
-	return manager.getMaxPriority();
-};
-
 
 TickEntry.HIGH = 0;
 TickEntry.NORMAL = 1;
 TickEntry.LOW = 2;
-TickEntry.WAIT = 3;
+
+TickEntry.allowedTickCount = 100;
+TickEntry.debug = false;
