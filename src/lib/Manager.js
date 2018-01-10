@@ -1,9 +1,67 @@
+import TickEntry from './TickEntry';
+let requestAnimationFrameId = 0;// for Windows Env
 
-let requestAnimationFrameId = NaN;
-//[0-HIGH, 1-NORMAL, 2-LOW, 3-WAIT]
-const priorityEntries = [null, null, null, null];
+//[0-HIGH, 1-NORMAL, 2-LOW]
+let priorityEntries = [null, null, null];
+let waitEntries = null;
+
+let tickCount = 0;
+let isExecuting = false;
 
 function onTick(){
+	tickCount++;
+	console.log(tickCount);
+	if(tickCount < TickEntry.allowedTickCount){
+		executePriorityEntries();
+		moveWaitingEntriesForExecution();
+		if(arePriorityEntriesEmpty()){
+			stop();
+			return false;
+		}
+	} else {
+		console.warn("Animation frame loop executed to its set limit: ", TickEntry.allowedTickCount);
+		if(TickEntry.debug){
+			console.log("Entries: ", priorityEntries[0],priorityEntries[1],priorityEntries[2],waitEntries);
+		}
+		reset();
+		return false;
+	}
+	return true;
+
+}
+
+
+function stop(){
+	tickCount = 0;
+	isExecuting = false;
+	tickManager.stop();
+}
+
+function reset(){
+	stop();
+	priorityEntries = [null, null, null];
+	waitEntries = null;
+}
+
+
+function moveWaitingEntriesForExecution(){
+	const entriesCount = waitEntries ?  waitEntries.length : 0;
+	if(waitEntries && entriesCount > 0) {
+		for(let index = 0 ; index < entriesCount; index++){
+			let tickEntry = waitEntries[index];
+			const { priority } = tickEntry;
+			if(!priorityEntries[priority]){
+				priorityEntries[priority] = [];
+			}
+			const tickEntries = priorityEntries[priority];
+			tickEntries.push(tickEntry);
+		}
+	}
+	waitEntries = null;
+}
+
+function executePriorityEntries(){
+	isExecuting = true;
 	for(let index = 0 ; index < priorityEntries.length; index++){
 		let tickEntries = priorityEntries[index];
 		if(tickEntries && tickEntries.length > 0) {
@@ -12,6 +70,7 @@ function onTick(){
 			priorityEntries[index] = null;
 		}
 	}
+	isExecuting = false;
 }
 
 function executeTickEntries(tickEntries){
@@ -27,33 +86,54 @@ function executeTickEntries(tickEntries){
 		if (tickEntry.callback) {
 			tickEntry.callback.call(tickEntry.callback['this']);
 		}
+		tickEntry.executionCount++;
+		if(TickEntry.debug && tickEntry.executionCount > 1){
+			console.log("Executed more than once: ", tickEntry);
+		}
 	}
 }
 
+function arePriorityEntriesEmpty(){
+	for(let index = 0 ; index < priorityEntries.length; index++){
+		let tickEntries = priorityEntries[index];
+		if(tickEntries && tickEntries.length > 0) {
+			return false
+		}
+	}
+	return true;
+}
 
 function requestAnimationFrameCallback(){
-	onTick();
-	requestAnimationFrameId = window.requestAnimationFrame(requestAnimationFrameCallback);
+	const shouldContinue = onTick();
+	if(shouldContinue){
+		requestAnimationFrameId = window.requestAnimationFrame(requestAnimationFrameCallback);
+	}
 }
 
 class TickManager {
 	constructor(){
-        requestAnimationFrameId = 0; // for Windows Env
-        this.start();
 	}
 }
 
-
 TickManager.prototype.add = function (tickEntry) {
-	const { priority, callback, ignoreIfAdded } = tickEntry;
-	if(!priorityEntries[priority]){
-		priorityEntries[priority] = [];
+	if(arePriorityEntriesEmpty()){
+		this.start()
+	}
+	if(isExecuting){
+		console.log("Added to Wait entries");
+		if(!waitEntries){
+			waitEntries = [];
+		}
+		waitEntries.push(tickEntry);
+	} else {
+		const { priority } = tickEntry;
+		if(!priorityEntries[priority]){
+			priorityEntries[priority] = [];
+		}
 		const tickEntries = priorityEntries[priority];
 		tickEntries.push(tickEntry);
-		return;
 	}
-	const tickEntries = priorityEntries[priority];
-	tickEntries.push(tickEntry);
+
 };
 
 
@@ -61,7 +141,6 @@ TickManager.prototype.add = function (tickEntry) {
 TickManager.prototype.start = function () {
 	if(window){
 		// will receives timestamp as argument
-		//todo: Learn:  the purpose of timestamp
 		requestAnimationFrameId = window.requestAnimationFrame(requestAnimationFrameCallback);
 	}
 };
@@ -69,13 +148,14 @@ TickManager.prototype.start = function () {
 
 TickManager.prototype.stop = function () {
 	if(window){
-		window.cancelAnimationFrame(requestAnimationFrameId);
+		console.log('cancelAnimationFrame', requestAnimationFrameId);
 	}
 };
 
-const singletonInstance = new TickManager();
+const tickManager = new TickManager();
 
-export default singletonInstance;
+// singletonInstanace
+export default tickManager;
 
 
 
