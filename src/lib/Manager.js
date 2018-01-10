@@ -10,7 +10,9 @@ let isExecuting = false;
 
 function onTick(){
 	tickCount++;
-	console.log(tickCount);
+	if(TickEntry.debug){
+		console.log("Tick count: ", tickCount);
+	}
 	if(tickCount < TickEntry.allowedTickCount){
 		executePriorityEntries();
 		moveWaitingEntriesForExecution();
