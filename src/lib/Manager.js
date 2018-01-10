@@ -10,7 +10,9 @@ let isExecuting = false;
 
 function onTick(){
 	tickCount++;
-	console.log(tickCount);
+	if(TickEntry.debug){
+		console.log("Tick count: ", tickCount);
+	}
 	if(tickCount < TickEntry.allowedTickCount){
 		executePriorityEntries();
 		moveWaitingEntriesForExecution();
@@ -146,7 +148,7 @@ TickManager.prototype.start = function () {
 
 TickManager.prototype.stop = function () {
 	if(window){
-		console.log('cancelAnimationFrame', requestAnimationFrameId);
+		window.cancelAnimationFrame(requestAnimationFrameId);
 	}
 };
 
