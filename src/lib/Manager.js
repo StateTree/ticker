@@ -82,9 +82,9 @@ function executeTickEntries(tickEntries){
 	// with map function we cant execute dynamically growing entries.
 	for(let i = 0; i < tickEntries.length; i++){
 		const tickEntry = tickEntries[i];
-		tickEntry.recursionCount++;
+		TickEntry.stackDebug && console.log("TickManager: executeTickEntries : for " , i, tickEntry);
 		tickEntry.listener.call(tickEntry.context || tickEntry.listener['this']);
-		tickEntry.recursionCount--;
+
 		if (tickEntry.callback) {
 			tickEntry.callback.call(tickEntry.callback['this']);
 		}
@@ -118,11 +118,12 @@ class TickManager {
 }
 
 TickManager.prototype.add = function (tickEntry) {
+	TickEntry.stackDebug && console.log("TickManager: add : " , tickEntry);
 	if(arePriorityEntriesEmpty()){
 		this.start()
 	}
 	if(isExecuting){
-		console.log("Added to Wait entries");
+		TickEntry.stackDebug && console.log("TickManager: add :  wait ");
 		if(!waitEntries){
 			waitEntries = [];
 		}
@@ -130,8 +131,10 @@ TickManager.prototype.add = function (tickEntry) {
 	} else {
 		const { priority } = tickEntry;
 		if(!priorityEntries[priority]){
+			TickEntry.stackDebug && console.log("TickManager: add : in "+priority+" : new Array");
 			priorityEntries[priority] = [];
 		}
+		TickEntry.stackDebug && console.log("TickManager: add : in "+priority+" : push");
 		const tickEntries = priorityEntries[priority];
 		tickEntries.push(tickEntry);
 	}
@@ -144,13 +147,15 @@ TickManager.prototype.start = function () {
 	if(window){
 		// will receives timestamp as argument
 		requestAnimationFrameId = window.requestAnimationFrame(requestAnimationFrameCallback);
+		TickEntry.stackDebug && console.log("TickManager: start : ", requestAnimationFrameId);
 	}
 };
 
 
 TickManager.prototype.stop = function () {
 	if(window){
-		console.log('cancelAnimationFrame', requestAnimationFrameId);
+		TickEntry.stackDebug && console.log("TickManager: stop : ", requestAnimationFrameId);
+		window.cancelAnimationFrame(requestAnimationFrameId);
 	}
 };
 
