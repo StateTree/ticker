@@ -21,6 +21,7 @@ export default class TickEntry
 /*---- Public|Prototype Methods ---*/
 
 TickEntry.prototype.dispose = function(){
+	TickEntry.stackDebug && console.log("TickEntry dispose:", this);
 	this.context = null;
 	this.listener = null;
 	this.callback = null;
@@ -29,6 +30,7 @@ TickEntry.prototype.dispose = function(){
 };
 
 TickEntry.prototype.execute = function(){
+	TickEntry.stackDebug && console.log("manager.add: ", this);
 	manager.add(this);
 };
 
@@ -39,3 +41,4 @@ TickEntry.LOW = 2;
 
 TickEntry.allowedTickCount = 100;
 TickEntry.debug = false;
+TickEntry.stackDebug = false;
