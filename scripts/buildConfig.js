@@ -3,7 +3,7 @@ var config = {
         "html":{
             "sourceDir": "src/demo",
             "sourceFiles": ["index"],
-            "destinationDir":"demo"
+            "destinationDir":"build/demo"
         },
         "js":{
             "sourceDir": null,
