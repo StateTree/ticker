@@ -1,0 +1,1175 @@
+[
+  {
+    "__docId__": 1,
+    "kind": "external",
+    "name": "Infinity",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Infinity",
+    "memberof": "lib/.external-ecmascript.js",
+    "static": true,
+    "longname": "lib/.external-ecmascript.js~Infinity",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 2,
+    "kind": "external",
+    "name": "NaN",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NaN",
+    "memberof": "lib/.external-ecmascript.js",
+    "static": true,
+    "longname": "lib/.external-ecmascript.js~NaN",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 3,
+    "kind": "external",
+    "name": "undefined",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined",
+    "memberof": "lib/.external-ecmascript.js",
+    "static": true,
+    "longname": "lib/.external-ecmascript.js~undefined",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 4,
+    "kind": "external",
+    "name": "null",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null",
+    "memberof": "lib/.external-ecmascript.js",
+    "static": true,
+    "longname": "lib/.external-ecmascript.js~null",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 5,
+    "kind": "external",
+    "name": "Object",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object",
+    "memberof": "lib/.external-ecmascript.js",
+    "static": true,
+    "longname": "lib/.external-ecmascript.js~Object",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 6,
+    "kind": "external",
+    "name": "object",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object",
+    "memberof": "lib/.external-ecmascript.js",
+    "static": true,
+    "longname": "lib/.external-ecmascript.js~object",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 7,
+    "kind": "external",
+    "name": "Function",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function",
+    "memberof": "lib/.external-ecmascript.js",
+    "static": true,
+    "longname": "lib/.external-ecmascript.js~Function",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 8,
+    "kind": "external",
+    "name": "function",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function",
+    "memberof": "lib/.external-ecmascript.js",
+    "static": true,
+    "longname": "lib/.external-ecmascript.js~function",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 9,
+    "kind": "external",
+    "name": "Boolean",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean",
+    "memberof": "lib/.external-ecmascript.js",
+    "static": true,
+    "longname": "lib/.external-ecmascript.js~Boolean",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 10,
+    "kind": "external",
+    "name": "boolean",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean",
+    "memberof": "lib/.external-ecmascript.js",
+    "static": true,
+    "longname": "lib/.external-ecmascript.js~boolean",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 11,
+    "kind": "external",
+    "name": "Symbol",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol",
+    "memberof": "lib/.external-ecmascript.js",
+    "static": true,
+    "longname": "lib/.external-ecmascript.js~Symbol",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 12,
+    "kind": "external",
+    "name": "Error",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error",
+    "memberof": "lib/.external-ecmascript.js",
+    "static": true,
+    "longname": "lib/.external-ecmascript.js~Error",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 13,
+    "kind": "external",
+    "name": "EvalError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/EvalError",
+    "memberof": "lib/.external-ecmascript.js",
+    "static": true,
+    "longname": "lib/.external-ecmascript.js~EvalError",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 14,
+    "kind": "external",
+    "name": "InternalError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/InternalError",
+    "memberof": "lib/.external-ecmascript.js",
+    "static": true,
+    "longname": "lib/.external-ecmascript.js~InternalError",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 15,
+    "kind": "external",
+    "name": "RangeError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RangeError",
+    "memberof": "lib/.external-ecmascript.js",
+    "static": true,
+    "longname": "lib/.external-ecmascript.js~RangeError",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 16,
+    "kind": "external",
+    "name": "ReferenceError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ReferenceError",
+    "memberof": "lib/.external-ecmascript.js",
+    "static": true,
+    "longname": "lib/.external-ecmascript.js~ReferenceError",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 17,
+    "kind": "external",
+    "name": "SyntaxError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SyntaxError",
+    "memberof": "lib/.external-ecmascript.js",
+    "static": true,
+    "longname": "lib/.external-ecmascript.js~SyntaxError",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 18,
+    "kind": "external",
+    "name": "TypeError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypeError",
+    "memberof": "lib/.external-ecmascript.js",
+    "static": true,
+    "longname": "lib/.external-ecmascript.js~TypeError",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 19,
+    "kind": "external",
+    "name": "URIError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/URIError",
+    "memberof": "lib/.external-ecmascript.js",
+    "static": true,
+    "longname": "lib/.external-ecmascript.js~URIError",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 20,
+    "kind": "external",
+    "name": "Number",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number",
+    "memberof": "lib/.external-ecmascript.js",
+    "static": true,
+    "longname": "lib/.external-ecmascript.js~Number",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 21,
+    "kind": "external",
+    "name": "number",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number",
+    "memberof": "lib/.external-ecmascript.js",
+    "static": true,
+    "longname": "lib/.external-ecmascript.js~number",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 22,
+    "kind": "external",
+    "name": "Date",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date",
+    "memberof": "lib/.external-ecmascript.js",
+    "static": true,
+    "longname": "lib/.external-ecmascript.js~Date",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 23,
+    "kind": "external",
+    "name": "String",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String",
+    "memberof": "lib/.external-ecmascript.js",
+    "static": true,
+    "longname": "lib/.external-ecmascript.js~String",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 24,
+    "kind": "external",
+    "name": "string",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String",
+    "memberof": "lib/.external-ecmascript.js",
+    "static": true,
+    "longname": "lib/.external-ecmascript.js~string",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 25,
+    "kind": "external",
+    "name": "RegExp",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp",
+    "memberof": "lib/.external-ecmascript.js",
+    "static": true,
+    "longname": "lib/.external-ecmascript.js~RegExp",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 26,
+    "kind": "external",
+    "name": "Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array",
+    "memberof": "lib/.external-ecmascript.js",
+    "static": true,
+    "longname": "lib/.external-ecmascript.js~Array",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 27,
+    "kind": "external",
+    "name": "Int8Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int8Array",
+    "memberof": "lib/.external-ecmascript.js",
+    "static": true,
+    "longname": "lib/.external-ecmascript.js~Int8Array",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 28,
+    "kind": "external",
+    "name": "Uint8Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array",
+    "memberof": "lib/.external-ecmascript.js",
+    "static": true,
+    "longname": "lib/.external-ecmascript.js~Uint8Array",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 29,
+    "kind": "external",
+    "name": "Uint8ClampedArray",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8ClampedArray",
+    "memberof": "lib/.external-ecmascript.js",
+    "static": true,
+    "longname": "lib/.external-ecmascript.js~Uint8ClampedArray",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 30,
+    "kind": "external",
+    "name": "Int16Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int16Array",
+    "memberof": "lib/.external-ecmascript.js",
+    "static": true,
+    "longname": "lib/.external-ecmascript.js~Int16Array",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 31,
+    "kind": "external",
+    "name": "Uint16Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint16Array",
+    "memberof": "lib/.external-ecmascript.js",
+    "static": true,
+    "longname": "lib/.external-ecmascript.js~Uint16Array",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 32,
+    "kind": "external",
+    "name": "Int32Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int32Array",
+    "memberof": "lib/.external-ecmascript.js",
+    "static": true,
+    "longname": "lib/.external-ecmascript.js~Int32Array",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 33,
+    "kind": "external",
+    "name": "Uint32Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint32Array",
+    "memberof": "lib/.external-ecmascript.js",
+    "static": true,
+    "longname": "lib/.external-ecmascript.js~Uint32Array",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 34,
+    "kind": "external",
+    "name": "Float32Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float32Array",
+    "memberof": "lib/.external-ecmascript.js",
+    "static": true,
+    "longname": "lib/.external-ecmascript.js~Float32Array",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 35,
+    "kind": "external",
+    "name": "Float64Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float64Array",
+    "memberof": "lib/.external-ecmascript.js",
+    "static": true,
+    "longname": "lib/.external-ecmascript.js~Float64Array",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 36,
+    "kind": "external",
+    "name": "Map",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map",
+    "memberof": "lib/.external-ecmascript.js",
+    "static": true,
+    "longname": "lib/.external-ecmascript.js~Map",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 37,
+    "kind": "external",
+    "name": "Set",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set",
+    "memberof": "lib/.external-ecmascript.js",
+    "static": true,
+    "longname": "lib/.external-ecmascript.js~Set",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 38,
+    "kind": "external",
+    "name": "WeakMap",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap",
+    "memberof": "lib/.external-ecmascript.js",
+    "static": true,
+    "longname": "lib/.external-ecmascript.js~WeakMap",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 39,
+    "kind": "external",
+    "name": "WeakSet",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet",
+    "memberof": "lib/.external-ecmascript.js",
+    "static": true,
+    "longname": "lib/.external-ecmascript.js~WeakSet",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 40,
+    "kind": "external",
+    "name": "ArrayBuffer",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer",
+    "memberof": "lib/.external-ecmascript.js",
+    "static": true,
+    "longname": "lib/.external-ecmascript.js~ArrayBuffer",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 41,
+    "kind": "external",
+    "name": "DataView",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView",
+    "memberof": "lib/.external-ecmascript.js",
+    "static": true,
+    "longname": "lib/.external-ecmascript.js~DataView",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 42,
+    "kind": "external",
+    "name": "JSON",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON",
+    "memberof": "lib/.external-ecmascript.js",
+    "static": true,
+    "longname": "lib/.external-ecmascript.js~JSON",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 43,
+    "kind": "external",
+    "name": "Promise",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise",
+    "memberof": "lib/.external-ecmascript.js",
+    "static": true,
+    "longname": "lib/.external-ecmascript.js~Promise",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 44,
+    "kind": "external",
+    "name": "Generator",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator",
+    "memberof": "lib/.external-ecmascript.js",
+    "static": true,
+    "longname": "lib/.external-ecmascript.js~Generator",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 45,
+    "kind": "external",
+    "name": "GeneratorFunction",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/GeneratorFunction",
+    "memberof": "lib/.external-ecmascript.js",
+    "static": true,
+    "longname": "lib/.external-ecmascript.js~GeneratorFunction",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 46,
+    "kind": "external",
+    "name": "Reflect",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Reflect",
+    "memberof": "lib/.external-ecmascript.js",
+    "static": true,
+    "longname": "lib/.external-ecmascript.js~Reflect",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 47,
+    "kind": "external",
+    "name": "Proxy",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy",
+    "memberof": "lib/.external-ecmascript.js",
+    "static": true,
+    "longname": "lib/.external-ecmascript.js~Proxy",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 48,
+    "kind": "file",
+    "name": "lib/TickEntry.js",
+    "content": "import addToSemiInfiniteLoop from './semiInfiniteLoop';\n\n/**\n * Tick Entry is a wrapper to the function we want to execute later in request animation frame or event cycle\n * @example\n * import Ticker from 'ticker'\n * let tickEntry = new TickEntry(context,listener,callback,priority);\n */\nexport default class TickEntry\n{\n\t/**\n\t * @param {Object} context The \"this\" argument for the listener function.\n\t * @param {Function} listener\n\t * @param {Function} callback\n\t * @param {number} priority\n\t */\n\tconstructor(context, listener, callback = null, priority = 0)\n\t{\n\t\t/**\n\t\t * @type {Object}\n\t\t */\n\t\tthis.context = context;\n\t\t/**\n\t\t * @type {Function}\n\t\t */\n\t\tthis.listener = listener;\n\t\t/**\n\t\t * @type {Function}\n\t\t */\n\t\tthis.callback = callback;\n\t\t/**\n\t\t * @type {number}\n\t\t */\n\t\tthis.priority = priority;\n\t\t/**\n\t\t * @type {number}\n\t\t */\n\t\tthis.executionCount = 0;\n\t}\n\n\n\t/**\n\t * This function dispose the tickEntry references for garbage collection\n\t *\n\t * @return {void}\n\t */\n\tdispose(){\n\t\tthis.context = null;\n\t\tthis.listener = null;\n\t\tthis.callback = null;\n\t\tthis.priority = null;\n\t\tthis.executionCount = NaN;\n\t}\n\n\t/**\n\t * This function adds the Listener to event cycle / request animation frame for execution\n\t *\n\t * @return {void}\n\t */\n\texecute(){\n\t\taddToSemiInfiniteLoop(this);\n\t};\n\n}\n\nTickEntry.HIGH = 0;\nTickEntry.NORMAL = 1;\nTickEntry.LOW = 2;\n\nTickEntry.allowedTickCount = 100;\n",
+    "static": true,
+    "longname": "/Users/sanjaykrishna/Projects/GitHub/statetree/ticker/src/lib/TickEntry.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 49,
+    "kind": "class",
+    "name": "TickEntry",
+    "memberof": "lib/TickEntry.js",
+    "static": true,
+    "longname": "lib/TickEntry.js~TickEntry",
+    "access": "public",
+    "export": true,
+    "importPath": "ticker/lib/TickEntry.js",
+    "importStyle": "TickEntry",
+    "description": "Tick Entry is a wrapper to the function we want to execute later in request animation frame or event cycle",
+    "examples": [
+      "import Ticker from 'ticker'\nlet tickEntry = new TickEntry(context,listener,callback,priority);"
+    ],
+    "lineNumber": 9,
+    "interface": false
+  },
+  {
+    "__docId__": 50,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "lib/TickEntry.js~TickEntry",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "lib/TickEntry.js~TickEntry#constructor",
+    "access": "public",
+    "description": "",
+    "lineNumber": 17,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "context",
+        "description": "The \"this\" argument for the listener function."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Function"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "listener",
+        "description": ""
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Function"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "callback",
+        "description": ""
+      },
+      {
+        "nullable": null,
+        "types": [
+          "number"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "priority",
+        "description": ""
+      }
+    ]
+  },
+  {
+    "__docId__": 51,
+    "kind": "member",
+    "name": "context",
+    "memberof": "lib/TickEntry.js~TickEntry",
+    "static": false,
+    "longname": "lib/TickEntry.js~TickEntry#context",
+    "access": "public",
+    "description": "",
+    "lineNumber": 22,
+    "type": {
+      "nullable": null,
+      "types": [
+        "Object"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 52,
+    "kind": "member",
+    "name": "listener",
+    "memberof": "lib/TickEntry.js~TickEntry",
+    "static": false,
+    "longname": "lib/TickEntry.js~TickEntry#listener",
+    "access": "public",
+    "description": "",
+    "lineNumber": 26,
+    "type": {
+      "nullable": null,
+      "types": [
+        "Function"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 53,
+    "kind": "member",
+    "name": "callback",
+    "memberof": "lib/TickEntry.js~TickEntry",
+    "static": false,
+    "longname": "lib/TickEntry.js~TickEntry#callback",
+    "access": "public",
+    "description": "",
+    "lineNumber": 30,
+    "type": {
+      "nullable": null,
+      "types": [
+        "Function"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 54,
+    "kind": "member",
+    "name": "priority",
+    "memberof": "lib/TickEntry.js~TickEntry",
+    "static": false,
+    "longname": "lib/TickEntry.js~TickEntry#priority",
+    "access": "public",
+    "description": "",
+    "lineNumber": 34,
+    "type": {
+      "nullable": null,
+      "types": [
+        "number"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 55,
+    "kind": "member",
+    "name": "executionCount",
+    "memberof": "lib/TickEntry.js~TickEntry",
+    "static": false,
+    "longname": "lib/TickEntry.js~TickEntry#executionCount",
+    "access": "public",
+    "description": "",
+    "lineNumber": 38,
+    "type": {
+      "nullable": null,
+      "types": [
+        "number"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 56,
+    "kind": "method",
+    "name": "dispose",
+    "memberof": "lib/TickEntry.js~TickEntry",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "lib/TickEntry.js~TickEntry#dispose",
+    "access": "public",
+    "description": "This function dispose the tickEntry references for garbage collection",
+    "lineNumber": 47,
+    "return": {
+      "nullable": null,
+      "types": [
+        "void"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "params": []
+  },
+  {
+    "__docId__": 62,
+    "kind": "method",
+    "name": "execute",
+    "memberof": "lib/TickEntry.js~TickEntry",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "lib/TickEntry.js~TickEntry#execute",
+    "access": "public",
+    "description": "This function adds the Listener to event cycle / request animation frame for execution",
+    "lineNumber": 60,
+    "return": {
+      "nullable": null,
+      "types": [
+        "void"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "params": []
+  },
+  {
+    "__docId__": 63,
+    "kind": "file",
+    "name": "lib/index.js",
+    "content": "import Ticker from './TickEntry';\n\nexport default Ticker;\n",
+    "static": true,
+    "longname": "/Users/sanjaykrishna/Projects/GitHub/statetree/ticker/src/lib/index.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 64,
+    "kind": "file",
+    "name": "lib/semiInfiniteLoop.js",
+    "content": "import TickEntry from './TickEntry';\n\nlet requestAnimationFrameId = 0;// for Windows Env\n//[0-HIGH, 1-NORMAL, 2-LOW]\nlet priorityEntries = [null, null, null];\nlet waitEntries = null;\n\nlet tickCount = 0;\nlet isExecuting = false;\n\n/**\n * @private (Core algorithm)\n * caller: Animation Frame | event cycle Callback\n *\n * Executes entries in animation frame / event cycle callback\n * First execute the entries in the priority order\n * Entries which are added to Wait queue while executing priority entries are moved for execution\n * If there are no entries in priority, semi-infinite loop is stopped\n * and return boolean flag to remove the callback from animation frame or event cycle.\n *\n * @return {boolean} notifies whether to continue or remove the callback\n */\nfunction onTick(){\n\ttickCount++;\n\tif(tickCount < TickEntry.allowedTickCount){\n\t\texecutePriorityEntries();\n\t\tmoveWaitingEntriesForExecution();\n\t\tif(arePriorityEntriesEmpty()){\n\t\t\tstopSemiInfiniteLoop();\n\t\t\treturn false;\n\t\t}\n\t} else {\n\t\tconsole.warn(\"Animation frame loop executed to its set limit: \", TickEntry.allowedTickCount);\n\t\tstopSemiInfiniteLoop();\n\t\treturn false;\n\t}\n\treturn true;\n}\n\n/**\n * @private\n * function that executes the entries in each priority\n *\n * @return {void}\n */\nfunction executePriorityEntries(){\n\tisExecuting = true;\n\tfor(let index = 0 ; index < priorityEntries.length; index++){\n\t\tlet tickEntries = priorityEntries[index];\n\t\tif(tickEntries && tickEntries.length > 0) {\n\t\t\texecuteTickEntries(tickEntries);\n\t\t\t//Clear them once executed\n\t\t\tpriorityEntries[index] = null;\n\t\t}\n\t}\n\tisExecuting = false;\n}\n\n/**\n * @private\n * function that executes all the entries in particular priority\n *\n * @return {void}\n */\nfunction executeTickEntries(tickEntries){\n\t// important to use for-loop\n\t// tickEntries grows dynamically by one of its entry\n\t// for example: let say we have one entry, and executing that entry might adds another entry\n\t// with map function we cant execute dynamically growing entries.\n\tfor(let i = 0; i < tickEntries.length; i++){\n\t\tconst tickEntry = tickEntries[i];\n\t\ttickEntry.listener.call(tickEntry.context || tickEntry.listener['this']);\n\n\t\tif (tickEntry.callback) {\n\t\t\ttickEntry.callback.call(tickEntry.callback['this']);\n\t\t}\n\t\ttickEntry.executionCount++;\n\t}\n}\n\nfunction moveWaitingEntriesForExecution(){\n\tconst entriesCount = waitEntries ?  waitEntries.length : 0;\n\tif(waitEntries && entriesCount > 0) {\n\t\tfor(let index = 0 ; index < entriesCount; index++){\n\t\t\tlet tickEntry = waitEntries[index];\n\t\t\tconst { priority } = tickEntry;\n\t\t\tif(!priorityEntries[priority]){\n\t\t\t\tpriorityEntries[priority] = [];\n\t\t\t}\n\t\t\tconst tickEntries = priorityEntries[priority];\n\t\t\ttickEntries.push(tickEntry);\n\t\t}\n\t}\n\twaitEntries = null;\n}\n\nfunction arePriorityEntriesEmpty(){\n\tfor(let index = 0 ; index < priorityEntries.length; index++){\n\t\tlet tickEntries = priorityEntries[index];\n\t\tif(tickEntries && tickEntries.length > 0) {\n\t\t\treturn false\n\t\t}\n\t}\n\treturn true;\n}\n\n/**\n * @private\n * Animation frame callback function which execute the entries\n *\n * @return {void}\n */\nfunction requestAnimationFrameCallback(){\n\tconst shouldContinue = onTick();\n\tif(shouldContinue){\n\t\trequestAnimationFrameId = window.requestAnimationFrame(requestAnimationFrameCallback);\n\t}\n}\n\n/**\n * @private\n * Starts the Semi-infinite loop to execute the functions\n * Executed when first entry is added.\n *\n * @return {void}\n */\nfunction startSemiInfiniteLoop() {\n\tif(window){\n\t\t// will receives timestamp as argument\n\t\trequestAnimationFrameId = window.requestAnimationFrame(requestAnimationFrameCallback);\n\t}\n}\n\n/**\n * @private\n * Stops the Semi-infinite loop.\n * Executed after executing all the entries both in priority and wait\n *\n * @return {void}\n */\nfunction stopSemiInfiniteLoop() {\n\ttickCount = 0;\n\tisExecuting = false;\n\tpriorityEntries = [null, null, null];\n\twaitEntries = null;\n\tif(window){\n\t\twindow.cancelAnimationFrame(requestAnimationFrameId);\n\t}\n};\n\n/**\n * @private\n * only visible to TickEntry and not accessible\n * adds the tickEntry to queue in priority order\n * if entries are empty starts the semi-infinite loop in event cycle or Animation frame\n * if execution of entries are in progress, the entry is added to waiting queue\n * thus listeners are executed in the order they are added to the semi-infinite loop\n * @param {Object} tickEntry\n * @return {void}\n */\nexport default function addToSemiInfiniteLoop(tickEntry) {\n\tif(arePriorityEntriesEmpty()){\n\t\tstartSemiInfiniteLoop()\n\t}\n\tif(isExecuting){\n\t\tif(!waitEntries){\n\t\t\twaitEntries = [];\n\t\t}\n\t\twaitEntries.push(tickEntry);\n\t} else {\n\t\tconst { priority } = tickEntry;\n\t\tif(!priorityEntries[priority]){\n\t\t\tpriorityEntries[priority] = [];\n\t\t}\n\t\tconst tickEntries = priorityEntries[priority];\n\t\ttickEntries.push(tickEntry);\n\t}\n\n};\n\n\n\n\n\n\n\n",
+    "static": true,
+    "longname": "/Users/sanjaykrishna/Projects/GitHub/statetree/ticker/src/lib/semiInfiniteLoop.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 65,
+    "kind": "variable",
+    "name": "requestAnimationFrameId",
+    "memberof": "lib/semiInfiniteLoop.js",
+    "static": true,
+    "longname": "lib/semiInfiniteLoop.js~requestAnimationFrameId",
+    "access": "public",
+    "export": false,
+    "importPath": "ticker/lib/semiInfiniteLoop.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 3,
+    "undocument": true,
+    "type": {
+      "types": [
+        "number"
+      ]
+    },
+    "ignore": true
+  },
+  {
+    "__docId__": 66,
+    "kind": "variable",
+    "name": "priorityEntries",
+    "memberof": "lib/semiInfiniteLoop.js",
+    "static": true,
+    "longname": "lib/semiInfiniteLoop.js~priorityEntries",
+    "access": "public",
+    "export": false,
+    "importPath": "ticker/lib/semiInfiniteLoop.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 5,
+    "undocument": true,
+    "type": {
+      "types": [
+        "undefined[]"
+      ]
+    },
+    "ignore": true
+  },
+  {
+    "__docId__": 67,
+    "kind": "variable",
+    "name": "waitEntries",
+    "memberof": "lib/semiInfiniteLoop.js",
+    "static": true,
+    "longname": "lib/semiInfiniteLoop.js~waitEntries",
+    "access": "public",
+    "export": false,
+    "importPath": "ticker/lib/semiInfiniteLoop.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 6,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    },
+    "ignore": true
+  },
+  {
+    "__docId__": 68,
+    "kind": "variable",
+    "name": "tickCount",
+    "memberof": "lib/semiInfiniteLoop.js",
+    "static": true,
+    "longname": "lib/semiInfiniteLoop.js~tickCount",
+    "access": "public",
+    "export": false,
+    "importPath": "ticker/lib/semiInfiniteLoop.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 8,
+    "undocument": true,
+    "type": {
+      "types": [
+        "number"
+      ]
+    },
+    "ignore": true
+  },
+  {
+    "__docId__": 69,
+    "kind": "variable",
+    "name": "isExecuting",
+    "memberof": "lib/semiInfiniteLoop.js",
+    "static": true,
+    "longname": "lib/semiInfiniteLoop.js~isExecuting",
+    "access": "public",
+    "export": false,
+    "importPath": "ticker/lib/semiInfiniteLoop.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 9,
+    "undocument": true,
+    "type": {
+      "types": [
+        "boolean"
+      ]
+    },
+    "ignore": true
+  },
+  {
+    "__docId__": 70,
+    "kind": "function",
+    "name": "onTick",
+    "memberof": "lib/semiInfiniteLoop.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "lib/semiInfiniteLoop.js~onTick",
+    "access": "private",
+    "export": false,
+    "importPath": "ticker/lib/semiInfiniteLoop.js",
+    "importStyle": null,
+    "description": "",
+    "lineNumber": 23,
+    "return": {
+      "nullable": null,
+      "types": [
+        "boolean"
+      ],
+      "spread": false,
+      "description": "notifies whether to continue or remove the callback"
+    },
+    "params": [],
+    "ignore": true
+  },
+  {
+    "__docId__": 71,
+    "kind": "function",
+    "name": "executePriorityEntries",
+    "memberof": "lib/semiInfiniteLoop.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "lib/semiInfiniteLoop.js~executePriorityEntries",
+    "access": "private",
+    "export": false,
+    "importPath": "ticker/lib/semiInfiniteLoop.js",
+    "importStyle": null,
+    "description": "",
+    "lineNumber": 46,
+    "return": {
+      "nullable": null,
+      "types": [
+        "void"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "params": [],
+    "ignore": true
+  },
+  {
+    "__docId__": 72,
+    "kind": "function",
+    "name": "executeTickEntries",
+    "memberof": "lib/semiInfiniteLoop.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "lib/semiInfiniteLoop.js~executeTickEntries",
+    "access": "private",
+    "export": false,
+    "importPath": "ticker/lib/semiInfiniteLoop.js",
+    "importStyle": null,
+    "description": "",
+    "lineNumber": 65,
+    "return": {
+      "nullable": null,
+      "types": [
+        "void"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "params": [
+      {
+        "name": "tickEntries",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "ignore": true
+  },
+  {
+    "__docId__": 73,
+    "kind": "function",
+    "name": "moveWaitingEntriesForExecution",
+    "memberof": "lib/semiInfiniteLoop.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "lib/semiInfiniteLoop.js~moveWaitingEntriesForExecution",
+    "access": "public",
+    "export": false,
+    "importPath": "ticker/lib/semiInfiniteLoop.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 81,
+    "undocument": true,
+    "params": [],
+    "return": null,
+    "ignore": true
+  },
+  {
+    "__docId__": 74,
+    "kind": "function",
+    "name": "arePriorityEntriesEmpty",
+    "memberof": "lib/semiInfiniteLoop.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "lib/semiInfiniteLoop.js~arePriorityEntriesEmpty",
+    "access": "public",
+    "export": false,
+    "importPath": "ticker/lib/semiInfiniteLoop.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 97,
+    "undocument": true,
+    "params": [],
+    "return": {
+      "types": [
+        "boolean"
+      ]
+    },
+    "ignore": true
+  },
+  {
+    "__docId__": 75,
+    "kind": "function",
+    "name": "requestAnimationFrameCallback",
+    "memberof": "lib/semiInfiniteLoop.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "lib/semiInfiniteLoop.js~requestAnimationFrameCallback",
+    "access": "private",
+    "export": false,
+    "importPath": "ticker/lib/semiInfiniteLoop.js",
+    "importStyle": null,
+    "description": "",
+    "lineNumber": 113,
+    "return": {
+      "nullable": null,
+      "types": [
+        "void"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "params": [],
+    "ignore": true
+  },
+  {
+    "__docId__": 76,
+    "kind": "function",
+    "name": "startSemiInfiniteLoop",
+    "memberof": "lib/semiInfiniteLoop.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "lib/semiInfiniteLoop.js~startSemiInfiniteLoop",
+    "access": "private",
+    "export": false,
+    "importPath": "ticker/lib/semiInfiniteLoop.js",
+    "importStyle": null,
+    "description": "",
+    "lineNumber": 127,
+    "return": {
+      "nullable": null,
+      "types": [
+        "void"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "params": [],
+    "ignore": true
+  },
+  {
+    "__docId__": 77,
+    "kind": "function",
+    "name": "stopSemiInfiniteLoop",
+    "memberof": "lib/semiInfiniteLoop.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "lib/semiInfiniteLoop.js~stopSemiInfiniteLoop",
+    "access": "private",
+    "export": false,
+    "importPath": "ticker/lib/semiInfiniteLoop.js",
+    "importStyle": null,
+    "description": "",
+    "lineNumber": 141,
+    "return": {
+      "nullable": null,
+      "types": [
+        "void"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "params": [],
+    "ignore": true
+  },
+  {
+    "__docId__": 78,
+    "kind": "function",
+    "name": "addToSemiInfiniteLoop",
+    "memberof": "lib/semiInfiniteLoop.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "lib/semiInfiniteLoop.js~addToSemiInfiniteLoop",
+    "access": "private",
+    "export": true,
+    "importPath": "ticker/lib/semiInfiniteLoop.js",
+    "importStyle": "addToSemiInfiniteLoop",
+    "description": "",
+    "lineNumber": 161,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "tickEntry",
+        "description": ""
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "void"
+      ],
+      "spread": false,
+      "description": ""
+    }
+  },
+  {
+    "kind": "index",
+    "content": "",
+    "longname": "/Users/sanjaykrishna/Projects/GitHub/statetree/ticker/README.md",
+    "name": "./README.md",
+    "static": true,
+    "access": "public"
+  },
+  {
+    "kind": "packageJSON",
+    "content": "{\n  \"name\": \"ticker\",\n  \"version\": \"1.10.0\",\n  \"description\": \"Ticker manager for Window request animation frame and NodeJS tick\",\n  \"main\": \"lib/ticker.js\",\n  \"scripts\": {\n    \"start\": \"webpack-dev-server --open --mode development\",\n    \"lint\": \"eslint ./src --ext .js --cache --fix --ext .jsx --cache --fix\",\n    \"doc\": \"./node_modules/.bin/esdoc open ./docs/index.html\",\n    \"prebuild\": \"rimraf lib && rimraf build && npm run doc\",\n    \"build\": \"./node_modules/.bin/webpack --mode production\",\n    \"postbuild\": \"node scripts/postbuild.js\",\n    \"release:master\": \"git checkout master && git merge --squash --strategy-option theirs develop && git commit -am 'Release Commit' && git push && git checkout develop\",\n    \"release:bugfix\": \"npm version patch -m 'Bumped patch version number' && npm run release:master\",\n    \"release:feature\": \"npm version minor -m 'Bumped minor version number' && npm run release:master\",\n    \"release:breakingchange\": \"npm version major -m 'Bumped major version number' && npm run release:master\",\n    \"postversion\": \"git push origin HEAD --follow-tags\",\n    \"deploy\": \"git subtree push --prefix build origin gh-pages\"\n  },\n  \"repository\": {\n    \"type\": \"git\",\n    \"url\": \"git+https://github.com/StateTree/ticker.git\"\n  },\n  \"author\": \"Sanjay Krishna Anbalagan\",\n  \"license\": \"MIT\",\n  \"bugs\": {\n    \"url\": \"https://github.com/StateTree/ticker/issues\"\n  },\n  \"homepage\": \"https://github.com/StateTree/ticker#readme\",\n  \"devDependencies\": {\n    \"babel-cli\": \"^6.26.0\",\n    \"babel-core\": \"^6.26.3\",\n    \"babel-eslint\": \"^8.2.6\",\n    \"babel-loader\": \"^7.1.5\",\n    \"babel-preset-env\": \"^1.7.0\",\n    \"esdoc\": \"^1.1.0\",\n    \"esdoc-standard-plugin\": \"^1.0.0\",\n    \"eslint\": \"^5.2.0\",\n    \"eslint-loader\": \"^2.1.0\",\n    \"fs-extra\": \"^7.0.0\",\n    \"rimraf\": \"^2.6.2\",\n    \"webpack\": \"^4.16.2\",\n    \"webpack-cli\": \"^3.1.0\",\n    \"webpack-dev-server\": \"^3.1.5\"\n  },\n  \"files\": [\n    \"lib\"\n  ]\n}\n",
+    "longname": "/Users/sanjaykrishna/Projects/GitHub/statetree/ticker/package.json",
+    "name": "package.json",
+    "static": true,
+    "access": "public"
+  }
+]
