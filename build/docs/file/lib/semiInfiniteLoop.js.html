@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">lib/semiInfiniteLoop.js | ticker</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="Ticker manager for Window request animation frame and NodeJS tick"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="ticker"><meta property="twitter:description" content="Ticker manager for Window request animation frame and NodeJS tick"></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/StateTree/ticker"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/TickEntry.js~TickEntry.html">TickEntry</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-addToSemiInfiniteLoop">addToSemiInfiniteLoop</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">lib/semiInfiniteLoop.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import TickEntry from &apos;./TickEntry&apos;;
+
+let requestAnimationFrameId = 0;// for Windows Env
+//[0-HIGH, 1-NORMAL, 2-LOW]
+let priorityEntries = [null, null, null];
+let waitEntries = null;
+
+let tickCount = 0;
+let isExecuting = false;
+
+/**
+ * @private (Core algorithm)
+ * caller: Animation Frame | event cycle Callback
+ *
+ * Executes entries in animation frame / event cycle callback
+ * First execute the entries in the priority order
+ * Entries which are added to Wait queue while executing priority entries are moved for execution
+ * If there are no entries in priority, semi-infinite loop is stopped
+ * and return boolean flag to remove the callback from animation frame or event cycle.
+ *
+ * @return {boolean} notifies whether to continue or remove the callback
+ */
+function onTick(){
+	tickCount++;
+	if(tickCount &lt; TickEntry.allowedTickCount){
+		executePriorityEntries();
+		moveWaitingEntriesForExecution();
+		if(arePriorityEntriesEmpty()){
+			stopSemiInfiniteLoop();
+			return false;
+		}
+	} else {
+		console.warn(&quot;Animation frame loop executed to its set limit: &quot;, TickEntry.allowedTickCount);
+		stopSemiInfiniteLoop();
+		return false;
+	}
+	return true;
+}
+
+/**
+ * @private
+ * function that executes the entries in each priority
+ *
+ * @return {void}
+ */
+function executePriorityEntries(){
+	isExecuting = true;
+	for(let index = 0 ; index &lt; priorityEntries.length; index++){
+		let tickEntries = priorityEntries[index];
+		if(tickEntries &amp;&amp; tickEntries.length &gt; 0) {
+			executeTickEntries(tickEntries);
+			//Clear them once executed
+			priorityEntries[index] = null;
+		}
+	}
+	isExecuting = false;
+}
+
+/**
+ * @private
+ * function that executes all the entries in particular priority
+ *
+ * @return {void}
+ */
+function executeTickEntries(tickEntries){
+	// important to use for-loop
+	// tickEntries grows dynamically by one of its entry
+	// for example: let say we have one entry, and executing that entry might adds another entry
+	// with map function we cant execute dynamically growing entries.
+	for(let i = 0; i &lt; tickEntries.length; i++){
+		const tickEntry = tickEntries[i];
+		tickEntry.listener.call(tickEntry.context || tickEntry.listener[&apos;this&apos;]);
+
+		if (tickEntry.callback) {
+			tickEntry.callback.call(tickEntry.callback[&apos;this&apos;]);
+		}
+		tickEntry.executionCount++;
+	}
+}
+
+function moveWaitingEntriesForExecution(){
+	const entriesCount = waitEntries ?  waitEntries.length : 0;
+	if(waitEntries &amp;&amp; entriesCount &gt; 0) {
+		for(let index = 0 ; index &lt; entriesCount; index++){
+			let tickEntry = waitEntries[index];
+			const { priority } = tickEntry;
+			if(!priorityEntries[priority]){
+				priorityEntries[priority] = [];
+			}
+			const tickEntries = priorityEntries[priority];
+			tickEntries.push(tickEntry);
+		}
+	}
+	waitEntries = null;
+}
+
+function arePriorityEntriesEmpty(){
+	for(let index = 0 ; index &lt; priorityEntries.length; index++){
+		let tickEntries = priorityEntries[index];
+		if(tickEntries &amp;&amp; tickEntries.length &gt; 0) {
+			return false
+		}
+	}
+	return true;
+}
+
+/**
+ * @private
+ * Animation frame callback function which execute the entries
+ *
+ * @return {void}
+ */
+function requestAnimationFrameCallback(){
+	const shouldContinue = onTick();
+	if(shouldContinue){
+		requestAnimationFrameId = window.requestAnimationFrame(requestAnimationFrameCallback);
+	}
+}
+
+/**
+ * @private
+ * Starts the Semi-infinite loop to execute the functions
+ * Executed when first entry is added.
+ *
+ * @return {void}
+ */
+function startSemiInfiniteLoop() {
+	if(window){
+		// will receives timestamp as argument
+		requestAnimationFrameId = window.requestAnimationFrame(requestAnimationFrameCallback);
+	}
+}
+
+/**
+ * @private
+ * Stops the Semi-infinite loop.
+ * Executed after executing all the entries both in priority and wait
+ *
+ * @return {void}
+ */
+function stopSemiInfiniteLoop() {
+	tickCount = 0;
+	isExecuting = false;
+	priorityEntries = [null, null, null];
+	waitEntries = null;
+	if(window){
+		window.cancelAnimationFrame(requestAnimationFrameId);
+	}
+};
+
+/**
+ * @private
+ * only visible to TickEntry and not accessible
+ * adds the tickEntry to queue in priority order
+ * if entries are empty starts the semi-infinite loop in event cycle or Animation frame
+ * if execution of entries are in progress, the entry is added to waiting queue
+ * thus listeners are executed in the order they are added to the semi-infinite loop
+ * @param {Object} tickEntry
+ * @return {void}
+ */
+export default function addToSemiInfiniteLoop(tickEntry) {
+	if(arePriorityEntriesEmpty()){
+		startSemiInfiniteLoop()
+	}
+	if(isExecuting){
+		if(!waitEntries){
+			waitEntries = [];
+		}
+		waitEntries.push(tickEntry);
+	} else {
+		const { priority } = tickEntry;
+		if(!priorityEntries[priority]){
+			priorityEntries[priority] = [];
+		}
+		const tickEntries = priorityEntries[priority];
+		tickEntries.push(tickEntry);
+	}
+
+};
+
+
+
+
+
+
+
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>
