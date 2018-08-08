@@ -1,6 +1,6 @@
 {
   "name": "ticker",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Ticker manager for Window request animation frame and NodeJS tick",
   "main": "lib/ticker.js",
   "scripts": {
@@ -9,9 +9,9 @@
     "test": "./node_modules/.bin/mocha test/**/*test.js --timeout 0 --require ./node_modules/babel-register --require test/helpers/*.js -R spec",
     "coverage": "NODE_ENV=coverage ./node_modules/.bin/nyc npm run test",
     "doc": "./node_modules/.bin/esdoc open ./docs/index.html",
-    "prebuild": "rimraf lib && rimraf build && npm run coverage && npm run doc",
-    "build": "./node_modules/.bin/webpack --mode production",
-    "postbuild": "node scripts/postbuild.js ",
+    "prebuild": "rimraf lib && rimraf build && npm run coverage ",
+    "build": "./node_modules/.bin/webpack --mode production ",
+    "postbuild": "node scripts/postbuild.js && npm run doc",
     "release:master": "git checkout master && git merge --squash --strategy-option theirs develop && git commit -am 'Release Commit' && git push && git checkout develop",
     "release:bugfix": "npm version patch -m 'Bumped patch version number' && npm run release:master",
     "release:feature": "npm version minor -m 'Bumped minor version number' && npm run release:master",

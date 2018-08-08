@@ -21,9 +21,8 @@ var config = {
             "destinationDir":null
         },
         "other":{
-            "sourceDir":null,
-            "sourceFiles": null,
-            "destinationDir":null
+            "sourceDir":"manual",
+            "destinationDir":"build/manual"
         }
     }
 };
