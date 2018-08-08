@@ -16,8 +16,7 @@
     "release:bugfix": "npm version patch -m 'Bumped patch version number' && npm run release:master",
     "release:feature": "npm version minor -m 'Bumped minor version number' && npm run release:master",
     "release:breakingchange": "npm version major -m 'Bumped major version number' && npm run release:master",
-    "postversion": "git push origin HEAD --follow-tags",
-    "deploy": "git subtree push --prefix build origin gh-pages"
+    "postversion": "git push origin HEAD --follow-tags"
   },
   "repository": {
     "type": "git",
