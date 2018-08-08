@@ -15,7 +15,6 @@
         },
         "manual": {
           "index": "./build/manual/index.md",
-          "asset": "./build/manual/asset",
           "files": [
             "./build/manual/installation.md",
             "./build/manual/overview.md",
