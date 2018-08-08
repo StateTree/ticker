@@ -1,5 +1,10 @@
 {
   "presets": [
     "env"
-  ]
+  ],
+  "env": {
+    "coverage": {
+      "plugins": ["istanbul"]
+    }
+  }
 }

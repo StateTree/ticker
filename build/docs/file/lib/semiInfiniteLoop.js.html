@@ -13,10 +13,10 @@
 
 <header>
   <a href="./">Home</a>
-  
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
   <a href="identifiers.html">Reference</a>
   <a href="source.html">Source</a>
-  
+  <a href="test.html" data-ice="testLink">Test</a>
   <div class="search-box">
   <span>
     <img src="./image/search.png">
@@ -38,7 +38,7 @@
 <div class="content" data-ice="content"><h1 data-ice="title">lib/semiInfiniteLoop.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import TickEntry from &apos;./TickEntry&apos;;
 
-let requestAnimationFrameId = 0;// for Windows Env
+let tickID = 0;// for Windows Env
 //[0-HIGH, 1-NORMAL, 2-LOW]
 let priorityEntries = [null, null, null];
 let waitEntries = null;
@@ -60,15 +60,25 @@ let isExecuting = false;
  */
 function onTick(){
 	tickCount++;
-	if(tickCount &lt; TickEntry.allowedTickCount){
-		executePriorityEntries();
-		moveWaitingEntriesForExecution();
-		if(arePriorityEntriesEmpty()){
+
+	if(TickEntry.allowedTickCount !== undefined){
+		if(tickCount &lt; TickEntry.allowedTickCount){
+			return coreAlogorithm();
+		 } else {
+			console.warn(&quot;Animation frame loop executed to its set limit: &quot;, TickEntry.allowedTickCount);
 			stopSemiInfiniteLoop();
 			return false;
 		}
 	} else {
-		console.warn(&quot;Animation frame loop executed to its set limit: &quot;, TickEntry.allowedTickCount);
+		return coreAlogorithm();
+	}
+	return true;
+}
+
+function coreAlogorithm(){
+	executePriorityEntries();
+	moveWaitingEntriesForExecution();
+	if(arePriorityEntriesEmpty()){
 		stopSemiInfiniteLoop();
 		return false;
 	}
@@ -107,10 +117,10 @@ function executeTickEntries(tickEntries){
 	// with map function we cant execute dynamically growing entries.
 	for(let i = 0; i &lt; tickEntries.length; i++){
 		const tickEntry = tickEntries[i];
-		tickEntry.listener.call(tickEntry.context || tickEntry.listener[&apos;this&apos;]);
+		tickEntry.func.call(tickEntry.context || tickEntry.func[&apos;this&apos;]);
 
 		if (tickEntry.callback) {
-			tickEntry.callback.call(tickEntry.callback[&apos;this&apos;]);
+			tickEntry.callback.call(tickEntry.context || tickEntry.callback[&apos;this&apos;]);
 		}
 		tickEntry.executionCount++;
 	}
@@ -148,10 +158,10 @@ function arePriorityEntriesEmpty(){
  *
  * @return {void}
  */
-function requestAnimationFrameCallback(){
+function tickCallback(){
 	const shouldContinue = onTick();
 	if(shouldContinue){
-		requestAnimationFrameId = window.requestAnimationFrame(requestAnimationFrameCallback);
+		tickID = window.requestAnimationFrame(tickCallback);
 	}
 }
 
@@ -165,7 +175,9 @@ function requestAnimationFrameCallback(){
 function startSemiInfiniteLoop() {
 	if(window){
 		// will receives timestamp as argument
-		requestAnimationFrameId = window.requestAnimationFrame(requestAnimationFrameCallback);
+		tickID = window.requestAnimationFrame(tickCallback);
+	} else{
+		tickID = setTimeout(tickCallback);
 	}
 }
 
@@ -182,7 +194,9 @@ function stopSemiInfiniteLoop() {
 	priorityEntries = [null, null, null];
 	waitEntries = null;
 	if(window){
-		window.cancelAnimationFrame(requestAnimationFrameId);
+		window.cancelAnimationFrame(tickID);
+	} else {
+		clearTimeout(tickID);
 	}
 };
 
@@ -192,7 +206,7 @@ function stopSemiInfiniteLoop() {
  * adds the tickEntry to queue in priority order
  * if entries are empty starts the semi-infinite loop in event cycle or Animation frame
  * if execution of entries are in progress, the entry is added to waiting queue
- * thus listeners are executed in the order they are added to the semi-infinite loop
+ * thus functions are executed in the order they are added to the semi-infinite loop
  * @param {Object} tickEntry
  * @return {void}
  */
