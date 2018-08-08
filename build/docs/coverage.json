@@ -1,15 +1,15 @@
 {
-  "coverage": "69.56%",
-  "expectCount": 23,
-  "actualCount": 16,
+  "coverage": "69.23%",
+  "expectCount": 26,
+  "actualCount": 18,
   "files": {
     "lib/TickEntry.js": {
-      "expectCount": 9,
-      "actualCount": 9,
+      "expectCount": 11,
+      "actualCount": 11,
       "undocumentLines": []
     },
     "lib/semiInfiniteLoop.js": {
-      "expectCount": 14,
+      "expectCount": 15,
       "actualCount": 7,
       "undocumentLines": [
         3,
@@ -17,8 +17,9 @@
         6,
         8,
         9,
-        81,
-        97
+        40,
+        91,
+        107
       ]
     }
   }

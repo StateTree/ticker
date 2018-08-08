@@ -12,6 +12,84 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
+    "tickentry lib/tickentry.js~tickentry,tickentry",
+    "test-file/test/TickEntry.test.js.html#lineNumber11",
+    "API",
+    "test"
+  ],
+  [
+    "tickentry#dispose lib/tickentry.js~tickentry#dispose,tickentry#dispose",
+    "test-file/test/TickEntry.test.js.html#lineNumber69",
+    "API dispose",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/TickEntry.test.js.html#lineNumber78",
+    "API dispose Should set callback to null",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/TickEntry.test.js.html#lineNumber70",
+    "API dispose Should set context to null",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/TickEntry.test.js.html#lineNumber82",
+    "API dispose Should set executionCount to NaN",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/TickEntry.test.js.html#lineNumber74",
+    "API dispose Should set func to null",
+    "test"
+  ],
+  [
+    "tickentry#executeassmallloopsincycle lib/tickentry.js~tickentry#executeassmallloopsincycle,tickentry#executeassmallloopsincycle",
+    "test-file/test/TickEntry.test.js.html#lineNumber36",
+    "API executeAsSmallLoopsInCycle",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/TickEntry.test.js.html#lineNumber49",
+    "API executeAsSmallLoopsInCycle Should call callback with current executed index ",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/TickEntry.test.js.html#lineNumber41",
+    "API executeAsSmallLoopsInCycle Should call function in next animation frame",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/TickEntry.test.js.html#lineNumber37",
+    "API executeAsSmallLoopsInCycle Should throw error when function is not defined",
+    "test"
+  ],
+  [
+    "tickentry#executeincycle lib/tickentry.js~tickentry#executeincycle,tickentry#executeincycle",
+    "test-file/test/TickEntry.test.js.html#lineNumber22",
+    "API executeInCycle",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/TickEntry.test.js.html#lineNumber23",
+    "API executeInCycle Should call function in next animation frame",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/TickEntry.test.js.html#lineNumber30",
+    "API executeInCycle Should throw error when function is not defined",
+    "test"
+  ],
+  [
     "lib/.external-ecmascript.js~array",
     "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array",
     "lib/.external-ecmascript.js~Array",
@@ -324,9 +402,15 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "lib/tickentry.js~tickentry#execute",
-    "class/lib/TickEntry.js~TickEntry.html#instance-method-execute",
-    "lib/TickEntry.js~TickEntry#execute",
+    "lib/tickentry.js~tickentry#executeassmallloopsincycle",
+    "class/lib/TickEntry.js~TickEntry.html#instance-method-executeAsSmallLoopsInCycle",
+    "lib/TickEntry.js~TickEntry#executeAsSmallLoopsInCycle",
+    "method"
+  ],
+  [
+    "lib/tickentry.js~tickentry#executeincycle",
+    "class/lib/TickEntry.js~TickEntry.html#instance-method-executeInCycle",
+    "lib/TickEntry.js~TickEntry#executeInCycle",
     "method"
   ],
   [
@@ -336,9 +420,9 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
-    "lib/tickentry.js~tickentry#listener",
-    "class/lib/TickEntry.js~TickEntry.html#instance-member-listener",
-    "lib/TickEntry.js~TickEntry#listener",
+    "lib/tickentry.js~tickentry#func",
+    "class/lib/TickEntry.js~TickEntry.html#instance-member-func",
+    "lib/TickEntry.js~TickEntry#func",
     "member"
   ],
   [
@@ -358,5 +442,11 @@ window.esdocSearchIndex = [
     "file/lib/semiInfiniteLoop.js.html",
     "lib/semiInfiniteLoop.js",
     "file"
+  ],
+  [
+    "test/tickentry.test.js",
+    "test-file/test/TickEntry.test.js.html",
+    "test/TickEntry.test.js",
+    "testFile"
   ]
 ]

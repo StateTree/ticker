@@ -13,10 +13,10 @@
 
 <header>
   <a href="./">Home</a>
-  
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
   <a href="identifiers.html">Reference</a>
   <a href="source.html">Source</a>
-  
+  <a href="test.html" data-ice="testLink">Test</a>
   <div class="search-box">
   <span>
     <img src="./image/search.png">
@@ -35,7 +35,45 @@
 </div>
 </nav>
 
-<div class="content" data-ice="content">
+<div class="content" data-ice="content"><div data-ice="index" class="github-markdown"><h1 id="ticker">Ticker</h1><h3 id="what-">What?</h3><ul>
+<li>Executes Functions later in animation frame / event cycle callback</li>
+<li>call later: wrapper to request animation frame callback or event cycle, perks are being adding priorty order</li>
+</ul>
+<h3 id="why-">Why?</h3><ul>
+<li>Cost effective Function can be broken into smaller functions and executed later</li>
+<li>Loops can be broken down to smaller loops with out holding execution resources.</li>
+</ul>
+<h3 id="how-">How?</h3><pre><code><code class="source-code prettyprint">import Ticker from &apos;ticker&apos;;
+
+// function to execute later
+function callMeLater() {
+    return &quot;called later&quot;;
+}
+
+// excutes right after call me later function (optional)
+function callback() {
+    // consumer of this library can decide what they want to do
+    ticker2.dispose();
+}
+
+// create the ticker object
+var ticker1 = new Ticker(this, callMeLater, 1);
+var ticker2 = new Ticker(this, callMeLater, 0 , callback);
+
+// add to execute later in animation frame callback or Event cycle callback
+ticker1.executeInCycle()</code>
+</code></pre><h3 id="core-algorithm">Core Algorithm</h3><ul>
+<li>Entry added to priority Stack<ol>
+<li>If first Entry starts the semi-infinite loop</li>
+<li>if priority order stack entries are executing, entry added to wait stack</li>
+</ol>
+</li>
+<li>Executes the entries in the priority order</li>
+<li>Added wait entries are moved to priority entries for execution</li>
+<li>If there are no entries in priority, semi-infinite loop is stopped</li>
+<li>and return boolean flag to remove the callback from animation frame or event cycle.</li>
+</ul>
+</div>
 </div>
 
 <footer class="footer">

@@ -1,6 +1,6 @@
 import TickEntry from './TickEntry';
 
-let requestAnimationFrameId = 0;// for Windows Env
+let tickID = 0;// for Windows Env
 //[0-HIGH, 1-NORMAL, 2-LOW]
 let priorityEntries = [null, null, null];
 let waitEntries = null;
@@ -22,15 +22,25 @@ let isExecuting = false;
  */
 function onTick(){
 	tickCount++;
-	if(tickCount < TickEntry.allowedTickCount){
-		executePriorityEntries();
-		moveWaitingEntriesForExecution();
-		if(arePriorityEntriesEmpty()){
+
+	if(TickEntry.allowedTickCount !== undefined){
+		if(tickCount < TickEntry.allowedTickCount){
+			return coreAlogorithm();
+		 } else {
+			console.warn("Animation frame loop executed to its set limit: ", TickEntry.allowedTickCount);
 			stopSemiInfiniteLoop();
 			return false;
 		}
 	} else {
-		console.warn("Animation frame loop executed to its set limit: ", TickEntry.allowedTickCount);
+		return coreAlogorithm();
+	}
+	return true;
+}
+
+function coreAlogorithm(){
+	executePriorityEntries();
+	moveWaitingEntriesForExecution();
+	if(arePriorityEntriesEmpty()){
 		stopSemiInfiniteLoop();
 		return false;
 	}
@@ -69,10 +79,10 @@ function executeTickEntries(tickEntries){
 	// with map function we cant execute dynamically growing entries.
 	for(let i = 0; i < tickEntries.length; i++){
 		const tickEntry = tickEntries[i];
-		tickEntry.listener.call(tickEntry.context || tickEntry.listener['this']);
+		tickEntry.func.call(tickEntry.context || tickEntry.func['this']);
 
 		if (tickEntry.callback) {
-			tickEntry.callback.call(tickEntry.callback['this']);
+			tickEntry.callback.call(tickEntry.context || tickEntry.callback['this']);
 		}
 		tickEntry.executionCount++;
 	}
@@ -110,10 +120,10 @@ function arePriorityEntriesEmpty(){
  *
  * @return {void}
  */
-function requestAnimationFrameCallback(){
+function tickCallback(){
 	const shouldContinue = onTick();
 	if(shouldContinue){
-		requestAnimationFrameId = window.requestAnimationFrame(requestAnimationFrameCallback);
+		tickID = window.requestAnimationFrame(tickCallback);
 	}
 }
 
@@ -127,7 +137,9 @@ function requestAnimationFrameCallback(){
 function startSemiInfiniteLoop() {
 	if(window){
 		// will receives timestamp as argument
-		requestAnimationFrameId = window.requestAnimationFrame(requestAnimationFrameCallback);
+		tickID = window.requestAnimationFrame(tickCallback);
+	} else{
+		tickID = setTimeout(tickCallback);
 	}
 }
 
@@ -144,7 +156,9 @@ function stopSemiInfiniteLoop() {
 	priorityEntries = [null, null, null];
 	waitEntries = null;
 	if(window){
-		window.cancelAnimationFrame(requestAnimationFrameId);
+		window.cancelAnimationFrame(tickID);
+	} else {
+		clearTimeout(tickID);
 	}
 };
 
@@ -154,7 +168,7 @@ function stopSemiInfiniteLoop() {
  * adds the tickEntry to queue in priority order
  * if entries are empty starts the semi-infinite loop in event cycle or Animation frame
  * if execution of entries are in progress, the entry is added to waiting queue
- * thus listeners are executed in the order they are added to the semi-infinite loop
+ * thus functions are executed in the order they are added to the semi-infinite loop
  * @param {Object} tickEntry
  * @return {void}
  */
