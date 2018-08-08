@@ -1280,7 +1280,7 @@
   },
   {
     "kind": "packageJSON",
-    "content": "{\n  \"name\": \"ticker\",\n  \"version\": \"1.11.0\",\n  \"description\": \"Ticker manager for Window request animation frame and NodeJS tick\",\n  \"main\": \"lib/ticker.js\",\n  \"scripts\": {\n    \"start\": \"webpack-dev-server --open --mode development\",\n    \"lint\": \"eslint ./src --ext .js --cache --fix --ext .jsx --cache --fix\",\n    \"test\": \"./node_modules/.bin/mocha test/**/*test.js --timeout 0 --require ./node_modules/babel-register --require test/helpers/*.js -R spec\",\n    \"coverage\": \"NODE_ENV=coverage ./node_modules/.bin/nyc npm run test\",\n    \"doc\": \"./node_modules/.bin/esdoc open ./docs/index.html\",\n    \"prebuild\": \"rimraf lib && rimraf build && npm run doc\",\n    \"build\": \"./node_modules/.bin/webpack --mode production\",\n    \"postbuild\": \"node scripts/postbuild.js\",\n    \"release:master\": \"git checkout master && git merge --squash --strategy-option theirs develop && git commit -am 'Release Commit' && git push && git checkout develop\",\n    \"release:bugfix\": \"npm version patch -m 'Bumped patch version number' && npm run release:master\",\n    \"release:feature\": \"npm version minor -m 'Bumped minor version number' && npm run release:master\",\n    \"release:breakingchange\": \"npm version major -m 'Bumped major version number' && npm run release:master\",\n    \"postversion\": \"git push origin HEAD --follow-tags\",\n    \"deploy\": \"git subtree push --prefix build origin gh-pages\"\n  },\n  \"repository\": {\n    \"type\": \"git\",\n    \"url\": \"git+https://github.com/StateTree/ticker.git\"\n  },\n  \"author\": \"Sanjay Krishna Anbalagan\",\n  \"license\": \"MIT\",\n  \"bugs\": {\n    \"url\": \"https://github.com/StateTree/ticker/issues\"\n  },\n  \"homepage\": \"https://github.com/StateTree/ticker#readme\",\n  \"devDependencies\": {\n    \"babel-cli\": \"^6.26.0\",\n    \"babel-core\": \"^6.26.3\",\n    \"babel-eslint\": \"^8.2.6\",\n    \"babel-loader\": \"^7.1.5\",\n    \"babel-plugin-istanbul\": \"^4.1.6\",\n    \"babel-preset-env\": \"^1.7.0\",\n    \"chai\": \"^4.1.2\",\n    \"esdoc\": \"^1.1.0\",\n    \"esdoc-standard-plugin\": \"^1.0.0\",\n    \"eslint\": \"^5.2.0\",\n    \"eslint-loader\": \"^2.1.0\",\n    \"fs-extra\": \"^7.0.0\",\n    \"jsdom\": \"^11.12.0\",\n    \"mocha\": \"^5.2.0\",\n    \"mock-raf\": \"^1.0.0\",\n    \"nyc\": \"^12.0.2\",\n    \"raf\": \"^3.4.0\",\n    \"raf-stub\": \"^2.0.2\",\n    \"rimraf\": \"^2.6.2\",\n    \"sinon\": \"^6.1.4\",\n    \"webpack\": \"^4.16.2\",\n    \"webpack-cli\": \"^3.1.0\",\n    \"webpack-dev-server\": \"^3.1.5\"\n  },\n  \"files\": [\n    \"lib\"\n  ]\n}\n",
+    "content": "{\n  \"name\": \"ticker\",\n  \"version\": \"2.1.0\",\n  \"description\": \"Ticker manager for Window request animation frame and NodeJS tick\",\n  \"main\": \"lib/ticker.js\",\n  \"scripts\": {\n    \"start\": \"webpack-dev-server --open --mode development\",\n    \"lint\": \"eslint ./src --ext .js --cache --fix --ext .jsx --cache --fix\",\n    \"test\": \"./node_modules/.bin/mocha test/**/*test.js --timeout 0 --require ./node_modules/babel-register --require test/helpers/*.js -R spec\",\n    \"coverage\": \"NODE_ENV=coverage ./node_modules/.bin/nyc npm run test\",\n    \"doc\": \"./node_modules/.bin/esdoc open ./docs/index.html\",\n    \"prebuild\": \"rimraf lib && rimraf build && npm run coverage \",\n    \"build\": \"./node_modules/.bin/webpack --mode production \",\n    \"postbuild\": \"node scripts/postbuild.js && npm run doc\",\n    \"release:master\": \"git checkout master && git merge --squash --strategy-option theirs develop && git commit -am 'Release Commit' && git push && git checkout develop\",\n    \"release:bugfix\": \"npm version patch -m 'Bumped patch version number' && npm run release:master\",\n    \"release:feature\": \"npm version minor -m 'Bumped minor version number' && npm run release:master\",\n    \"release:breakingchange\": \"npm version major -m 'Bumped major version number' && npm run release:master\",\n    \"postversion\": \"git push origin HEAD --follow-tags\"\n  },\n  \"repository\": {\n    \"type\": \"git\",\n    \"url\": \"git+https://github.com/StateTree/ticker.git\"\n  },\n  \"author\": \"Sanjay Krishna Anbalagan\",\n  \"license\": \"MIT\",\n  \"bugs\": {\n    \"url\": \"https://github.com/StateTree/ticker/issues\"\n  },\n  \"homepage\": \"https://statetree.github.io/ticker/docs/\",\n  \"devDependencies\": {\n    \"babel-cli\": \"^6.26.0\",\n    \"babel-core\": \"^6.26.3\",\n    \"babel-eslint\": \"^8.2.6\",\n    \"babel-loader\": \"^7.1.5\",\n    \"babel-plugin-istanbul\": \"^4.1.6\",\n    \"babel-preset-env\": \"^1.7.0\",\n    \"chai\": \"^4.1.2\",\n    \"esdoc\": \"^1.1.0\",\n    \"esdoc-standard-plugin\": \"^1.0.0\",\n    \"eslint\": \"^5.2.0\",\n    \"eslint-loader\": \"^2.1.0\",\n    \"fs-extra\": \"^7.0.0\",\n    \"jsdom\": \"^11.12.0\",\n    \"mocha\": \"^5.2.0\",\n    \"mock-raf\": \"^1.0.0\",\n    \"nyc\": \"^12.0.2\",\n    \"raf\": \"^3.4.0\",\n    \"raf-stub\": \"^2.0.2\",\n    \"rimraf\": \"^2.6.2\",\n    \"sinon\": \"^6.1.4\",\n    \"webpack\": \"^4.16.2\",\n    \"webpack-cli\": \"^3.1.0\",\n    \"webpack-dev-server\": \"^3.1.5\"\n  },\n  \"files\": [\n    \"lib\"\n  ]\n}\n",
     "longname": "/Users/sanjaykrishna/Projects/GitHub/statetree/ticker/package.json",
     "name": "package.json",
     "static": true,
@@ -1289,38 +1289,38 @@
   {
     "kind": "manualIndex",
     "content": "# Ticker",
-    "longname": "/Users/sanjaykrishna/Projects/GitHub/statetree/ticker/manual/index.md",
-    "name": "./manual/index.md",
+    "longname": "/Users/sanjaykrishna/Projects/GitHub/statetree/ticker/build/manual/index.md",
+    "name": "./build/manual/index.md",
     "static": true,
     "access": "public"
   },
   {
     "kind": "manualAsset",
-    "longname": "/Users/sanjaykrishna/Projects/GitHub/statetree/ticker/manual/asset",
-    "name": "./manual/asset",
+    "longname": "/Users/sanjaykrishna/Projects/GitHub/statetree/ticker/build/manual/asset",
+    "name": "./build/manual/asset",
     "static": true,
     "access": "public"
   },
   {
     "kind": "manual",
-    "longname": "/Users/sanjaykrishna/Projects/GitHub/statetree/ticker/manual/installation.md",
-    "name": "./manual/installation.md",
+    "longname": "/Users/sanjaykrishna/Projects/GitHub/statetree/ticker/build/manual/installation.md",
+    "name": "./build/manual/installation.md",
     "content": "# Download\n\n### npm\n```\nnpm install --save ticker\n```",
     "static": true,
     "access": "public"
   },
   {
     "kind": "manual",
-    "longname": "/Users/sanjaykrishna/Projects/GitHub/statetree/ticker/manual/overview.md",
-    "name": "./manual/overview.md",
+    "longname": "/Users/sanjaykrishna/Projects/GitHub/statetree/ticker/build/manual/overview.md",
+    "name": "./build/manual/overview.md",
     "content": "# What?\n* call-later: wrapper to request animation frame callback or event cycle,\n* perks are being adding priorty order, and self destruction or animation frame or event cycle callback\n\n# Why?\n* Cost effective Function can be broken into smaller functions and executed later\n* Loops can be broken down to smaller loops with out holding execution resources.\n",
     "static": true,
     "access": "public"
   },
   {
     "kind": "manual",
-    "longname": "/Users/sanjaykrishna/Projects/GitHub/statetree/ticker/manual/tutorial.md",
-    "name": "./manual/tutorial.md",
+    "longname": "/Users/sanjaykrishna/Projects/GitHub/statetree/ticker/build/manual/tutorial.md",
+    "name": "./build/manual/tutorial.md",
     "content": "# How?\n\n## API\n### executeInCycle\n\n```\nimport Ticker from 'ticker';\n\n// function to execute later\nfunction callMeLater() {\n    return \"called later\";\n}\n\n// excutes right after call me later function (optional)\nfunction callback() {\n    // consumer of this library can decide what they want to do\n    ticker2.dispose();\n}\n\n// create the ticker object\nvar ticker1 = new Ticker(this, callMeLater, 1);\nvar ticker2 = new Ticker(this, callMeLater, 0 , callback);\n\n// add to execute later in animation frame callback or Event cycle callback\nticker1.executeInCycle()\n```\n\n### executeAsSmallLoopsInCycle\n\n```\nimport Ticker from 'ticker';\n\nconst array = [];\nfor(let i= 0 ; i < 100; i++){\n\tarray[i] = i;\n};\n\nfunction forLoopCode (index){\n\tconsole.log(\"forLoopCode: \", array[index]);\n}\n\nfunction forLoopCodeCallback(executedIndex){\n\tconsole.log(\"Executed Index: \", executedIndex);\n}\n\nlet loopTicker = new Ticker(window, forLoopCode, 0, forLoopCodeCallback);\nloopTicker.executeAsSmallLoopsInCycle(10, 100);\n```\n\n### dispose\n\n```\nimport Ticker from 'ticker';\n\n// function to execute later\nfunction callMeLater() {\n    return \"called later\";\n}\n\nfunction callback() {\n    ticker.dispose();\n}\n\n// create the ticker object\nvar ticker = new Ticker(this, callMeLater, 0 , callback);\n\n// add to execute later in animation frame callback or Event cycle callback\nticker.executeInCycle()\n```",
     "static": true,
     "access": "public"
