@@ -1,5 +1,5 @@
 {
-  "name": "ticker",
+  "name": "@statetree/ticker",
   "version": "2.1.3",
   "description": "Ticker manager for Window request animation frame and NodeJS tick",
   "main": "lib/ticker.js",
