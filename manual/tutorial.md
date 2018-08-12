@@ -4,7 +4,7 @@
 ### executeInCycle
 
 ```
-import Ticker from 'ticker';
+import Ticker from '@statetree/ticker';
 
 // function to execute later
 function callMeLater() {
@@ -28,7 +28,7 @@ ticker1.executeInCycle()
 ### executeAsSmallLoopsInCycle
 
 ```
-import Ticker from 'ticker';
+import Ticker from '@statetree/ticker';
 
 const array = [];
 for(let i= 0 ; i < 100; i++){
@@ -50,7 +50,7 @@ loopTicker.executeAsSmallLoopsInCycle(10, 100);
 ### dispose
 
 ```
-import Ticker from 'ticker';
+import Ticker from '@statetree/ticker';
 
 // function to execute later
 function callMeLater() {
