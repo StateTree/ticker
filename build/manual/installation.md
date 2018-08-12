@@ -2,5 +2,5 @@
 
 ### npm
 ```
-npm install --save ticker
+npm install --save @statetree/ticker
 ```

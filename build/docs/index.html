@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <base data-ice="baseUrl">
-  <title data-ice="title">Home | ticker</title>
+  <title data-ice="title">Home | @statetree/ticker</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
   <script src="script/manual.js"></script>
-<meta name="description" content="Ticker manager for Window request animation frame and NodeJS tick"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="ticker"><meta property="twitter:description" content="Ticker manager for Window request animation frame and NodeJS tick"></head>
+<meta name="description" content="Ticker manager for Window request animation frame and NodeJS tick"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="@statetree/ticker"><meta property="twitter:description" content="Ticker manager for Window request animation frame and NodeJS tick"></head>
 <body class="layout-container" data-ice="rootContainer">
 
 <header>
@@ -35,7 +35,8 @@
 </div>
 </nav>
 
-<div class="content" data-ice="content"><div data-ice="index" class="github-markdown"><h1 id="ticker">Ticker</h1><h3 id="what-">What?</h3><ul>
+<div class="content" data-ice="content"><div data-ice="index" class="github-markdown"><h1 id="ticker">Ticker</h1><p><a href="https://travis-ci.com/StateTree/ticker"><img src="https://travis-ci.com/StateTree/ticker.svg?branch=master" alt="Build Status"></a></p>
+<h3 id="what-">What?</h3><ul>
 <li>Executes Functions later in animation frame / event cycle callback</li>
 <li>call later: wrapper to request animation frame callback or event cycle, perks are being adding priorty order</li>
 </ul>
@@ -43,7 +44,7 @@
 <li>Cost effective Function can be broken into smaller functions and executed later</li>
 <li>Loops can be broken down to smaller loops with out holding execution resources.</li>
 </ul>
-<h3 id="how-">How?</h3><pre><code><code class="source-code prettyprint">import Ticker from &apos;ticker&apos;;
+<h3 id="how-">How?</h3><h5 id="executeincycle">executeInCycle</h5><pre><code><code class="source-code prettyprint">import Ticker from &apos;@statetree/ticker&apos;;
 
 // function to execute later
 function callMeLater() {
@@ -62,6 +63,39 @@ var ticker2 = new Ticker(this, callMeLater, 0 , callback);
 
 // add to execute later in animation frame callback or Event cycle callback
 ticker1.executeInCycle()</code>
+</code></pre><h5 id="executeassmallloopsincycle">executeAsSmallLoopsInCycle</h5><pre><code><code class="source-code prettyprint">import Ticker from &apos;@statetree/ticker&apos;;
+
+const array = [];
+for(let i= 0 ; i &lt; 100; i++){
+    array[i] = i;
+};
+
+function forLoopCode (index){
+    console.log(&quot;forLoopCode: &quot;, array[index]);
+}
+
+function forLoopCodeCallback(executedIndex){
+    console.log(&quot;Executed Index: &quot;, executedIndex);
+}
+
+let loopTicker = new Ticker(window, forLoopCode, 0, forLoopCodeCallback);
+loopTicker.executeAsSmallLoopsInCycle(10, 100);</code>
+</code></pre><h5 id="dispose">dispose</h5><pre><code><code class="source-code prettyprint">import Ticker from &apos;@statetree/ticker&apos;;
+
+// function to execute later
+function callMeLater() {
+    return &quot;called later&quot;;
+}
+
+function callback() {
+    ticker.dispose();
+}
+
+// create the ticker object
+var ticker = new Ticker(this, callMeLater, 0 , callback);
+
+// add to execute later in animation frame callback or Event cycle callback
+ticker.executeInCycle()</code>
 </code></pre><h3 id="core-algorithm">Core Algorithm</h3><ul>
 <li>Entry added to priority Stack<ol>
 <li>If first Entry starts the semi-infinite loop</li>
