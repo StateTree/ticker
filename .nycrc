@@ -14,12 +14,6 @@
     "require": [
         "babel-register"
     ],
-    "reporter": [
-      "json",
-      "lcov",
-      "html",
-      "text"
-    ],
     "extension": [
         ".js"
     ],
@@ -27,6 +21,5 @@
     "check-coverage": true,
     "all": true,
     "sourceMap": false,
-    "instrument": false,
-    "report-dir": "./build/coverage"
+    "instrument": false
 }

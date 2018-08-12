@@ -1,14 +1,14 @@
 window.esdocSearchIndex = [
   [
-    "ticker/lib/tickentry.js~tickentry",
+    "@statetree/ticker/lib/tickentry.js~tickentry",
     "class/lib/TickEntry.js~TickEntry.html",
-    "<span>TickEntry</span> <span class=\"search-result-import-path\">ticker/lib/TickEntry.js</span>",
+    "<span>TickEntry</span> <span class=\"search-result-import-path\">@statetree/ticker/lib/TickEntry.js</span>",
     "class"
   ],
   [
-    "ticker/lib/semiinfiniteloop.js~addtosemiinfiniteloop",
+    "@statetree/ticker/lib/semiinfiniteloop.js~addtosemiinfiniteloop",
     "function/index.html#static-function-addToSemiInfiniteLoop",
-    "<span>addToSemiInfiniteLoop</span> <span class=\"search-result-import-path\">ticker/lib/semiInfiniteLoop.js</span>",
+    "<span>addToSemiInfiniteLoop</span> <span class=\"search-result-import-path\">@statetree/ticker/lib/semiInfiniteLoop.js</span>",
     "function"
   ],
   [

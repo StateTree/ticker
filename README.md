@@ -1,4 +1,7 @@
 # Ticker
+[![Build Status](https://travis-ci.com/StateTree/ticker.svg?branch=master)](https://travis-ci.com/StateTree/ticker)
+[![Code Coverage](https://codecov.io/gh/StateTree/ticker/branch/master/graph/badge.svg)](https://codecov.io/gh/StateTree/ticker/branch/master/graph/badge.svg)
+
 
 ### What?
 * Executes Functions later in animation frame / event cycle callback
