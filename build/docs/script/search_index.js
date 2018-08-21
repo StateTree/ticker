@@ -6,6 +6,12 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
+    "@statetree/ticker/lib/tickfunction.js~tickfunction",
+    "class/lib/TickFunction.js~TickFunction.html",
+    "<span>TickFunction</span> <span class=\"search-result-import-path\">@statetree/ticker/lib/TickFunction.js</span>",
+    "class"
+  ],
+  [
     "@statetree/ticker/lib/semiinfiniteloop.js~addtosemiinfiniteloop",
     "function/index.html#static-function-addToSemiInfiniteLoop",
     "<span>addToSemiInfiniteLoop</span> <span class=\"search-result-import-path\">@statetree/ticker/lib/semiInfiniteLoop.js</span>",
@@ -19,31 +25,31 @@ window.esdocSearchIndex = [
   ],
   [
     "tickentry#dispose lib/tickentry.js~tickentry#dispose,tickentry#dispose",
-    "test-file/test/TickEntry.test.js.html#lineNumber69",
+    "test-file/test/TickEntry.test.js.html#lineNumber64",
     "API dispose",
     "test"
   ],
   [
     "",
-    "test-file/test/TickEntry.test.js.html#lineNumber78",
+    "test-file/test/TickEntry.test.js.html#lineNumber73",
     "API dispose Should set callback to null",
     "test"
   ],
   [
     "",
-    "test-file/test/TickEntry.test.js.html#lineNumber70",
+    "test-file/test/TickEntry.test.js.html#lineNumber65",
     "API dispose Should set context to null",
     "test"
   ],
   [
     "",
-    "test-file/test/TickEntry.test.js.html#lineNumber82",
+    "test-file/test/TickEntry.test.js.html#lineNumber77",
     "API dispose Should set executionCount to NaN",
     "test"
   ],
   [
     "",
-    "test-file/test/TickEntry.test.js.html#lineNumber74",
+    "test-file/test/TickEntry.test.js.html#lineNumber69",
     "API dispose Should set func to null",
     "test"
   ],
@@ -429,6 +435,60 @@ window.esdocSearchIndex = [
     "lib/tickentry.js~tickentry#priority",
     "class/lib/TickEntry.js~TickEntry.html#instance-member-priority",
     "lib/TickEntry.js~TickEntry#priority",
+    "member"
+  ],
+  [
+    "lib/tickfunction.js",
+    "file/lib/TickFunction.js.html",
+    "lib/TickFunction.js",
+    "file"
+  ],
+  [
+    "lib/tickfunction.js~tickfunction#constructor",
+    "class/lib/TickFunction.js~TickFunction.html#instance-constructor-constructor",
+    "lib/TickFunction.js~TickFunction#constructor",
+    "method"
+  ],
+  [
+    "lib/tickfunction.js~tickfunction#done",
+    "class/lib/TickFunction.js~TickFunction.html#instance-method-done",
+    "lib/TickFunction.js~TickFunction#done",
+    "method"
+  ],
+  [
+    "lib/tickfunction.js~tickfunction#donecallback",
+    "class/lib/TickFunction.js~TickFunction.html#instance-member-doneCallback",
+    "lib/TickFunction.js~TickFunction#doneCallback",
+    "member"
+  ],
+  [
+    "lib/tickfunction.js~tickfunction#error",
+    "class/lib/TickFunction.js~TickFunction.html#instance-method-error",
+    "lib/TickFunction.js~TickFunction#error",
+    "method"
+  ],
+  [
+    "lib/tickfunction.js~tickfunction#errorcallback",
+    "class/lib/TickFunction.js~TickFunction.html#instance-member-errorCallback",
+    "lib/TickFunction.js~TickFunction#errorCallback",
+    "member"
+  ],
+  [
+    "lib/tickfunction.js~tickfunction#func",
+    "class/lib/TickFunction.js~TickFunction.html#instance-member-func",
+    "lib/TickFunction.js~TickFunction#func",
+    "member"
+  ],
+  [
+    "lib/tickfunction.js~tickfunction#progress",
+    "class/lib/TickFunction.js~TickFunction.html#instance-method-progress",
+    "lib/TickFunction.js~TickFunction#progress",
+    "method"
+  ],
+  [
+    "lib/tickfunction.js~tickfunction#progresscallback",
+    "class/lib/TickFunction.js~TickFunction.html#instance-member-progressCallback",
+    "lib/TickFunction.js~TickFunction#progressCallback",
     "member"
   ],
   [

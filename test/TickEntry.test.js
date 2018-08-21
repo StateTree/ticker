@@ -47,22 +47,17 @@ describe('API', ()=>{
 		});
 
 		it('Should call callback with current executed index ', (done)=>{
-			var ind;
+			var maxLoopPerFrame = 10;
+			var endIndex = 30;
 			ticker.callback = function(index){
-				ind = index;
-				setTimeout(()=>{
-					if(ticker.executionCount >= 11 ){
-						expect(ticker.executionCount).equal(ind + 1);
-					} else{
-						expect(ticker.executionCount).equal(ind);
-					}
-					if(index == 20){
-						done();
-					}
-
-				},0);
+				var loopCount = (index/ maxLoopPerFrame);
+				expect(ticker.executionCount).equal(loopCount);
+				if(index == endIndex){
+					done();
+				}
 			}
-			ticker.executeAsSmallLoopsInCycle(10, 20);
+
+			ticker.executeAsSmallLoopsInCycle(maxLoopPerFrame, endIndex);
 		});
 	});
 	/** @test {TickEntry#dispose} */

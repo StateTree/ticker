@@ -30,6 +30,7 @@
   <ul>
     
   <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/TickEntry.js~TickEntry.html">TickEntry</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/TickFunction.js~TickFunction.html">TickFunction</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-addToSemiInfiniteLoop">addToSemiInfiniteLoop</a></span></span></li>
 </ul>
 </div>
@@ -118,14 +119,14 @@ export default class TickEntry
 	/**
 	 * This function adds the loop function to event cycle / request animation frame for execution
 	 *
-	 * @param {number} maxLoopCount indicates loop length that needs to be executed.
+	 * @param {number} maxLoopPerFrame indicates loop length that needs to be executed in single frame or tick.
 	 * @param {number} endIndex indicates loop end value
-	 * @param {number} startIndex indicates loop begining value
+	 * @param {number} startIndex indicates loop begining value , default value is 0
 	 * @return {void}
 	 */
-	executeAsSmallLoopsInCycle(maxLoopCount, endIndex, startIndex = 0){
+	executeAsSmallLoopsInCycle(maxLoopPerFrame, endIndex, startIndex = 0){
 		checkError(this);
-		let loopLimit = maxLoopCount;
+		let loopLimit = maxLoopPerFrame;
 		let i = startIndex;
 		let allowedTickCount = TickEntry.allowedTickCount;
 		TickEntry.allowedTickCount = undefined;
@@ -135,6 +136,7 @@ export default class TickEntry
 		let loopFnCallback = this.callback;
 
 		this.context = this;
+
 		if(loopFnCallback){
 			this.callback = function() {
 				loopFnCallback.call(loopFnContext || loopFnCallback[&apos;this&apos;], i)
@@ -142,12 +144,11 @@ export default class TickEntry
 		}
 
 		this.func = function(){
-			if(i &lt; loopLimit) {
+			for(;i &lt; loopLimit; i++){
 				loopFunction.call(loopFnContext || loopFunction[&apos;this&apos;], i);
-				i = i + 1;
-				this.executeInCycle();
-			} else if(loopLimit &lt; endIndex){
-				loopLimit = loopLimit + maxLoopCount;
+			}
+			if(loopLimit &lt;= endIndex){
+				loopLimit = loopLimit + maxLoopPerFrame;
 				this.executeInCycle()
 			} else {
 				this.dispose();

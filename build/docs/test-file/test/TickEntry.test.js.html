@@ -30,6 +30,7 @@
   <ul>
     
   <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/TickEntry.js~TickEntry.html">TickEntry</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/TickFunction.js~TickFunction.html">TickFunction</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-addToSemiInfiniteLoop">addToSemiInfiniteLoop</a></span></span></li>
 </ul>
 </div>
@@ -85,22 +86,17 @@ describe(&apos;API&apos;, ()=&gt;{
 		});
 
 		it(&apos;Should call callback with current executed index &apos;, (done)=&gt;{
-			var ind;
+			var maxLoopPerFrame = 10;
+			var endIndex = 30;
 			ticker.callback = function(index){
-				ind = index;
-				setTimeout(()=&gt;{
-					if(ticker.executionCount &gt;= 11 ){
-						expect(ticker.executionCount).equal(ind + 1);
-					} else{
-						expect(ticker.executionCount).equal(ind);
-					}
-					if(index == 20){
-						done();
-					}
-
-				},0);
+				var loopCount = (index/ maxLoopPerFrame);
+				expect(ticker.executionCount).equal(loopCount);
+				if(index == endIndex){
+					done();
+				}
 			}
-			ticker.executeAsSmallLoopsInCycle(10, 20);
+
+			ticker.executeAsSmallLoopsInCycle(maxLoopPerFrame, endIndex);
 		});
 	});
 	/** @test {TickEntry#dispose} */

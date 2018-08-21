@@ -30,6 +30,7 @@
   <ul>
     
   <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/TickEntry.js~TickEntry.html">TickEntry</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/TickFunction.js~TickFunction.html">TickFunction</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-addToSemiInfiniteLoop">addToSemiInfiniteLoop</a></span></span></li>
 </ul>
 </div>
@@ -320,7 +321,7 @@ let tickEntry = new TickEntry(context,listener,callback,priority);</code></pre>
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/lib/TickEntry.js~TickEntry.html#instance-method-executeAsSmallLoopsInCycle">executeAsSmallLoopsInCycle</a></span></span><span class="code" data-ice="signature">(maxLoopCount: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, endIndex: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, startIndex: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>): <span>void</span></span>
+          <span class="code" data-ice="name"><span><a href="class/lib/TickEntry.js~TickEntry.html#instance-method-executeAsSmallLoopsInCycle">executeAsSmallLoopsInCycle</a></span></span><span class="code" data-ice="signature">(maxLoopPerFrame: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, endIndex: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, startIndex: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>): <span>void</span></span>
         </p>
       </div>
       <div>
@@ -728,7 +729,7 @@ let tickEntry = new TickEntry(context,listener,callback,priority);</code></pre>
     <h4>Test:</h4>
     <ul>
       
-    <li data-ice="test"><span><a href="test-file/test/TickEntry.test.js.html#lineNumber69">API dispose</a></span></li>
+    <li data-ice="test"><span><a href="test-file/test/TickEntry.test.js.html#lineNumber64">API dispose</a></span></li>
 </ul>
   </div>
 
@@ -743,7 +744,7 @@ let tickEntry = new TickEntry(context,listener,callback,priority);</code></pre>
     
     
     
-    <span class="code" data-ice="name">executeAsSmallLoopsInCycle</span><span class="code" data-ice="signature">(maxLoopCount: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, endIndex: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, startIndex: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>): <span>void</span></span>
+    <span class="code" data-ice="name">executeAsSmallLoopsInCycle</span><span class="code" data-ice="signature">(maxLoopPerFrame: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, endIndex: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, startIndex: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>): <span>void</span></span>
     <span class="right-info">
       
       
@@ -768,10 +769,10 @@ let tickEntry = new TickEntry(context,listener,callback,priority);</code></pre>
     <tbody>
     
     <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">maxLoopCount</td>
+      <td data-ice="name" class="code" data-depth="0">maxLoopPerFrame</td>
       <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></td>
       <td data-ice="appendix"></td>
-      <td data-ice="description"><p>indicates loop length that needs to be executed.</p>
+      <td data-ice="description"><p>indicates loop length that needs to be executed in single frame or tick.</p>
 </td>
     </tr>
 <tr data-ice="property" data-depth="0">
@@ -785,7 +786,7 @@ let tickEntry = new TickEntry(context,listener,callback,priority);</code></pre>
       <td data-ice="name" class="code" data-depth="0">startIndex</td>
       <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></td>
       <td data-ice="appendix"></td>
-      <td data-ice="description"><p>indicates loop begining value</p>
+      <td data-ice="description"><p>indicates loop begining value , default value is 0</p>
 </td>
     </tr>
 </tbody>

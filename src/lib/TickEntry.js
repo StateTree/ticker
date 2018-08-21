@@ -80,14 +80,14 @@ export default class TickEntry
 	/**
 	 * This function adds the loop function to event cycle / request animation frame for execution
 	 *
-	 * @param {number} maxLoopCount indicates loop length that needs to be executed.
+	 * @param {number} maxLoopPerFrame indicates loop length that needs to be executed in single frame or tick.
 	 * @param {number} endIndex indicates loop end value
-	 * @param {number} startIndex indicates loop begining value
+	 * @param {number} startIndex indicates loop begining value , default value is 0
 	 * @return {void}
 	 */
-	executeAsSmallLoopsInCycle(maxLoopCount, endIndex, startIndex = 0){
+	executeAsSmallLoopsInCycle(maxLoopPerFrame, endIndex, startIndex = 0){
 		checkError(this);
-		let loopLimit = maxLoopCount;
+		let loopLimit = maxLoopPerFrame;
 		let i = startIndex;
 		let allowedTickCount = TickEntry.allowedTickCount;
 		TickEntry.allowedTickCount = undefined;
@@ -97,6 +97,7 @@ export default class TickEntry
 		let loopFnCallback = this.callback;
 
 		this.context = this;
+
 		if(loopFnCallback){
 			this.callback = function() {
 				loopFnCallback.call(loopFnContext || loopFnCallback['this'], i)
@@ -104,12 +105,11 @@ export default class TickEntry
 		}
 
 		this.func = function(){
-			if(i < loopLimit) {
+			for(;i < loopLimit; i++){
 				loopFunction.call(loopFnContext || loopFunction['this'], i);
-				i = i + 1;
-				this.executeInCycle();
-			} else if(loopLimit < endIndex){
-				loopLimit = loopLimit + maxLoopCount;
+			}
+			if(loopLimit <= endIndex){
+				loopLimit = loopLimit + maxLoopPerFrame;
 				this.executeInCycle()
 			} else {
 				this.dispose();

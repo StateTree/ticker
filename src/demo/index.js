@@ -44,13 +44,18 @@ for(let i= 0 ; i < 100; i++){
 	array[i] = i;
 };
 
+let total = 0;
 function forLoopCode (index){
-	console.log("forLoopCode: ", array[index]);
+	total = total + index;
+	document.getElementById("indexLogger").innerHTML = index;
+	document.getElementById("logger").innerHTML = total;
 }
 
+var cbCount = 0;
 function forLoopCodeCallback(executedIndex){
-	console.log("Executed Index: ", executedIndex);
+	cbCount = cbCount + 1;
+	document.getElementById("loopLogger").innerHTML =  cbCount;
 }
 
 let loopTicker = new Ticker(window, forLoopCode, 0, forLoopCodeCallback);
-loopTicker.executeAsSmallLoopsInCycle(10, 100);
+loopTicker.executeAsSmallLoopsInCycle(100, 100000);

@@ -7,7 +7,7 @@ const paths = {
     output: path.join(__dirname, "./"),
     lib: path.join(__dirname, "./lib"),
     entry: {
-        'build/demo/index': "./demo/index.js"
+        'demo/index': "./demo/index.js"
     }
 };
 
@@ -33,7 +33,11 @@ const config = {
             }
         ]
 
-    }
+    },
+	devServer: {
+		contentBase: path.join(__dirname, 'src'),
+		compress: true
+	}
 };
 
 
