@@ -80,11 +80,11 @@ function executeTickEntries(tickEntries){
 	for(let i = 0; i < tickEntries.length; i++){
 		const tickEntry = tickEntries[i];
 		tickEntry.func.call(tickEntry.context || tickEntry.func['this']);
-
+		tickEntry.executionCount++;
 		if (tickEntry.callback) {
 			tickEntry.callback.call(tickEntry.context || tickEntry.callback['this']);
 		}
-		tickEntry.executionCount++;
+
 	}
 }
 

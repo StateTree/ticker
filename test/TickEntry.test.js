@@ -46,23 +46,39 @@ describe('API', ()=>{
 			},0);
 		});
 
-		it('Should call callback with current executed index ', (done)=>{
-			var ind;
-			ticker.callback = function(index){
-				ind = index;
-				setTimeout(()=>{
-					if(ticker.executionCount >= 11 ){
-						expect(ticker.executionCount).equal(ind + 1);
-					} else{
-						expect(ticker.executionCount).equal(ind);
-					}
-					if(index == 20){
-						done();
-					}
-
-				},0);
+		it('Should call progress and done callback', (done)=>{
+			var maxLoopPerFrame = 10;
+			var endIndex = 30;
+			ticker.executeAsSmallLoopsInCycle(maxLoopPerFrame, endIndex)
+			.progress(function(index){
+				var loopCount = (index/ maxLoopPerFrame);
+				expect(ticker.executionCount).equal(loopCount);
+			})
+			.done(function(){
+				expect(ticker.executionCount).equal(endIndex/maxLoopPerFrame);
+				done();
+			});
+		});
+		it('Should call callback if provided', (done)=>{
+			var maxLoopPerFrame = 10;
+			var endIndex = 30;
+			ticker.callback = function(){
+				expect(ticker.executionCount).equal(endIndex/maxLoopPerFrame);
+				done();
 			}
-			ticker.executeAsSmallLoopsInCycle(10, 20);
+			ticker.executeAsSmallLoopsInCycle(maxLoopPerFrame, endIndex)
+		});
+		it('Should call error callback if there is error in for loop code ', (done)=>{
+			var maxLoopPerFrame = 10;
+			var endIndex = 30;
+			ticker.func = function(index){
+				throw new Error("Error Thrown");
+			}
+			ticker.executeAsSmallLoopsInCycle(maxLoopPerFrame, endIndex)
+			.error(function(error){
+				expect(error.message).equal("Error Thrown");
+				done();
+			})
 		});
 	});
 	/** @test {TickEntry#dispose} */

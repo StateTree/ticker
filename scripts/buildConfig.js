@@ -6,9 +6,9 @@ var config = {
             "destinationDir":"build/demo"
         },
         "js":{
-            "sourceDir": null,
-            "sourceFiles": null,
-            "destinationDir":null
+            "sourceDir": "demo",
+            "sourceFiles": ["index"],
+            "destinationDir":"build/demo"
         },
         "css":{
             "sourceDir":null,

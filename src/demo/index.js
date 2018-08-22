@@ -44,13 +44,27 @@ for(let i= 0 ; i < 100; i++){
 	array[i] = i;
 };
 
+let total = 0;
 function forLoopCode (index){
-	console.log("forLoopCode: ", array[index]);
+	total = total + index;
+	document.getElementById("indexLogger").innerHTML = document.getElementById("indexLogger").innerHTML +"," +index;
+	document.getElementById("logger").innerHTML = total;
 }
 
+var cbCount = 0;
 function forLoopCodeCallback(executedIndex){
-	console.log("Executed Index: ", executedIndex);
+	cbCount = cbCount + 1;
+	document.getElementById("loopLogger").innerHTML =  executedIndex + " - " + cbCount;
+	console.log("progress ")
 }
 
-let loopTicker = new Ticker(window, forLoopCode, 0, forLoopCodeCallback);
-loopTicker.executeAsSmallLoopsInCycle(10, 100);
+function doneCallback(){
+	cbCount = cbCount + 1;
+	document.getElementById("loopLogger").innerHTML =  document.getElementById("loopLogger").innerHTML  + " - " + "Done";
+	console.log("Done ")
+}
+
+let loopTicker = new Ticker(window, forLoopCode, 0);
+loopTicker.executeAsSmallLoopsInCycle(10, 100)
+.progress(forLoopCodeCallback)
+.done(doneCallback);
