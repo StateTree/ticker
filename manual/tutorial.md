@@ -38,12 +38,30 @@ for(let i= 0 ; i < 100; i++){
 function forLoopCode (index){
 	console.log("forLoopCode: ", array[index]);
 }
+```
+##### Way 1:
+```
+let loopTicker = new Ticker(window, forLoopCode, 0);
+loopTicker.executeAsSmallLoopsInCycle(10, 100)
+.progress(function (executedIndex){
+    console.log("called 9 times ", executedIndex);
+ })
+ .done(function (){
+    console.log("Called 1 time last ");
+ })
+ .error(function (error){
+     console.log(error);
+  })
 
-function forLoopCodeCallback(executedIndex){
-	console.log("Executed Index: ", executedIndex);
+```
+
+##### Way 2:
+```
+function forLoopCodeDoneCallback(){
+	console.log("Called once last ");
 }
 
-let loopTicker = new Ticker(window, forLoopCode, 0, forLoopCodeCallback);
+let loopTicker = new Ticker(window, forLoopCode, 0, forLoopCodeDoneCallback);
 loopTicker.executeAsSmallLoopsInCycle(10, 100);
 ```
 

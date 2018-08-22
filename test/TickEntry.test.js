@@ -46,18 +46,39 @@ describe('API', ()=>{
 			},0);
 		});
 
-		it('Should call callback with current executed index ', (done)=>{
+		it('Should call progress and done callback', (done)=>{
 			var maxLoopPerFrame = 10;
 			var endIndex = 30;
-			ticker.callback = function(index){
+			ticker.executeAsSmallLoopsInCycle(maxLoopPerFrame, endIndex)
+			.progress(function(index){
 				var loopCount = (index/ maxLoopPerFrame);
 				expect(ticker.executionCount).equal(loopCount);
-				if(index == endIndex){
-					done();
-				}
+			})
+			.done(function(){
+				expect(ticker.executionCount).equal(endIndex/maxLoopPerFrame);
+				done();
+			});
+		});
+		it('Should call callback if provided', (done)=>{
+			var maxLoopPerFrame = 10;
+			var endIndex = 30;
+			ticker.callback = function(){
+				expect(ticker.executionCount).equal(endIndex/maxLoopPerFrame);
+				done();
 			}
-
-			ticker.executeAsSmallLoopsInCycle(maxLoopPerFrame, endIndex);
+			ticker.executeAsSmallLoopsInCycle(maxLoopPerFrame, endIndex)
+		});
+		it('Should call error callback if there is error in for loop code ', (done)=>{
+			var maxLoopPerFrame = 10;
+			var endIndex = 30;
+			ticker.func = function(index){
+				throw new Error("Error Thrown");
+			}
+			ticker.executeAsSmallLoopsInCycle(maxLoopPerFrame, endIndex)
+			.error(function(error){
+				expect(error.message).equal("Error Thrown");
+				done();
+			})
 		});
 	});
 	/** @test {TickEntry#dispose} */
