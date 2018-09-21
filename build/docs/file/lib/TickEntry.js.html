@@ -29,8 +29,8 @@
 <nav class="navigation" data-ice="nav"><div>
   <ul>
     
-  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/TickEntry.js~TickEntry.html">TickEntry</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/TickFunction.js~TickFunction.html">TickFunction</a></span></span></li>
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/Notifier.js~Notifier.html">Notifier</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/TickEntry.js~TickEntry.html">TickEntry</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-addToSemiInfiniteLoop">addToSemiInfiniteLoop</a></span></span></li>
 </ul>
 </div>
@@ -38,21 +38,25 @@
 
 <div class="content" data-ice="content"><h1 data-ice="title">lib/TickEntry.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import addToSemiInfiniteLoop from &apos;./semiInfiniteLoop&apos;;
+import Notifier from &quot;./Notifier&quot;;
 
 /**
  * @private
  * @param {Object} tickEntry
  * @return {void}
  */
-function checkError(tickEntry){
-	if(!tickEntry instanceof TickEntry){
+function _checkError(tickEntry){
+	if(!tickEntry){
+		throw new Error(`Ticker: instance can&apos;t be null`);
+	} else if(!(tickEntry instanceof TickEntry)){
 		const className = tickEntry.constructor ? tickEntry.constructor.name : typeof tickEntry;
 		throw new Error(`Ticker: Expecting instance of TickEntry got ${className}`);
-	}
-	if(!tickEntry.func){
+	} else if(!tickEntry.func){
 		throw new Error(&quot;Ticker: function can&apos;t be undefined&quot;);
 	}
 }
+
+
 /**
  * Tick Entry is a wrapper to the function we want to execute later in request animation frame or event cycle
  * @example
@@ -62,12 +66,11 @@ function checkError(tickEntry){
 export default class TickEntry
 {
 	/**
-	 * @param {Object} context The &quot;this&quot; argument for the listener function.
 	 * @param {Function} func
+	 * @param {Object} context The &quot;this&quot; argument for the func.
 	 * @param {number} priority
-	 * @param {Function} callback
 	 */
-	constructor(context, func, priority = 0, callback = null)
+	constructor(func, context = null, priority = 0)
 	{
 		/**
 		 * @type {Object}
@@ -78,10 +81,6 @@ export default class TickEntry
 		 */
 		this.func = func;
 		/**
-		 * @type {Function}
-		 */
-		this.callback = callback;
-		/**
 		 * @type {number}
 		 */
 		this.priority = priority;
@@ -89,7 +88,18 @@ export default class TickEntry
 		 * @type {number}
 		 */
 		this.executionCount = 0;
-		checkError(this);
+		this.notifier = new Notifier();
+		_checkError(this);
+	}
+
+	onDone(doneCallback){
+		this.notifier.doneCallback = doneCallback;
+		return this.notifier
+	}
+
+	onError(errorCallback){
+		this.notifier.errorCallback = errorCallback;
+		return this.notifier
 	}
 
 
@@ -101,9 +111,9 @@ export default class TickEntry
 	dispose(){
 		this.context = null;
 		this.func = null;
-		this.callback = null;
 		this.priority = null;
 		this.executionCount = NaN;
+		this.notifier = null;
 	}
 
 	/**
@@ -112,8 +122,27 @@ export default class TickEntry
 	 * @return {void}
 	 */
 	executeInCycle(){
-		checkError(this);
+		_checkError(this);
+
+		const tickEntryInstance = this;
+		const {func, context} = tickEntryInstance;1
+		this.context = tickEntryInstance;
+
+		this.func = function(){
+			const notifier = tickEntryInstance.notifier;
+			const {doneCallback, errorCallback} = notifier;
+			try{
+				const result = func.call(context || func[&apos;this&apos;]);
+				tickEntryInstance.executionCount++;
+				doneCallback &amp;&amp; doneCallback.call(context || doneCallback[&apos;this&apos;], result);
+			} catch (error){
+				errorCallback &amp;&amp; errorCallback.call(context || errorCallback[&apos;this&apos;], error);
+			}
+		};
 		addToSemiInfiniteLoop(this);
+
+		this.notifier.onProgress = undefined;
+		return this.notifier;
 	};
 
 	/**
@@ -125,40 +154,40 @@ export default class TickEntry
 	 * @return {void}
 	 */
 	executeAsSmallLoopsInCycle(maxLoopPerFrame, endIndex, startIndex = 0){
-		checkError(this);
+		_checkError(this);
+
+		const tickEntryInstance = this;
+		const {func, context} = tickEntryInstance;
+		this.context = tickEntryInstance;
+
 		let loopLimit = maxLoopPerFrame;
 		let i = startIndex;
-		let allowedTickCount = TickEntry.allowedTickCount;
-		TickEntry.allowedTickCount = undefined;
-
-		let loopFunction = this.func;
-		let loopFnContext = this.context;
-		let loopFnCallback = this.callback;
-
 		this.context = this;
-
-		if(loopFnCallback){
-			this.callback = function() {
-				loopFnCallback.call(loopFnContext || loopFnCallback[&apos;this&apos;], i)
-			};
-		}
-
 		this.func = function(){
+			const notifier = tickEntryInstance.notifier;
+			const {doneCallback, errorCallback, progressCallback} = notifier;
+			let result;
 			for(;i &lt; loopLimit; i++){
-				loopFunction.call(loopFnContext || loopFunction[&apos;this&apos;], i);
+				try {
+					result = func.call(context || func[&apos;this&apos;], i);
+				} catch(error) {
+					errorCallback &amp;&amp; errorCallback.call(context || errorCallback[&apos;this&apos;], error);
+					tickEntryInstance.dispose();
+					return;
+				}
 			}
-			if(loopLimit &lt;= endIndex){
+			if(loopLimit &lt; endIndex){
 				loopLimit = loopLimit + maxLoopPerFrame;
-				this.executeInCycle()
-			} else {
-				this.dispose();
-				loopFunction = null;
-				loopFnContext = null;
-				TickEntry.allowedTickCount = allowedTickCount;
+				progressCallback &amp;&amp; progressCallback.call(context || progressCallback[&apos;this&apos;], i, result);
+				addToSemiInfiniteLoop(this);
+			} else if( i === endIndex){
+				tickEntryInstance.executionCount++;
+				doneCallback &amp;&amp; doneCallback.call(context || doneCallback[&apos;this&apos;], result);
 			}
 		};
 
-		this.executeInCycle();
+		addToSemiInfiniteLoop(this);
+		return this.notifier;
 	};
 
 }

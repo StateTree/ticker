@@ -11,7 +11,7 @@ function func(){
 describe('API', ()=>{
 
 	beforeEach(()=>{
-		ticker = new TickEntry(null,func);
+		ticker = new TickEntry(func);
 	});
 
 	afterEach(()=>{
@@ -22,60 +22,95 @@ describe('API', ()=>{
 	describe('executeInCycle', ()=>{
 		it('Should call function in next animation frame', (done)=>{
 			ticker.executeInCycle();
+			expect(ticker.executionCount).equal(0);
 			setTimeout(()=>{
 				expect(ticker.executionCount).equal(1);
 				done();
 			},0);
 		});
+		it('Should call onDone handler with result if provided', (done)=>{
+			ticker.onDone(function(result){
+				expect(ticker.executionCount).equal(1);
+				expect(result).equal('called later');
+				done();
+			});
+			ticker.executeInCycle()
+		});
 		it('Should throw error when function is not defined', ()=>{
 			ticker.func = null;
-			assert.throws(ticker.executeInCycle, Error, "Ticker: function can't be undefined");
+			try{
+				ticker.executeInCycle();
+			}catch(error){
+				expect(error.message).equal("Ticker: function can't be undefined");
+			}
 		});
+		it('Should throw error when instance is null', ()=>{
+			try{
+				ticker.executeInCycle.call(null);
+			}catch(error){
+				expect(error.message).equal("Ticker: instance can't be null");
+			}
+		});
+		it('Should throw error when instance is not Ticker', ()=>{
+			try{
+				ticker.executeInCycle.call(window);
+			}catch(error){
+				expect(error.message).equal(`Ticker: Expecting instance of TickEntry got ${window.constructor.name}`);
+			}
+		});
+		it('Should call onError handler when error is thrown', (done)=>{
+			ticker.func = function(){
+				throw new Error("Error Thrown");
+			};
+			ticker.onError(function(error){
+				expect(error.message).equal('Error Thrown');
+				done();
+			});
+			ticker.executeInCycle()
+		});
+
 	});
 	/** @test {TickEntry#executeAsSmallLoopsInCycle} */
 	describe('executeAsSmallLoopsInCycle', ()=>{
 		it('Should throw error when function is not defined', ()=>{
 			ticker.func = null;
-			assert.throws(ticker.executeAsSmallLoopsInCycle, Error, "Ticker: function can't be undefined");
-		})
+			try{
+				ticker.executeInCycle();
+			}catch(error){
+				expect(error.message).equal("Ticker: function can't be undefined");
+			}
+		});
+
 		it('Should call function in next animation frame', (done)=>{
-			ticker.executeAsSmallLoopsInCycle(10, 100);
+			ticker.executeAsSmallLoopsInCycle(1, 1);
 			setTimeout(()=>{
 				expect(ticker.executionCount).equal(1);
 				done();
 			},0);
 		});
 
-		it('Should call progress and done callback', (done)=>{
+		it('Should call onProgress and onDone handler', (done)=>{
 			var maxLoopPerFrame = 10;
 			var endIndex = 30;
+			let progressIndex = maxLoopPerFrame;
 			ticker.executeAsSmallLoopsInCycle(maxLoopPerFrame, endIndex)
-			.progress(function(index){
-				var loopCount = (index/ maxLoopPerFrame);
-				expect(ticker.executionCount).equal(loopCount);
+			.onProgress(function(index){
+				expect(progressIndex).equal(index);
+				progressIndex = progressIndex + maxLoopPerFrame;
 			})
-			.done(function(){
-				expect(ticker.executionCount).equal(endIndex/maxLoopPerFrame);
+			.onDone(function(){
+				expect(ticker.executionCount).equal(1);
 				done();
 			});
 		});
-		it('Should call callback if provided', (done)=>{
-			var maxLoopPerFrame = 10;
-			var endIndex = 30;
-			ticker.callback = function(){
-				expect(ticker.executionCount).equal(endIndex/maxLoopPerFrame);
-				done();
-			}
-			ticker.executeAsSmallLoopsInCycle(maxLoopPerFrame, endIndex)
-		});
-		it('Should call error callback if there is error in for loop code ', (done)=>{
-			var maxLoopPerFrame = 10;
-			var endIndex = 30;
-			ticker.func = function(index){
+
+		it('Should call error Handler if there is error in for loop code ', (done)=>{
+			ticker.func = function(){
 				throw new Error("Error Thrown");
-			}
-			ticker.executeAsSmallLoopsInCycle(maxLoopPerFrame, endIndex)
-			.error(function(error){
+			};
+
+			ticker.executeAsSmallLoopsInCycle(10, 30)
+			.onError(function(error){
 				expect(error.message).equal("Error Thrown");
 				done();
 			})
@@ -91,9 +126,9 @@ describe('API', ()=>{
 			ticker.dispose();
 			expect(ticker.func).equal(null);
 		});
-		it('Should set callback to null', ()=>{
+		it('Should set notifier to null', ()=>{
 			ticker.dispose();
-			expect(ticker.callback).equal(null);
+			expect(ticker.notifier).equal(null);
 		});
 		it('Should set executionCount to NaN', ()=>{
 			ticker.dispose();

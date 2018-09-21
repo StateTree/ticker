@@ -1,14 +1,14 @@
 window.esdocSearchIndex = [
   [
-    "@statetree/ticker/lib/tickentry.js~tickentry",
-    "class/lib/TickEntry.js~TickEntry.html",
-    "<span>TickEntry</span> <span class=\"search-result-import-path\">@statetree/ticker/lib/TickEntry.js</span>",
+    "@statetree/ticker/lib/notifier.js~notifier",
+    "class/lib/Notifier.js~Notifier.html",
+    "<span>Notifier</span> <span class=\"search-result-import-path\">@statetree/ticker/lib/Notifier.js</span>",
     "class"
   ],
   [
-    "@statetree/ticker/lib/tickfunction.js~tickfunction",
-    "class/lib/TickFunction.js~TickFunction.html",
-    "<span>TickFunction</span> <span class=\"search-result-import-path\">@statetree/ticker/lib/TickFunction.js</span>",
+    "@statetree/ticker/lib/tickentry.js~tickentry",
+    "class/lib/TickEntry.js~TickEntry.html",
+    "<span>TickEntry</span> <span class=\"search-result-import-path\">@statetree/ticker/lib/TickEntry.js</span>",
     "class"
   ],
   [
@@ -25,55 +25,61 @@ window.esdocSearchIndex = [
   ],
   [
     "tickentry#dispose lib/tickentry.js~tickentry#dispose,tickentry#dispose",
-    "test-file/test/TickEntry.test.js.html#lineNumber64",
+    "test-file/test/TickEntry.test.js.html#lineNumber120",
     "API dispose",
     "test"
   ],
   [
     "",
-    "test-file/test/TickEntry.test.js.html#lineNumber73",
-    "API dispose Should set callback to null",
-    "test"
-  ],
-  [
-    "",
-    "test-file/test/TickEntry.test.js.html#lineNumber65",
+    "test-file/test/TickEntry.test.js.html#lineNumber121",
     "API dispose Should set context to null",
     "test"
   ],
   [
     "",
-    "test-file/test/TickEntry.test.js.html#lineNumber77",
+    "test-file/test/TickEntry.test.js.html#lineNumber133",
     "API dispose Should set executionCount to NaN",
     "test"
   ],
   [
     "",
-    "test-file/test/TickEntry.test.js.html#lineNumber69",
+    "test-file/test/TickEntry.test.js.html#lineNumber125",
     "API dispose Should set func to null",
     "test"
   ],
   [
+    "",
+    "test-file/test/TickEntry.test.js.html#lineNumber129",
+    "API dispose Should set notifier to null",
+    "test"
+  ],
+  [
     "tickentry#executeassmallloopsincycle lib/tickentry.js~tickentry#executeassmallloopsincycle,tickentry#executeassmallloopsincycle",
-    "test-file/test/TickEntry.test.js.html#lineNumber36",
+    "test-file/test/TickEntry.test.js.html#lineNumber74",
     "API executeAsSmallLoopsInCycle",
     "test"
   ],
   [
     "",
-    "test-file/test/TickEntry.test.js.html#lineNumber49",
-    "API executeAsSmallLoopsInCycle Should call callback with current executed index ",
+    "test-file/test/TickEntry.test.js.html#lineNumber107",
+    "API executeAsSmallLoopsInCycle Should call error Handler if there is error in for loop code ",
     "test"
   ],
   [
     "",
-    "test-file/test/TickEntry.test.js.html#lineNumber41",
+    "test-file/test/TickEntry.test.js.html#lineNumber84",
     "API executeAsSmallLoopsInCycle Should call function in next animation frame",
     "test"
   ],
   [
     "",
-    "test-file/test/TickEntry.test.js.html#lineNumber37",
+    "test-file/test/TickEntry.test.js.html#lineNumber92",
+    "API executeAsSmallLoopsInCycle Should call onProgress and onDone handler",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/TickEntry.test.js.html#lineNumber75",
     "API executeAsSmallLoopsInCycle Should throw error when function is not defined",
     "test"
   ],
@@ -91,8 +97,32 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/test/TickEntry.test.js.html#lineNumber30",
+    "test-file/test/TickEntry.test.js.html#lineNumber31",
+    "API executeInCycle Should call onDone handler with result if provided",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/TickEntry.test.js.html#lineNumber61",
+    "API executeInCycle Should call onError handler when error is thrown",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/TickEntry.test.js.html#lineNumber39",
     "API executeInCycle Should throw error when function is not defined",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/TickEntry.test.js.html#lineNumber54",
+    "API executeInCycle Should throw error when instance is not Ticker",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/TickEntry.test.js.html#lineNumber47",
+    "API executeInCycle Should throw error when instance is null",
     "test"
   ],
   [
@@ -378,16 +408,58 @@ window.esdocSearchIndex = [
     "external"
   ],
   [
+    "lib/notifier.js",
+    "file/lib/Notifier.js.html",
+    "lib/Notifier.js",
+    "file"
+  ],
+  [
+    "lib/notifier.js~notifier#constructor",
+    "class/lib/Notifier.js~Notifier.html#instance-constructor-constructor",
+    "lib/Notifier.js~Notifier#constructor",
+    "method"
+  ],
+  [
+    "lib/notifier.js~notifier#donecallback",
+    "class/lib/Notifier.js~Notifier.html#instance-member-doneCallback",
+    "lib/Notifier.js~Notifier#doneCallback",
+    "member"
+  ],
+  [
+    "lib/notifier.js~notifier#errorcallback",
+    "class/lib/Notifier.js~Notifier.html#instance-member-errorCallback",
+    "lib/Notifier.js~Notifier#errorCallback",
+    "member"
+  ],
+  [
+    "lib/notifier.js~notifier#ondone",
+    "class/lib/Notifier.js~Notifier.html#instance-method-onDone",
+    "lib/Notifier.js~Notifier#onDone",
+    "method"
+  ],
+  [
+    "lib/notifier.js~notifier#onerror",
+    "class/lib/Notifier.js~Notifier.html#instance-method-onError",
+    "lib/Notifier.js~Notifier#onError",
+    "method"
+  ],
+  [
+    "lib/notifier.js~notifier#onprogress",
+    "class/lib/Notifier.js~Notifier.html#instance-method-onProgress",
+    "lib/Notifier.js~Notifier#onProgress",
+    "method"
+  ],
+  [
+    "lib/notifier.js~notifier#progresscallback",
+    "class/lib/Notifier.js~Notifier.html#instance-member-progressCallback",
+    "lib/Notifier.js~Notifier#progressCallback",
+    "member"
+  ],
+  [
     "lib/tickentry.js",
     "file/lib/TickEntry.js.html",
     "lib/TickEntry.js",
     "file"
-  ],
-  [
-    "lib/tickentry.js~tickentry#callback",
-    "class/lib/TickEntry.js~TickEntry.html#instance-member-callback",
-    "lib/TickEntry.js~TickEntry#callback",
-    "member"
   ],
   [
     "lib/tickentry.js~tickentry#constructor",
@@ -432,63 +504,27 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
+    "lib/tickentry.js~tickentry#notifier",
+    "class/lib/TickEntry.js~TickEntry.html#instance-member-notifier",
+    "lib/TickEntry.js~TickEntry#notifier",
+    "member"
+  ],
+  [
+    "lib/tickentry.js~tickentry#ondone",
+    "class/lib/TickEntry.js~TickEntry.html#instance-method-onDone",
+    "lib/TickEntry.js~TickEntry#onDone",
+    "method"
+  ],
+  [
+    "lib/tickentry.js~tickentry#onerror",
+    "class/lib/TickEntry.js~TickEntry.html#instance-method-onError",
+    "lib/TickEntry.js~TickEntry#onError",
+    "method"
+  ],
+  [
     "lib/tickentry.js~tickentry#priority",
     "class/lib/TickEntry.js~TickEntry.html#instance-member-priority",
     "lib/TickEntry.js~TickEntry#priority",
-    "member"
-  ],
-  [
-    "lib/tickfunction.js",
-    "file/lib/TickFunction.js.html",
-    "lib/TickFunction.js",
-    "file"
-  ],
-  [
-    "lib/tickfunction.js~tickfunction#constructor",
-    "class/lib/TickFunction.js~TickFunction.html#instance-constructor-constructor",
-    "lib/TickFunction.js~TickFunction#constructor",
-    "method"
-  ],
-  [
-    "lib/tickfunction.js~tickfunction#done",
-    "class/lib/TickFunction.js~TickFunction.html#instance-method-done",
-    "lib/TickFunction.js~TickFunction#done",
-    "method"
-  ],
-  [
-    "lib/tickfunction.js~tickfunction#donecallback",
-    "class/lib/TickFunction.js~TickFunction.html#instance-member-doneCallback",
-    "lib/TickFunction.js~TickFunction#doneCallback",
-    "member"
-  ],
-  [
-    "lib/tickfunction.js~tickfunction#error",
-    "class/lib/TickFunction.js~TickFunction.html#instance-method-error",
-    "lib/TickFunction.js~TickFunction#error",
-    "method"
-  ],
-  [
-    "lib/tickfunction.js~tickfunction#errorcallback",
-    "class/lib/TickFunction.js~TickFunction.html#instance-member-errorCallback",
-    "lib/TickFunction.js~TickFunction#errorCallback",
-    "member"
-  ],
-  [
-    "lib/tickfunction.js~tickfunction#func",
-    "class/lib/TickFunction.js~TickFunction.html#instance-member-func",
-    "lib/TickFunction.js~TickFunction#func",
-    "member"
-  ],
-  [
-    "lib/tickfunction.js~tickfunction#progress",
-    "class/lib/TickFunction.js~TickFunction.html#instance-method-progress",
-    "lib/TickFunction.js~TickFunction#progress",
-    "method"
-  ],
-  [
-    "lib/tickfunction.js~tickfunction#progresscallback",
-    "class/lib/TickFunction.js~TickFunction.html#instance-member-progressCallback",
-    "lib/TickFunction.js~TickFunction#progressCallback",
     "member"
   ],
   [

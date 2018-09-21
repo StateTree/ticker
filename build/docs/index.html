@@ -29,8 +29,8 @@
 <nav class="navigation" data-ice="nav"><div>
   <ul>
     
-  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/TickEntry.js~TickEntry.html">TickEntry</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/TickFunction.js~TickFunction.html">TickFunction</a></span></span></li>
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/Notifier.js~Notifier.html">Notifier</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/TickEntry.js~TickEntry.html">TickEntry</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-addToSemiInfiniteLoop">addToSemiInfiniteLoop</a></span></span></li>
 </ul>
 </div>
@@ -74,13 +74,24 @@ for(let i= 0 ; i &lt; 100; i++){
 
 function forLoopCode (index){
     console.log(&quot;forLoopCode: &quot;, array[index]);
+}</code>
+</code></pre><h5 id="way-1-">Way 1:</h5><pre><code><code class="source-code prettyprint">let loopTicker = new Ticker(window, forLoopCode, 0);
+loopTicker.executeAsSmallLoopsInCycle(10, 100)
+.progress(function (executedIndex){
+    console.log(&quot;called 9 times &quot;, executedIndex);
+ })
+ .done(function (){
+    console.log(&quot;Called 1 time last &quot;);
+ })
+ .error(function (error){
+     console.log(error);
+  })
+</code>
+</code></pre><h5 id="way-2-">Way 2:</h5><pre><code><code class="source-code prettyprint">function forLoopCodeDoneCallback(){
+    console.log(&quot;Called once last &quot;);
 }
 
-function forLoopCodeCallback(executedIndex){
-    console.log(&quot;Executed Index: &quot;, executedIndex);
-}
-
-let loopTicker = new Ticker(window, forLoopCode, 0, forLoopCodeCallback);
+let loopTicker = new Ticker(window, forLoopCode, 0, forLoopCodeDoneCallback);
 loopTicker.executeAsSmallLoopsInCycle(10, 100);</code>
 </code></pre><h5 id="dispose">dispose</h5><pre><code><code class="source-code prettyprint">import Ticker from &apos;@statetree/ticker&apos;;
 

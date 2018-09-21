@@ -23,17 +23,14 @@ let isExecuting = false;
 function onTick(){
 	tickCount++;
 
-	if(TickEntry.allowedTickCount !== undefined){
-		if(tickCount < TickEntry.allowedTickCount){
-			return coreAlogorithm();
-		 } else {
-			console.warn("Animation frame loop executed to its set limit: ", TickEntry.allowedTickCount);
-			stopSemiInfiniteLoop();
-			return false;
-		}
-	} else {
+	if(tickCount < TickEntry.allowedTickCount){
 		return coreAlogorithm();
+	} else {
+		console.warn("Animation frame loop executed to its set limit: ", TickEntry.allowedTickCount);
+		stopSemiInfiniteLoop();
+		return false;
 	}
+
 	return true;
 }
 
@@ -79,12 +76,8 @@ function executeTickEntries(tickEntries){
 	// with map function we cant execute dynamically growing entries.
 	for(let i = 0; i < tickEntries.length; i++){
 		const tickEntry = tickEntries[i];
-		tickEntry.func.call(tickEntry.context || tickEntry.func['this']);
-		tickEntry.executionCount++;
-		if (tickEntry.callback) {
-			tickEntry.callback.call(tickEntry.context || tickEntry.callback['this']);
-		}
-
+		const {func, context} = tickEntry;
+		func.call(context || func['this']);
 	}
 }
 
