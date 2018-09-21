@@ -1,26 +1,29 @@
 {
-  "coverage": "51.42%",
-  "expectCount": 35,
-  "actualCount": 18,
+  "coverage": "47.22%",
+  "expectCount": 36,
+  "actualCount": 17,
   "files": {
-    "lib/TickEntry.js": {
-      "expectCount": 11,
-      "actualCount": 11,
-      "undocumentLines": []
-    },
-    "lib/TickFunction.js": {
-      "expectCount": 9,
+    "lib/Notifier.js": {
+      "expectCount": 8,
       "actualCount": 0,
       "undocumentLines": [
         1,
         2,
-        3,
+        8,
         9,
-        10,
+        13,
         14,
-        15,
         18,
         19
+      ]
+    },
+    "lib/TickEntry.js": {
+      "expectCount": 13,
+      "actualCount": 10,
+      "undocumentLines": [
+        52,
+        56,
+        61
       ]
     },
     "lib/semiInfiniteLoop.js": {
@@ -32,9 +35,9 @@
         6,
         8,
         9,
-        40,
-        91,
-        107
+        37,
+        84,
+        100
       ]
     }
   }

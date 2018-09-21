@@ -7,32 +7,17 @@ import Notifier from "./Notifier";
  * @return {void}
  */
 function _checkError(tickEntry){
-	if(!tickEntry instanceof TickEntry){
+	if(!tickEntry){
+		throw new Error(`Ticker: instance can't be null`);
+	} else if(!(tickEntry instanceof TickEntry)){
 		const className = tickEntry.constructor ? tickEntry.constructor.name : typeof tickEntry;
 		throw new Error(`Ticker: Expecting instance of TickEntry got ${className}`);
-	}
-	if(!tickEntry.func){
+	} else if(!tickEntry.func){
 		throw new Error("Ticker: function can't be undefined");
 	}
 }
 
-function _callNotifiers(tickEntry, context, currentIndex, endIndex, callback , error){
-	if(tickEntry.notifier){
-		const {progressCallback, doneCallback , errorCallback } = tickEntry.notifier;
-		if(error){
-			errorCallback.call(context || errorCallback['this'], error, currentIndex)
-		} else if(currentIndex === endIndex){
-			if(doneCallback){
-				doneCallback.call(context || doneCallback['this'])
-			}
-			if(callback){
-				callback.call(context || callback['this'])
-			}
-		} else if(progressCallback){
-			progressCallback.call(context || progressCallback['this'], currentIndex)
-		}
-	}
-}
+
 /**
  * Tick Entry is a wrapper to the function we want to execute later in request animation frame or event cycle
  * @example
@@ -42,12 +27,11 @@ function _callNotifiers(tickEntry, context, currentIndex, endIndex, callback , e
 export default class TickEntry
 {
 	/**
-	 * @param {Object} context The "this" argument for the listener function.
 	 * @param {Function} func
+	 * @param {Object} context The "this" argument for the func.
 	 * @param {number} priority
-	 * @param {Function} callback
 	 */
-	constructor(context, func, priority = 0, callback = null)
+	constructor(func, context = null, priority = 0)
 	{
 		/**
 		 * @type {Object}
@@ -58,10 +42,6 @@ export default class TickEntry
 		 */
 		this.func = func;
 		/**
-		 * @type {Function}
-		 */
-		this.callback = callback;
-		/**
 		 * @type {number}
 		 */
 		this.priority = priority;
@@ -69,8 +49,18 @@ export default class TickEntry
 		 * @type {number}
 		 */
 		this.executionCount = 0;
-		this.notifier;
+		this.notifier = new Notifier();
 		_checkError(this);
+	}
+
+	onDone(doneCallback){
+		this.notifier.doneCallback = doneCallback;
+		return this.notifier
+	}
+
+	onError(errorCallback){
+		this.notifier.errorCallback = errorCallback;
+		return this.notifier
 	}
 
 
@@ -82,7 +72,6 @@ export default class TickEntry
 	dispose(){
 		this.context = null;
 		this.func = null;
-		this.callback = null;
 		this.priority = null;
 		this.executionCount = NaN;
 		this.notifier = null;
@@ -94,9 +83,26 @@ export default class TickEntry
 	 * @return {void}
 	 */
 	executeInCycle(){
-		this.notifier = new Notifier();
 		_checkError(this);
+
+		const tickEntryInstance = this;
+		const {func, context} = tickEntryInstance;1
+		this.context = tickEntryInstance;
+
+		this.func = function(){
+			const notifier = tickEntryInstance.notifier;
+			const {doneCallback, errorCallback} = notifier;
+			try{
+				const result = func.call(context || func['this']);
+				tickEntryInstance.executionCount++;
+				doneCallback && doneCallback.call(context || doneCallback['this'], result);
+			} catch (error){
+				errorCallback && errorCallback.call(context || errorCallback['this'], error);
+			}
+		};
 		addToSemiInfiniteLoop(this);
+
+		this.notifier.onProgress = undefined;
 		return this.notifier;
 	};
 
@@ -110,42 +116,39 @@ export default class TickEntry
 	 */
 	executeAsSmallLoopsInCycle(maxLoopPerFrame, endIndex, startIndex = 0){
 		_checkError(this);
+
+		const tickEntryInstance = this;
+		const {func, context} = tickEntryInstance;
+		this.context = tickEntryInstance;
+
 		let loopLimit = maxLoopPerFrame;
 		let i = startIndex;
-		let allowedTickCount = TickEntry.allowedTickCount;
-		TickEntry.allowedTickCount = undefined;
-
-		let loopFunction = this.func;
-		let loopFnContext = this.context;
-		let loopFnCallback = this.callback;
-
 		this.context = this;
-
-		this.callback = function() {
-			_callNotifiers(this,loopFnContext,i, endIndex, loopFnCallback);
-			if(i === endIndex){
-				this.dispose();
-				TickEntry.allowedTickCount = allowedTickCount;
-			}
-		};
-
 		this.func = function(){
+			const notifier = tickEntryInstance.notifier;
+			const {doneCallback, errorCallback, progressCallback} = notifier;
+			let result;
 			for(;i < loopLimit; i++){
 				try {
-					loopFunction.call(loopFnContext || loopFunction['this'], i);
-				} catch (error){
-					_callNotifiers(this,loopFnContext,i, endIndex, loopFnCallback, error);
-					this.dispose();
+					result = func.call(context || func['this'], i);
+				} catch(error) {
+					errorCallback && errorCallback.call(context || errorCallback['this'], error);
+					tickEntryInstance.dispose();
+					return;
 				}
-
 			}
 			if(loopLimit < endIndex){
 				loopLimit = loopLimit + maxLoopPerFrame;
-				addToSemiInfiniteLoop(this)
+				progressCallback && progressCallback.call(context || progressCallback['this'], i, result);
+				addToSemiInfiniteLoop(this);
+			} else if( i === endIndex){
+				tickEntryInstance.executionCount++;
+				doneCallback && doneCallback.call(context || doneCallback['this'], result);
 			}
 		};
 
-		return this.executeInCycle();
+		addToSemiInfiniteLoop(this);
+		return this.notifier;
 	};
 
 }

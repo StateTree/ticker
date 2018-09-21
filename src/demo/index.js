@@ -1,7 +1,7 @@
 import Ticker from "./../lib";
 
 
-/*function firstFunction (){
+function firstFunction (){
     console.log("first Function");
 }
 
@@ -16,27 +16,29 @@ function thirdFunction (){
 
 function fourthFunction (){
 	console.log("Fourth Function");
-	ticker5.executeInCycle();
 
 }
 function fifthFunction (){
 	console.log("Fifth Function");
-	ticker4.executeInCycle();// to test infinite loop detection
 }
 
 function callBackFunction (){
 	console.log("I am called once per frame last as callback");
 }
 
-var ticker1 = new Ticker(window, firstFunction, 0, callBackFunction);
-var ticker2 = new Ticker(window, secondFunction, 1, callBackFunction );
-var ticker3 = new Ticker(window, thirdFunction, 2, callBackFunction);
-var ticker4 = new Ticker(window, fourthFunction, 2);
-var ticker5 = new Ticker(window, fifthFunction, 1);
+/*var ticker1 = new Ticker(firstFunction, null,2);
+var ticker2 = new Ticker(secondFunction);
+var ticker3 = new Ticker(thirdFunction, null,1);
+var ticker4 = new Ticker(fourthFunction);
+var ticker5 = new Ticker(fifthFunction);
+
 
 ticker3.executeInCycle();
 ticker2.executeInCycle();
-ticker1.executeInCycle();*/
+ticker1.executeInCycle();
+ticker4.executeInCycle();
+ticker5.executeInCycle();
+ticker5.onDone(callBackFunction);*/
 
 
 const array = [];
@@ -46,25 +48,26 @@ for(let i= 0 ; i < 100; i++){
 
 let total = 0;
 function forLoopCode (index){
+	console.log(index )
 	total = total + index;
 	document.getElementById("indexLogger").innerHTML = document.getElementById("indexLogger").innerHTML +"," +index;
 	document.getElementById("logger").innerHTML = total;
+	return total;
 }
 
 var cbCount = 0;
-function forLoopCodeCallback(executedIndex){
+function forLoopCodeCallback(executedIndex, result){
+	console.log("forLoopCodeCallback progress - ",executedIndex, result)
 	cbCount = cbCount + 1;
-	document.getElementById("loopLogger").innerHTML =  executedIndex + " - " + cbCount;
-	console.log("progress ")
+	document.getElementById("loopLogger").innerHTML =  executedIndex + " - " + cbCount + "-" + result;
 }
 
-function doneCallback(){
-	cbCount = cbCount + 1;
+function doneCallback(result){
+	console.log("forLoopCodeCallback done - ",result )
 	document.getElementById("loopLogger").innerHTML =  document.getElementById("loopLogger").innerHTML  + " - " + "Done";
-	console.log("Done ")
 }
 
-let loopTicker = new Ticker(window, forLoopCode, 0);
-loopTicker.executeAsSmallLoopsInCycle(10, 100)
-.progress(forLoopCodeCallback)
-.done(doneCallback);
+let loopTicker = new Ticker(forLoopCode);
+loopTicker.executeAsSmallLoopsInCycle(1, 10)
+.onProgress(forLoopCodeCallback)
+.onDone(doneCallback);

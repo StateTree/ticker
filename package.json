@@ -1,6 +1,6 @@
 {
   "name": "@statetree/ticker",
-  "version": "2.2.0",
+  "version": "3.0.0",
   "description": "Ticker manager for Window request animation frame and NodeJS tick",
   "main": "lib/ticker.js",
   "scripts": {
@@ -13,12 +13,10 @@
     "prebuild": "rimraf lib && rimraf build && npm run coverage ",
     "build": "./node_modules/.bin/webpack --mode production ",
     "postbuild": "node scripts/postbuild.js && npm run doc && rimraf demo",
-    "release:master": "git checkout master && git merge --squash --strategy-option theirs develop && git commit -am 'Release Commit' && git push && git checkout develop",
-    "release:bugfix": "npm version patch -m 'Bumped patch version number' && npm run release:master",
-    "release:feature": "npm version minor -m 'Bumped minor version number' && npm run release:master",
-    "release:breakingchange": "npm version major -m 'Bumped major version number' && npm run release:master",
-    "postversion": "git push origin HEAD --follow-tags",
-    "deploy": "git subtree push --prefix build origin gh-pages"
+    "release:bugfix": "npm version patch -m 'Bumping a patch version: %s'",
+    "release:feature": "npm version minor -m 'Bumping a minor version: %s'",
+    "release:breakingchange": "npm version major -m 'Bumping a major version: %s'",
+    "postversion": "git push origin HEAD --follow-tags"
   },
   "repository": {
     "type": "git",
@@ -46,10 +44,7 @@
     "fs-extra": "^7.0.0",
     "jsdom": "^11.12.0",
     "mocha": "^5.2.0",
-    "mock-raf": "^1.0.0",
     "nyc": "^12.0.2",
-    "raf": "^3.4.0",
-    "raf-stub": "^2.0.2",
     "rimraf": "^2.6.2",
     "sinon": "^6.1.4",
     "webpack": "^4.16.2",

@@ -5,16 +5,18 @@ export default class Notifier {
 		this.errorCallback;
 	}
 
-	error(func){
+	onError(func){
 		this.errorCallback = func;
 		return this;
 	}
 
-	progress(func){
+	onProgress(func){
 		this.progressCallback = func;
 		return this;
 	}
-	done(func){
+
+	onDone(func){
 		this.doneCallback = func;
+		return this;
 	}
 }
