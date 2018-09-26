@@ -740,7 +740,7 @@
     "__docId__": 57,
     "kind": "file",
     "name": "lib/TickEntry.js",
-    "content": "import addToSemiInfiniteLoop from './semiInfiniteLoop';\nimport Notifier from \"./Notifier\";\n\n/**\n * @private\n * @param {Object} tickEntry\n * @return {void}\n */\nfunction _checkError(tickEntry){\n\tif(!tickEntry){\n\t\tthrow new Error(`Ticker: instance can't be null`);\n\t} else if(!(tickEntry instanceof TickEntry)){\n\t\tconst className = tickEntry.constructor ? tickEntry.constructor.name : typeof tickEntry;\n\t\tthrow new Error(`Ticker: Expecting instance of TickEntry got ${className}`);\n\t} else if(!tickEntry.func){\n\t\tthrow new Error(\"Ticker: function can't be undefined\");\n\t}\n}\n\n\n/**\n * Tick Entry is a wrapper to the function we want to execute later in request animation frame or event cycle\n * @example\n * import Ticker from 'ticker'\n * let tickEntry = new TickEntry(context,listener,callback,priority);\n */\nexport default class TickEntry\n{\n\t/**\n\t * @param {Function} func\n\t * @param {Object} context The \"this\" argument for the func.\n\t * @param {number} priority\n\t */\n\tconstructor(func, context = null, priority = 0)\n\t{\n\t\t/**\n\t\t * @type {Object}\n\t\t */\n\t\tthis.context = context;\n\t\t/**\n\t\t * @type {Function}\n\t\t */\n\t\tthis.func = func;\n\t\t/**\n\t\t * @type {number}\n\t\t */\n\t\tthis.priority = priority;\n\t\t/**\n\t\t * @type {number}\n\t\t */\n\t\tthis.executionCount = 0;\n\t\tthis.notifier = new Notifier();\n\t\t_checkError(this);\n\t}\n\n\tonDone(doneCallback){\n\t\tthis.notifier.doneCallback = doneCallback;\n\t\treturn this.notifier\n\t}\n\n\tonError(errorCallback){\n\t\tthis.notifier.errorCallback = errorCallback;\n\t\treturn this.notifier\n\t}\n\n\n\t/**\n\t * This function dispose the tickEntry references for garbage collection\n\t *\n\t * @return {void}\n\t */\n\tdispose(){\n\t\tthis.context = null;\n\t\tthis.func = null;\n\t\tthis.priority = null;\n\t\tthis.executionCount = NaN;\n\t\tthis.notifier = null;\n\t}\n\n\t/**\n\t * This function adds the func to event cycle / request animation frame for execution\n\t *\n\t * @return {void}\n\t */\n\texecuteInCycle(){\n\t\t_checkError(this);\n\n\t\tconst tickEntryInstance = this;\n\t\tconst {func, context} = tickEntryInstance;1\n\t\tthis.context = tickEntryInstance;\n\n\t\tthis.func = function(){\n\t\t\tconst notifier = tickEntryInstance.notifier;\n\t\t\tconst {doneCallback, errorCallback} = notifier;\n\t\t\ttry{\n\t\t\t\tconst result = func.call(context || func['this']);\n\t\t\t\ttickEntryInstance.executionCount++;\n\t\t\t\tdoneCallback && doneCallback.call(context || doneCallback['this'], result);\n\t\t\t} catch (error){\n\t\t\t\terrorCallback && errorCallback.call(context || errorCallback['this'], error);\n\t\t\t}\n\t\t};\n\t\taddToSemiInfiniteLoop(this);\n\n\t\tthis.notifier.onProgress = undefined;\n\t\treturn this.notifier;\n\t};\n\n\t/**\n\t * This function adds the loop function to event cycle / request animation frame for execution\n\t *\n\t * @param {number} maxLoopPerFrame indicates loop length that needs to be executed in single frame or tick.\n\t * @param {number} endIndex indicates loop end value\n\t * @param {number} startIndex indicates loop begining value , default value is 0\n\t * @return {void}\n\t */\n\texecuteAsSmallLoopsInCycle(maxLoopPerFrame, endIndex, startIndex = 0){\n\t\t_checkError(this);\n\n\t\tconst tickEntryInstance = this;\n\t\tconst {func, context} = tickEntryInstance;\n\t\tthis.context = tickEntryInstance;\n\n\t\tlet loopLimit = maxLoopPerFrame;\n\t\tlet i = startIndex;\n\t\tthis.context = this;\n\t\tthis.func = function(){\n\t\t\tconst notifier = tickEntryInstance.notifier;\n\t\t\tconst {doneCallback, errorCallback, progressCallback} = notifier;\n\t\t\tlet result;\n\t\t\tfor(;i < loopLimit; i++){\n\t\t\t\ttry {\n\t\t\t\t\tresult = func.call(context || func['this'], i);\n\t\t\t\t} catch(error) {\n\t\t\t\t\terrorCallback && errorCallback.call(context || errorCallback['this'], error);\n\t\t\t\t\ttickEntryInstance.dispose();\n\t\t\t\t\treturn;\n\t\t\t\t}\n\t\t\t}\n\t\t\tif(loopLimit < endIndex){\n\t\t\t\tloopLimit = loopLimit + maxLoopPerFrame;\n\t\t\t\tprogressCallback && progressCallback.call(context || progressCallback['this'], i, result);\n\t\t\t\taddToSemiInfiniteLoop(this);\n\t\t\t} else if( i === endIndex){\n\t\t\t\ttickEntryInstance.executionCount++;\n\t\t\t\tdoneCallback && doneCallback.call(context || doneCallback['this'], result);\n\t\t\t}\n\t\t};\n\n\t\taddToSemiInfiniteLoop(this);\n\t\treturn this.notifier;\n\t};\n\n}\n\nTickEntry.HIGH = 0;\nTickEntry.NORMAL = 1;\nTickEntry.LOW = 2;\n\nTickEntry.allowedTickCount = 100;\n",
+    "content": "import addToSemiInfiniteLoop from './semiInfiniteLoop';\nimport Notifier from \"./Notifier\";\n\n/**\n * @private\n * @param {Object} tickEntry\n * @return {void}\n */\nfunction _checkError(tickEntry){\n\tif(!tickEntry){\n\t\tthrow new Error(`Ticker: instance can't be null`);\n\t} else if(!(tickEntry instanceof TickEntry)){\n\t\tconst className = tickEntry.constructor ? tickEntry.constructor.name : typeof tickEntry;\n\t\tthrow new Error(`Ticker: Expecting instance of TickEntry got ${className}`);\n\t} else if(!tickEntry.func){\n\t\tthrow new Error(\"Ticker: function can't be undefined\");\n\t}\n}\n\n\n/**\n * Tick Entry is a wrapper to the function we want to execute later in request animation frame or event cycle\n * @example\n * import Ticker from 'ticker'\n * let tickEntry = new TickEntry(context,listener,callback,priority);\n */\nexport default class TickEntry\n{\n\t/**\n\t * @param {Function} func\n\t * @param {Object} context The \"this\" argument for the func.\n\t * @param {number} priority\n\t */\n\tconstructor(func, context = null, priority = 0)\n\t{\n\t\t/**\n\t\t * @type {Object}\n\t\t */\n\t\tthis.context = context;\n\t\t/**\n\t\t * @type {Function}\n\t\t */\n\t\tthis.func = func;\n\t\t/**\n\t\t * @type {number}\n\t\t */\n\t\tthis.priority = priority;\n\t\t/**\n\t\t * @type {number}\n\t\t */\n\t\tthis.executionCount = 0;\n\t\tthis.notifier = new Notifier();\n\t\t_checkError(this);\n\t}\n\n\tonDone(doneCallback){\n\t\tthis.notifier.doneCallback = doneCallback;\n\t\treturn this.notifier\n\t}\n\n\tonError(errorCallback){\n\t\tthis.notifier.errorCallback = errorCallback;\n\t\treturn this.notifier\n\t}\n\n\n\t/**\n\t * This function dispose the tickEntry references for garbage collection\n\t *\n\t * @return {void}\n\t */\n\tdispose(){\n\t\tthis.context = null;\n\t\tthis.func = null;\n\t\tthis.priority = null;\n\t\tthis.executionCount = NaN;\n\t\tthis.notifier = null;\n\t}\n\n\t/**\n\t * This function adds the func to event cycle / request animation frame for execution\n\t *\n\t * @return {void}\n\t */\n\texecuteInCycle(){\n\t\t_checkError(this);\n\n\t\tconst tickEntryInstance = this;\n\t\tconst {func, context} = tickEntryInstance;\n\n\t\tthis.func = function(){\n\t\t\tconst notifier = tickEntryInstance.notifier;\n\t\t\tconst {doneCallback, errorCallback} = notifier;\n\t\t\ttry{\n\t\t\t\tconst result = func.call(context || func['this']);\n\t\t\t\ttickEntryInstance.executionCount++;\n\t\t\t\tdoneCallback && doneCallback.call(context || doneCallback['this'], result);\n\t\t\t} catch (error){\n\t\t\t\terrorCallback && errorCallback.call(context || errorCallback['this'], error);\n\t\t\t\ttickEntryInstance.dispose();\n\t\t\t}\n\t\t};\n\t\taddToSemiInfiniteLoop(this);\n\n\t\tthis.notifier.onProgress = undefined;\n\t\treturn this.notifier;\n\t};\n\n\t/**\n\t * This function adds the loop function to event cycle / request animation frame for execution\n\t *\n\t * @param {number} maxLoopPerFrame indicates loop length that needs to be executed in single frame or tick.\n\t * @param {number} endIndex indicates loop end value\n\t * @param {number} startIndex indicates loop begining value , default value is 0\n\t * @return {void}\n\t */\n\texecuteAsSmallLoopsInCycle(maxLoopPerFrame, endIndex, startIndex = 0){\n\t\t_checkError(this);\n\n\t\tconst tickEntryInstance = this;\n\t\tconst {func, context} = tickEntryInstance;\n\n\t\tlet loopLimit = maxLoopPerFrame;\n\t\tlet i = startIndex;\n\n\t\tthis.func = function(){\n\t\t\tconst notifier = tickEntryInstance.notifier;\n\t\t\tconst {doneCallback, errorCallback, progressCallback} = notifier;\n\t\t\tlet result;\n\t\t\tfor(;i < loopLimit; i++){\n\t\t\t\ttry {\n\t\t\t\t\tresult = func.call(context || func['this'], i);\n\t\t\t\t} catch(error) {\n\t\t\t\t\terrorCallback && errorCallback.call(context || errorCallback['this'], error);\n\t\t\t\t\ttickEntryInstance.dispose();\n\t\t\t\t\treturn;\n\t\t\t\t}\n\t\t\t}\n\t\t\tif(loopLimit < endIndex){\n\t\t\t\tloopLimit = loopLimit + maxLoopPerFrame;\n\t\t\t\tprogressCallback && progressCallback.call(context || progressCallback['this'], i, result);\n\t\t\t\taddToSemiInfiniteLoop(this);\n\t\t\t} else if( i === endIndex){\n\t\t\t\ttickEntryInstance.executionCount++;\n\t\t\t\tdoneCallback && doneCallback.call(context || doneCallback['this'], result);\n\t\t\t}\n\t\t};\n\n\t\taddToSemiInfiniteLoop(this);\n\t\treturn this.notifier;\n\t};\n\n}\n\nTickEntry.HIGH = 0;\nTickEntry.NORMAL = 1;\nTickEntry.LOW = 2;\n\nTickEntry.allowedTickCount = 100;\n",
     "static": true,
     "longname": "/Users/sanjaykrishna/Projects/GitHub/statetree/ticker/src/lib/TickEntry.js",
     "access": "public",
@@ -1039,7 +1039,7 @@
     "params": []
   },
   {
-    "__docId__": 76,
+    "__docId__": 75,
     "kind": "method",
     "name": "executeAsSmallLoopsInCycle",
     "memberof": "lib/TickEntry.js~TickEntry",
@@ -1092,7 +1092,7 @@
     }
   },
   {
-    "__docId__": 79,
+    "__docId__": 76,
     "kind": "file",
     "name": "lib/index.js",
     "content": "import Ticker from './TickEntry';\n\nexport default Ticker;\n",
@@ -1103,10 +1103,10 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 80,
+    "__docId__": 77,
     "kind": "file",
     "name": "lib/semiInfiniteLoop.js",
-    "content": "import TickEntry from './TickEntry';\n\nlet tickID = 0;// for Windows Env\n//[0-HIGH, 1-NORMAL, 2-LOW]\nlet priorityEntries = [null, null, null];\nlet waitEntries = null;\n\nlet tickCount = 0;\nlet isExecuting = false;\n\n/**\n * @private (Core algorithm)\n * caller: Animation Frame | event cycle Callback\n *\n * Executes entries in animation frame / event cycle callback\n * First execute the entries in the priority order\n * Entries which are added to Wait queue while executing priority entries are moved for execution\n * If there are no entries in priority, semi-infinite loop is stopped\n * and return boolean flag to remove the callback from animation frame or event cycle.\n *\n * @return {boolean} notifies whether to continue or remove the callback\n */\nfunction onTick(){\n\ttickCount++;\n\n\tif(tickCount < TickEntry.allowedTickCount){\n\t\treturn coreAlogorithm();\n\t} else {\n\t\tconsole.warn(\"Animation frame loop executed to its set limit: \", TickEntry.allowedTickCount);\n\t\tstopSemiInfiniteLoop();\n\t\treturn false;\n\t}\n\n\treturn true;\n}\n\nfunction coreAlogorithm(){\n\texecutePriorityEntries();\n\tmoveWaitingEntriesForExecution();\n\tif(arePriorityEntriesEmpty()){\n\t\tstopSemiInfiniteLoop();\n\t\treturn false;\n\t}\n\treturn true;\n}\n\n/**\n * @private\n * function that executes the entries in each priority\n *\n * @return {void}\n */\nfunction executePriorityEntries(){\n\tisExecuting = true;\n\tfor(let index = 0 ; index < priorityEntries.length; index++){\n\t\tlet tickEntries = priorityEntries[index];\n\t\tif(tickEntries && tickEntries.length > 0) {\n\t\t\texecuteTickEntries(tickEntries);\n\t\t\t//Clear them once executed\n\t\t\tpriorityEntries[index] = null;\n\t\t}\n\t}\n\tisExecuting = false;\n}\n\n/**\n * @private\n * function that executes all the entries in particular priority\n *\n * @return {void}\n */\nfunction executeTickEntries(tickEntries){\n\t// important to use for-loop\n\t// tickEntries grows dynamically by one of its entry\n\t// for example: let say we have one entry, and executing that entry might adds another entry\n\t// with map function we cant execute dynamically growing entries.\n\tfor(let i = 0; i < tickEntries.length; i++){\n\t\tconst tickEntry = tickEntries[i];\n\t\tconst {func, context} = tickEntry;\n\t\tfunc.call(context || func['this']);\n\t}\n}\n\nfunction moveWaitingEntriesForExecution(){\n\tconst entriesCount = waitEntries ?  waitEntries.length : 0;\n\tif(waitEntries && entriesCount > 0) {\n\t\tfor(let index = 0 ; index < entriesCount; index++){\n\t\t\tlet tickEntry = waitEntries[index];\n\t\t\tconst { priority } = tickEntry;\n\t\t\tif(!priorityEntries[priority]){\n\t\t\t\tpriorityEntries[priority] = [];\n\t\t\t}\n\t\t\tconst tickEntries = priorityEntries[priority];\n\t\t\ttickEntries.push(tickEntry);\n\t\t}\n\t}\n\twaitEntries = null;\n}\n\nfunction arePriorityEntriesEmpty(){\n\tfor(let index = 0 ; index < priorityEntries.length; index++){\n\t\tlet tickEntries = priorityEntries[index];\n\t\tif(tickEntries && tickEntries.length > 0) {\n\t\t\treturn false\n\t\t}\n\t}\n\treturn true;\n}\n\n/**\n * @private\n * Animation frame callback function which execute the entries\n *\n * @return {void}\n */\nfunction tickCallback(){\n\tconst shouldContinue = onTick();\n\tif(shouldContinue){\n\t\ttickID = window.requestAnimationFrame(tickCallback);\n\t}\n}\n\n/**\n * @private\n * Starts the Semi-infinite loop to execute the functions\n * Executed when first entry is added.\n *\n * @return {void}\n */\nfunction startSemiInfiniteLoop() {\n\tif(window){\n\t\t// will receives timestamp as argument\n\t\ttickID = window.requestAnimationFrame(tickCallback);\n\t} else{\n\t\ttickID = setTimeout(tickCallback);\n\t}\n}\n\n/**\n * @private\n * Stops the Semi-infinite loop.\n * Executed after executing all the entries both in priority and wait\n *\n * @return {void}\n */\nfunction stopSemiInfiniteLoop() {\n\ttickCount = 0;\n\tisExecuting = false;\n\tpriorityEntries = [null, null, null];\n\twaitEntries = null;\n\tif(window){\n\t\twindow.cancelAnimationFrame(tickID);\n\t} else {\n\t\tclearTimeout(tickID);\n\t}\n};\n\n/**\n * @private\n * only visible to TickEntry and not accessible\n * adds the tickEntry to queue in priority order\n * if entries are empty starts the semi-infinite loop in event cycle or Animation frame\n * if execution of entries are in progress, the entry is added to waiting queue\n * thus functions are executed in the order they are added to the semi-infinite loop\n * @param {Object} tickEntry\n * @return {void}\n */\nexport default function addToSemiInfiniteLoop(tickEntry) {\n\tif(arePriorityEntriesEmpty()){\n\t\tstartSemiInfiniteLoop()\n\t}\n\tif(isExecuting){\n\t\tif(!waitEntries){\n\t\t\twaitEntries = [];\n\t\t}\n\t\twaitEntries.push(tickEntry);\n\t} else {\n\t\tconst { priority } = tickEntry;\n\t\tif(!priorityEntries[priority]){\n\t\t\tpriorityEntries[priority] = [];\n\t\t}\n\t\tconst tickEntries = priorityEntries[priority];\n\t\ttickEntries.push(tickEntry);\n\t}\n\n};\n\n\n\n\n\n\n\n",
+    "content": "import TickEntry from './TickEntry';\n\nlet tickID = 0;// for Windows Env\n//[0-HIGH, 1-NORMAL, 2-LOW]\nlet priorityEntries = [null, null, null];\nlet waitEntries = null;\n\nlet tickCount = 0;\nlet isExecuting = false;\n\n/**\n * @private (Core algorithm)\n * caller: Animation Frame | event cycle Callback\n *\n * Executes entries in animation frame / event cycle callback\n * First execute the entries in the priority order\n * Entries which are added to Wait queue while executing priority entries are moved for execution\n * If there are no entries in priority, semi-infinite loop is stopped\n * and return boolean flag to remove the callback from animation frame or event cycle.\n *\n * @return {boolean} notifies whether to continue or remove the callback\n */\nfunction onTick(){\n\ttickCount++;\n\n\tif(tickCount < TickEntry.allowedTickCount){\n\t\treturn coreAlogorithm();\n\t} else {\n\t\tconsole.warn(\"Animation frame loop executed to its set limit: \", TickEntry.allowedTickCount);\n\t\tstopSemiInfiniteLoop();\n\t\treturn false;\n\t}\n\n\treturn true;\n}\n\nfunction coreAlogorithm(){\n\texecutePriorityEntries();\n\tmoveWaitingEntriesForExecution();\n\tif(arePriorityEntriesEmpty()){\n\t\tstopSemiInfiniteLoop();\n\t\treturn false;\n\t}\n\treturn true;\n}\n\n/**\n * @private\n * function that executes the entries in each priority\n *\n * @return {void}\n */\nfunction executePriorityEntries(){\n\tisExecuting = true;\n\tfor(let index = 0 ; index < priorityEntries.length; index++){\n\t\tlet tickEntries = priorityEntries[index];\n\t\tif(tickEntries && tickEntries.length > 0) {\n\t\t\texecuteTickEntries(tickEntries);\n\t\t\t//Clear them once executed\n\t\t\tpriorityEntries[index] = null;\n\t\t}\n\t}\n\tisExecuting = false;\n}\n\n/**\n * @private\n * function that executes all the entries in particular priority\n *\n * @return {void}\n */\nfunction executeTickEntries(tickEntries){\n\t// important to use for-loop\n\t// tickEntries grows dynamically by one of its entry\n\t// for example: let say we have one entry, and executing that entry might adds another entry\n\t// with map function we cant execute dynamically growing entries.\n\tfor(let i = 0; i < tickEntries.length; i++){\n\t\tconst tickEntry = tickEntries[i];\n\t\tconst {func} = tickEntry;\n\t\tfunc.call(tickEntry);\n\t}\n}\n\nfunction moveWaitingEntriesForExecution(){\n\tconst entriesCount = waitEntries ?  waitEntries.length : 0;\n\tif(waitEntries && entriesCount > 0) {\n\t\tfor(let index = 0 ; index < entriesCount; index++){\n\t\t\tlet tickEntry = waitEntries[index];\n\t\t\tconst { priority } = tickEntry;\n\t\t\tif(!priorityEntries[priority]){\n\t\t\t\tpriorityEntries[priority] = [];\n\t\t\t}\n\t\t\tconst tickEntries = priorityEntries[priority];\n\t\t\ttickEntries.push(tickEntry);\n\t\t}\n\t}\n\twaitEntries = null;\n}\n\nfunction arePriorityEntriesEmpty(){\n\tfor(let index = 0 ; index < priorityEntries.length; index++){\n\t\tlet tickEntries = priorityEntries[index];\n\t\tif(tickEntries && tickEntries.length > 0) {\n\t\t\treturn false\n\t\t}\n\t}\n\treturn true;\n}\n\n/**\n * @private\n * Animation frame callback function which execute the entries\n *\n * @return {void}\n */\nfunction tickCallback(){\n\tconst shouldContinue = onTick();\n\tif(shouldContinue){\n\t\ttickID = window.requestAnimationFrame(tickCallback);\n\t}\n}\n\n/**\n * @private\n * Starts the Semi-infinite loop to execute the functions\n * Executed when first entry is added.\n *\n * @return {void}\n */\nfunction startSemiInfiniteLoop() {\n\tif(window){\n\t\t// will receives timestamp as argument\n\t\ttickID = window.requestAnimationFrame(tickCallback);\n\t} else{\n\t\ttickID = setTimeout(tickCallback);\n\t}\n}\n\n/**\n * @private\n * Stops the Semi-infinite loop.\n * Executed after executing all the entries both in priority and wait\n *\n * @return {void}\n */\nfunction stopSemiInfiniteLoop() {\n\ttickCount = 0;\n\tisExecuting = false;\n\tpriorityEntries = [null, null, null];\n\twaitEntries = null;\n\tif(window){\n\t\twindow.cancelAnimationFrame(tickID);\n\t} else {\n\t\tclearTimeout(tickID);\n\t}\n};\n\n/**\n * @private\n * only visible to TickEntry and not accessible\n * adds the tickEntry to queue in priority order\n * if entries are empty starts the semi-infinite loop in event cycle or Animation frame\n * if execution of entries are in progress, the entry is added to waiting queue\n * thus functions are executed in the order they are added to the semi-infinite loop\n * @param {Object} tickEntry\n * @return {void}\n */\nexport default function addToSemiInfiniteLoop(tickEntry) {\n\tif(arePriorityEntriesEmpty()){\n\t\tstartSemiInfiniteLoop()\n\t}\n\tif(isExecuting){\n\t\tif(!waitEntries){\n\t\t\twaitEntries = [];\n\t\t}\n\t\twaitEntries.push(tickEntry);\n\t} else {\n\t\tconst { priority } = tickEntry;\n\t\tif(!priorityEntries[priority]){\n\t\t\tpriorityEntries[priority] = [];\n\t\t}\n\t\tconst tickEntries = priorityEntries[priority];\n\t\ttickEntries.push(tickEntry);\n\t}\n\n};\n\n\n\n\n\n\n\n",
     "static": true,
     "longname": "/Users/sanjaykrishna/Projects/GitHub/statetree/ticker/src/lib/semiInfiniteLoop.js",
     "access": "public",
@@ -1114,7 +1114,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 81,
+    "__docId__": 78,
     "kind": "variable",
     "name": "tickID",
     "memberof": "lib/semiInfiniteLoop.js",
@@ -1135,7 +1135,7 @@
     "ignore": true
   },
   {
-    "__docId__": 82,
+    "__docId__": 79,
     "kind": "variable",
     "name": "priorityEntries",
     "memberof": "lib/semiInfiniteLoop.js",
@@ -1156,7 +1156,7 @@
     "ignore": true
   },
   {
-    "__docId__": 83,
+    "__docId__": 80,
     "kind": "variable",
     "name": "waitEntries",
     "memberof": "lib/semiInfiniteLoop.js",
@@ -1177,7 +1177,7 @@
     "ignore": true
   },
   {
-    "__docId__": 84,
+    "__docId__": 81,
     "kind": "variable",
     "name": "tickCount",
     "memberof": "lib/semiInfiniteLoop.js",
@@ -1198,7 +1198,7 @@
     "ignore": true
   },
   {
-    "__docId__": 85,
+    "__docId__": 82,
     "kind": "variable",
     "name": "isExecuting",
     "memberof": "lib/semiInfiniteLoop.js",
@@ -1219,7 +1219,7 @@
     "ignore": true
   },
   {
-    "__docId__": 86,
+    "__docId__": 83,
     "kind": "function",
     "name": "onTick",
     "memberof": "lib/semiInfiniteLoop.js",
@@ -1245,7 +1245,7 @@
     "ignore": true
   },
   {
-    "__docId__": 87,
+    "__docId__": 84,
     "kind": "function",
     "name": "coreAlogorithm",
     "memberof": "lib/semiInfiniteLoop.js",
@@ -1269,7 +1269,7 @@
     "ignore": true
   },
   {
-    "__docId__": 88,
+    "__docId__": 85,
     "kind": "function",
     "name": "executePriorityEntries",
     "memberof": "lib/semiInfiniteLoop.js",
@@ -1295,7 +1295,7 @@
     "ignore": true
   },
   {
-    "__docId__": 89,
+    "__docId__": 86,
     "kind": "function",
     "name": "executeTickEntries",
     "memberof": "lib/semiInfiniteLoop.js",
@@ -1328,7 +1328,7 @@
     "ignore": true
   },
   {
-    "__docId__": 90,
+    "__docId__": 87,
     "kind": "function",
     "name": "moveWaitingEntriesForExecution",
     "memberof": "lib/semiInfiniteLoop.js",
@@ -1348,7 +1348,7 @@
     "ignore": true
   },
   {
-    "__docId__": 91,
+    "__docId__": 88,
     "kind": "function",
     "name": "arePriorityEntriesEmpty",
     "memberof": "lib/semiInfiniteLoop.js",
@@ -1372,7 +1372,7 @@
     "ignore": true
   },
   {
-    "__docId__": 92,
+    "__docId__": 89,
     "kind": "function",
     "name": "tickCallback",
     "memberof": "lib/semiInfiniteLoop.js",
@@ -1398,7 +1398,7 @@
     "ignore": true
   },
   {
-    "__docId__": 93,
+    "__docId__": 90,
     "kind": "function",
     "name": "startSemiInfiniteLoop",
     "memberof": "lib/semiInfiniteLoop.js",
@@ -1424,7 +1424,7 @@
     "ignore": true
   },
   {
-    "__docId__": 94,
+    "__docId__": 91,
     "kind": "function",
     "name": "stopSemiInfiniteLoop",
     "memberof": "lib/semiInfiniteLoop.js",
@@ -1450,7 +1450,7 @@
     "ignore": true
   },
   {
-    "__docId__": 95,
+    "__docId__": 92,
     "kind": "function",
     "name": "addToSemiInfiniteLoop",
     "memberof": "lib/semiInfiniteLoop.js",
@@ -1495,7 +1495,7 @@
   },
   {
     "kind": "packageJSON",
-    "content": "{\n  \"name\": \"@statetree/ticker\",\n  \"version\": \"2.2.1\",\n  \"description\": \"Ticker manager for Window request animation frame and NodeJS tick\",\n  \"main\": \"lib/ticker.js\",\n  \"scripts\": {\n    \"start\": \"webpack-dev-server --open --mode development\",\n    \"lint\": \"eslint ./src --ext .js --cache --fix --ext .jsx --cache --fix\",\n    \"test\": \"./node_modules/.bin/mocha test/**/*test.js --timeout 0 --require ./node_modules/babel-register --require test/helpers/*.js -R spec\",\n    \"coverage\": \"NODE_ENV=coverage ./node_modules/.bin/nyc npm run test\",\n    \"report-coverage\": \"nyc report --reporter=text-lcov > coverage.lcov && codecov\",\n    \"doc\": \"./node_modules/.bin/esdoc open ./docs/index.html\",\n    \"prebuild\": \"rimraf lib && rimraf build && npm run coverage \",\n    \"build\": \"./node_modules/.bin/webpack --mode production \",\n    \"postbuild\": \"node scripts/postbuild.js && npm run doc && rimraf demo\",\n    \"release:bugfix\": \"npm version patch -m 'Bumping a patch version: %s'\",\n    \"release:feature\": \"npm version minor -m 'Bumping a minor version: %s'\",\n    \"release:breakingchange\": \"npm version major -m 'Bumping a major version: %s'\",\n    \"postversion\": \"git push origin HEAD --follow-tags\"\n  },\n  \"repository\": {\n    \"type\": \"git\",\n    \"url\": \"git+https://github.com/StateTree/ticker.git\"\n  },\n  \"author\": \"Sanjay Krishna Anbalagan\",\n  \"license\": \"MIT\",\n  \"bugs\": {\n    \"url\": \"https://github.com/StateTree/ticker/issues\"\n  },\n  \"homepage\": \"https://statetree.github.io/ticker/docs/\",\n  \"devDependencies\": {\n    \"babel-cli\": \"^6.26.0\",\n    \"babel-core\": \"^6.26.3\",\n    \"babel-eslint\": \"^8.2.6\",\n    \"babel-loader\": \"^7.1.5\",\n    \"babel-plugin-istanbul\": \"^4.1.6\",\n    \"babel-preset-env\": \"^1.7.0\",\n    \"chai\": \"^4.1.2\",\n    \"codecov\": \"^3.0.4\",\n    \"esdoc\": \"^1.1.0\",\n    \"esdoc-standard-plugin\": \"^1.0.0\",\n    \"eslint\": \"^5.2.0\",\n    \"eslint-loader\": \"^2.1.0\",\n    \"fs-extra\": \"^7.0.0\",\n    \"jsdom\": \"^11.12.0\",\n    \"mocha\": \"^5.2.0\",\n    \"nyc\": \"^12.0.2\",\n    \"rimraf\": \"^2.6.2\",\n    \"sinon\": \"^6.1.4\",\n    \"webpack\": \"^4.16.2\",\n    \"webpack-cli\": \"^3.1.0\",\n    \"webpack-dev-server\": \"^3.1.5\"\n  },\n  \"files\": [\n    \"lib\"\n  ]\n}\n",
+    "content": "{\n  \"name\": \"@statetree/ticker\",\n  \"version\": \"3.0.1\",\n  \"description\": \"Ticker manager for Window request animation frame and NodeJS tick\",\n  \"main\": \"lib/ticker.js\",\n  \"scripts\": {\n    \"start\": \"webpack-dev-server --open --mode development\",\n    \"lint\": \"eslint ./src --ext .js --cache --fix --ext .jsx --cache --fix\",\n    \"test\": \"./node_modules/.bin/mocha test/**/*test.js --timeout 0 --require ./node_modules/babel-register --require test/helpers/*.js -R spec\",\n    \"coverage\": \"NODE_ENV=coverage ./node_modules/.bin/nyc npm run test\",\n    \"report-coverage\": \"nyc report --reporter=text-lcov > coverage.lcov && codecov\",\n    \"doc\": \"./node_modules/.bin/esdoc open ./docs/index.html\",\n    \"prebuild\": \"rimraf lib && rimraf build && npm run coverage \",\n    \"build\": \"./node_modules/.bin/webpack --mode production \",\n    \"postbuild\": \"node scripts/postbuild.js && npm run doc && rimraf demo\",\n    \"release:bugfix\": \"npm version patch -m 'Bumping a patch version: %s'\",\n    \"release:feature\": \"npm version minor -m 'Bumping a minor version: %s'\",\n    \"release:breakingchange\": \"npm version major -m 'Bumping a major version: %s'\",\n    \"postversion\": \"git push origin HEAD --follow-tags\"\n  },\n  \"repository\": {\n    \"type\": \"git\",\n    \"url\": \"git+https://github.com/StateTree/ticker.git\"\n  },\n  \"author\": \"Sanjay Krishna Anbalagan\",\n  \"license\": \"MIT\",\n  \"bugs\": {\n    \"url\": \"https://github.com/StateTree/ticker/issues\"\n  },\n  \"homepage\": \"https://statetree.github.io/ticker/docs/\",\n  \"devDependencies\": {\n    \"babel-cli\": \"^6.26.0\",\n    \"babel-core\": \"^6.26.3\",\n    \"babel-eslint\": \"^8.2.6\",\n    \"babel-loader\": \"^7.1.5\",\n    \"babel-plugin-istanbul\": \"^4.1.6\",\n    \"babel-preset-env\": \"^1.7.0\",\n    \"chai\": \"^4.1.2\",\n    \"codecov\": \"^3.0.4\",\n    \"esdoc\": \"^1.1.0\",\n    \"esdoc-standard-plugin\": \"^1.0.0\",\n    \"eslint\": \"^5.2.0\",\n    \"eslint-loader\": \"^2.1.0\",\n    \"fs-extra\": \"^7.0.0\",\n    \"jsdom\": \"^11.12.0\",\n    \"mocha\": \"^5.2.0\",\n    \"nyc\": \"^12.0.2\",\n    \"rimraf\": \"^2.6.2\",\n    \"sinon\": \"^6.1.4\",\n    \"webpack\": \"^4.16.2\",\n    \"webpack-cli\": \"^3.1.0\",\n    \"webpack-dev-server\": \"^3.1.5\"\n  },\n  \"files\": [\n    \"lib\"\n  ]\n}\n",
     "longname": "/Users/sanjaykrishna/Projects/GitHub/statetree/ticker/package.json",
     "name": "package.json",
     "static": true,
@@ -1534,7 +1534,7 @@
     "access": "public"
   },
   {
-    "__docId__": 96,
+    "__docId__": 93,
     "kind": "testFile",
     "name": "test/TickEntry.test.js",
     "content": "import {expect} from 'chai';\nimport assert from 'assert';\nimport TickEntry from './../src/lib/TickEntry'\n\nlet ticker;\n\nfunction func(){\n\treturn 'called later';\n}\n/** @test {TickEntry} */\ndescribe('API', ()=>{\n\n\tbeforeEach(()=>{\n\t\tticker = new TickEntry(func);\n\t});\n\n\tafterEach(()=>{\n\t\tticker = null;\n\t});\n\n\t/** @test {TickEntry#executeInCycle} */\n\tdescribe('executeInCycle', ()=>{\n\t\tit('Should call function in next animation frame', (done)=>{\n\t\t\tticker.executeInCycle();\n\t\t\texpect(ticker.executionCount).equal(0);\n\t\t\tsetTimeout(()=>{\n\t\t\t\texpect(ticker.executionCount).equal(1);\n\t\t\t\tdone();\n\t\t\t},0);\n\t\t});\n\t\tit('Should call onDone handler with result if provided', (done)=>{\n\t\t\tticker.onDone(function(result){\n\t\t\t\texpect(ticker.executionCount).equal(1);\n\t\t\t\texpect(result).equal('called later');\n\t\t\t\tdone();\n\t\t\t});\n\t\t\tticker.executeInCycle()\n\t\t});\n\t\tit('Should throw error when function is not defined', ()=>{\n\t\t\tticker.func = null;\n\t\t\ttry{\n\t\t\t\tticker.executeInCycle();\n\t\t\t}catch(error){\n\t\t\t\texpect(error.message).equal(\"Ticker: function can't be undefined\");\n\t\t\t}\n\t\t});\n\t\tit('Should throw error when instance is null', ()=>{\n\t\t\ttry{\n\t\t\t\tticker.executeInCycle.call(null);\n\t\t\t}catch(error){\n\t\t\t\texpect(error.message).equal(\"Ticker: instance can't be null\");\n\t\t\t}\n\t\t});\n\t\tit('Should throw error when instance is not Ticker', ()=>{\n\t\t\ttry{\n\t\t\t\tticker.executeInCycle.call(window);\n\t\t\t}catch(error){\n\t\t\t\texpect(error.message).equal(`Ticker: Expecting instance of TickEntry got ${window.constructor.name}`);\n\t\t\t}\n\t\t});\n\t\tit('Should call onError handler when error is thrown', (done)=>{\n\t\t\tticker.func = function(){\n\t\t\t\tthrow new Error(\"Error Thrown\");\n\t\t\t};\n\t\t\tticker.onError(function(error){\n\t\t\t\texpect(error.message).equal('Error Thrown');\n\t\t\t\tdone();\n\t\t\t});\n\t\t\tticker.executeInCycle()\n\t\t});\n\n\t});\n\t/** @test {TickEntry#executeAsSmallLoopsInCycle} */\n\tdescribe('executeAsSmallLoopsInCycle', ()=>{\n\t\tit('Should throw error when function is not defined', ()=>{\n\t\t\tticker.func = null;\n\t\t\ttry{\n\t\t\t\tticker.executeInCycle();\n\t\t\t}catch(error){\n\t\t\t\texpect(error.message).equal(\"Ticker: function can't be undefined\");\n\t\t\t}\n\t\t});\n\n\t\tit('Should call function in next animation frame', (done)=>{\n\t\t\tticker.executeAsSmallLoopsInCycle(1, 1);\n\t\t\tsetTimeout(()=>{\n\t\t\t\texpect(ticker.executionCount).equal(1);\n\t\t\t\tdone();\n\t\t\t},0);\n\t\t});\n\n\t\tit('Should call onProgress and onDone handler', (done)=>{\n\t\t\tvar maxLoopPerFrame = 10;\n\t\t\tvar endIndex = 30;\n\t\t\tlet progressIndex = maxLoopPerFrame;\n\t\t\tticker.executeAsSmallLoopsInCycle(maxLoopPerFrame, endIndex)\n\t\t\t.onProgress(function(index){\n\t\t\t\texpect(progressIndex).equal(index);\n\t\t\t\tprogressIndex = progressIndex + maxLoopPerFrame;\n\t\t\t})\n\t\t\t.onDone(function(){\n\t\t\t\texpect(ticker.executionCount).equal(1);\n\t\t\t\tdone();\n\t\t\t});\n\t\t});\n\n\t\tit('Should call error Handler if there is error in for loop code ', (done)=>{\n\t\t\tticker.func = function(){\n\t\t\t\tthrow new Error(\"Error Thrown\");\n\t\t\t};\n\n\t\t\tticker.executeAsSmallLoopsInCycle(10, 30)\n\t\t\t.onError(function(error){\n\t\t\t\texpect(error.message).equal(\"Error Thrown\");\n\t\t\t\tdone();\n\t\t\t})\n\t\t});\n\t});\n\t/** @test {TickEntry#dispose} */\n\tdescribe('dispose', ()=>{\n\t\tit('Should set context to null', ()=>{\n\t\t\tticker.dispose();\n\t\t\texpect(ticker.context).equal(null);\n\t\t});\n\t\tit('Should set func to null', ()=>{\n\t\t\tticker.dispose();\n\t\t\texpect(ticker.func).equal(null);\n\t\t});\n\t\tit('Should set notifier to null', ()=>{\n\t\t\tticker.dispose();\n\t\t\texpect(ticker.notifier).equal(null);\n\t\t});\n\t\tit('Should set executionCount to NaN', ()=>{\n\t\t\tticker.dispose();\n\t\t\texpect(ticker.executionCount).to.be.NaN;\n\t\t});\n\t})\n});",
@@ -1545,7 +1545,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 97,
+    "__docId__": 94,
     "kind": "test",
     "name": "describe0",
     "testId": 0,
@@ -1561,7 +1561,7 @@
     ]
   },
   {
-    "__docId__": 98,
+    "__docId__": 95,
     "kind": "test",
     "name": "describe1",
     "testId": 1,
@@ -1577,7 +1577,7 @@
     ]
   },
   {
-    "__docId__": 99,
+    "__docId__": 96,
     "kind": "test",
     "name": "it2",
     "testId": 2,
@@ -1590,7 +1590,7 @@
     "lineNumber": 23
   },
   {
-    "__docId__": 100,
+    "__docId__": 97,
     "kind": "test",
     "name": "it3",
     "testId": 3,
@@ -1603,7 +1603,7 @@
     "lineNumber": 31
   },
   {
-    "__docId__": 101,
+    "__docId__": 98,
     "kind": "test",
     "name": "it4",
     "testId": 4,
@@ -1616,7 +1616,7 @@
     "lineNumber": 39
   },
   {
-    "__docId__": 102,
+    "__docId__": 99,
     "kind": "test",
     "name": "it5",
     "testId": 5,
@@ -1629,7 +1629,7 @@
     "lineNumber": 47
   },
   {
-    "__docId__": 103,
+    "__docId__": 100,
     "kind": "test",
     "name": "it6",
     "testId": 6,
@@ -1642,7 +1642,7 @@
     "lineNumber": 54
   },
   {
-    "__docId__": 104,
+    "__docId__": 101,
     "kind": "test",
     "name": "it7",
     "testId": 7,
@@ -1655,7 +1655,7 @@
     "lineNumber": 61
   },
   {
-    "__docId__": 105,
+    "__docId__": 102,
     "kind": "test",
     "name": "describe8",
     "testId": 8,
@@ -1671,7 +1671,7 @@
     ]
   },
   {
-    "__docId__": 106,
+    "__docId__": 103,
     "kind": "test",
     "name": "it9",
     "testId": 9,
@@ -1684,7 +1684,7 @@
     "lineNumber": 75
   },
   {
-    "__docId__": 107,
+    "__docId__": 104,
     "kind": "test",
     "name": "it10",
     "testId": 10,
@@ -1697,7 +1697,7 @@
     "lineNumber": 84
   },
   {
-    "__docId__": 108,
+    "__docId__": 105,
     "kind": "test",
     "name": "it11",
     "testId": 11,
@@ -1710,7 +1710,7 @@
     "lineNumber": 92
   },
   {
-    "__docId__": 109,
+    "__docId__": 106,
     "kind": "test",
     "name": "it12",
     "testId": 12,
@@ -1723,7 +1723,7 @@
     "lineNumber": 107
   },
   {
-    "__docId__": 110,
+    "__docId__": 107,
     "kind": "test",
     "name": "describe13",
     "testId": 13,
@@ -1739,7 +1739,7 @@
     ]
   },
   {
-    "__docId__": 111,
+    "__docId__": 108,
     "kind": "test",
     "name": "it14",
     "testId": 14,
@@ -1752,7 +1752,7 @@
     "lineNumber": 121
   },
   {
-    "__docId__": 112,
+    "__docId__": 109,
     "kind": "test",
     "name": "it15",
     "testId": 15,
@@ -1765,7 +1765,7 @@
     "lineNumber": 125
   },
   {
-    "__docId__": 113,
+    "__docId__": 110,
     "kind": "test",
     "name": "it16",
     "testId": 16,
@@ -1778,7 +1778,7 @@
     "lineNumber": 129
   },
   {
-    "__docId__": 114,
+    "__docId__": 111,
     "kind": "test",
     "name": "it17",
     "testId": 17,
