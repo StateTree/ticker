@@ -25,61 +25,61 @@ window.esdocSearchIndex = [
   ],
   [
     "tickentry#dispose lib/tickentry.js~tickentry#dispose,tickentry#dispose",
-    "test-file/test/TickEntry.test.js.html#lineNumber120",
+    "test-file/test/TickEntry.test.js.html#lineNumber128",
     "API dispose",
     "test"
   ],
   [
     "",
-    "test-file/test/TickEntry.test.js.html#lineNumber121",
+    "test-file/test/TickEntry.test.js.html#lineNumber129",
     "API dispose Should set context to null",
     "test"
   ],
   [
     "",
-    "test-file/test/TickEntry.test.js.html#lineNumber133",
+    "test-file/test/TickEntry.test.js.html#lineNumber141",
     "API dispose Should set executionCount to NaN",
     "test"
   ],
   [
     "",
-    "test-file/test/TickEntry.test.js.html#lineNumber125",
+    "test-file/test/TickEntry.test.js.html#lineNumber133",
     "API dispose Should set func to null",
     "test"
   ],
   [
     "",
-    "test-file/test/TickEntry.test.js.html#lineNumber129",
+    "test-file/test/TickEntry.test.js.html#lineNumber137",
     "API dispose Should set notifier to null",
     "test"
   ],
   [
     "tickentry#executeassmallloopsincycle lib/tickentry.js~tickentry#executeassmallloopsincycle,tickentry#executeassmallloopsincycle",
-    "test-file/test/TickEntry.test.js.html#lineNumber74",
+    "test-file/test/TickEntry.test.js.html#lineNumber82",
     "API executeAsSmallLoopsInCycle",
     "test"
   ],
   [
     "",
-    "test-file/test/TickEntry.test.js.html#lineNumber107",
+    "test-file/test/TickEntry.test.js.html#lineNumber115",
     "API executeAsSmallLoopsInCycle Should call error Handler if there is error in for loop code ",
     "test"
   ],
   [
     "",
-    "test-file/test/TickEntry.test.js.html#lineNumber84",
+    "test-file/test/TickEntry.test.js.html#lineNumber92",
     "API executeAsSmallLoopsInCycle Should call function in next animation frame",
     "test"
   ],
   [
     "",
-    "test-file/test/TickEntry.test.js.html#lineNumber92",
+    "test-file/test/TickEntry.test.js.html#lineNumber100",
     "API executeAsSmallLoopsInCycle Should call onProgress and onDone handler",
     "test"
   ],
   [
     "",
-    "test-file/test/TickEntry.test.js.html#lineNumber75",
+    "test-file/test/TickEntry.test.js.html#lineNumber83",
     "API executeAsSmallLoopsInCycle Should throw error when function is not defined",
     "test"
   ],
@@ -97,32 +97,38 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/test/TickEntry.test.js.html#lineNumber31",
+    "test-file/test/TickEntry.test.js.html#lineNumber39",
     "API executeInCycle Should call onDone handler with result if provided",
     "test"
   ],
   [
     "",
-    "test-file/test/TickEntry.test.js.html#lineNumber61",
+    "test-file/test/TickEntry.test.js.html#lineNumber69",
     "API executeInCycle Should call onError handler when error is thrown",
     "test"
   ],
   [
     "",
-    "test-file/test/TickEntry.test.js.html#lineNumber39",
+    "test-file/test/TickEntry.test.js.html#lineNumber47",
     "API executeInCycle Should throw error when function is not defined",
     "test"
   ],
   [
     "",
-    "test-file/test/TickEntry.test.js.html#lineNumber54",
+    "test-file/test/TickEntry.test.js.html#lineNumber62",
     "API executeInCycle Should throw error when instance is not Ticker",
     "test"
   ],
   [
     "",
-    "test-file/test/TickEntry.test.js.html#lineNumber47",
+    "test-file/test/TickEntry.test.js.html#lineNumber55",
     "API executeInCycle Should throw error when instance is null",
+    "test"
+  ],
+  [
+    "",
+    "test-file/test/TickEntry.test.js.html#lineNumber31",
+    "API executeInCycle function reference has to be retained",
     "test"
   ],
   [

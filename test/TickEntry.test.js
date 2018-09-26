@@ -28,6 +28,14 @@ describe('API', ()=>{
 				done();
 			},0);
 		});
+		it('function reference has to be retained', (done)=>{
+			const func = ticker.func;
+			ticker.executeInCycle().onDone(()=>{
+				expect(ticker.func).equal(func);
+				done();
+			});
+			expect(ticker.func).to.not.equal(func);
+		});
 		it('Should call onDone handler with result if provided', (done)=>{
 			ticker.onDone(function(result){
 				expect(ticker.executionCount).equal(1);

@@ -132,6 +132,7 @@ export default class TickEntry
 			const {doneCallback, errorCallback} = notifier;
 			try{
 				const result = func.call(context || func[&apos;this&apos;]);
+				tickEntryInstance.func = func; //important:revert back to original function reference once done
 				tickEntryInstance.executionCount++;
 				doneCallback &amp;&amp; doneCallback.call(context || doneCallback[&apos;this&apos;], result);
 			} catch (error){
