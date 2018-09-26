@@ -740,7 +740,7 @@
     "__docId__": 57,
     "kind": "file",
     "name": "lib/TickEntry.js",
-    "content": "import addToSemiInfiniteLoop from './semiInfiniteLoop';\nimport Notifier from \"./Notifier\";\n\n/**\n * @private\n * @param {Object} tickEntry\n * @return {void}\n */\nfunction _checkError(tickEntry){\n\tif(!tickEntry){\n\t\tthrow new Error(`Ticker: instance can't be null`);\n\t} else if(!(tickEntry instanceof TickEntry)){\n\t\tconst className = tickEntry.constructor ? tickEntry.constructor.name : typeof tickEntry;\n\t\tthrow new Error(`Ticker: Expecting instance of TickEntry got ${className}`);\n\t} else if(!tickEntry.func){\n\t\tthrow new Error(\"Ticker: function can't be undefined\");\n\t}\n}\n\n\n/**\n * Tick Entry is a wrapper to the function we want to execute later in request animation frame or event cycle\n * @example\n * import Ticker from 'ticker'\n * let tickEntry = new TickEntry(context,listener,callback,priority);\n */\nexport default class TickEntry\n{\n\t/**\n\t * @param {Function} func\n\t * @param {Object} context The \"this\" argument for the func.\n\t * @param {number} priority\n\t */\n\tconstructor(func, context = null, priority = 0)\n\t{\n\t\t/**\n\t\t * @type {Object}\n\t\t */\n\t\tthis.context = context;\n\t\t/**\n\t\t * @type {Function}\n\t\t */\n\t\tthis.func = func;\n\t\t/**\n\t\t * @type {number}\n\t\t */\n\t\tthis.priority = priority;\n\t\t/**\n\t\t * @type {number}\n\t\t */\n\t\tthis.executionCount = 0;\n\t\tthis.notifier = new Notifier();\n\t\t_checkError(this);\n\t}\n\n\tonDone(doneCallback){\n\t\tthis.notifier.doneCallback = doneCallback;\n\t\treturn this.notifier\n\t}\n\n\tonError(errorCallback){\n\t\tthis.notifier.errorCallback = errorCallback;\n\t\treturn this.notifier\n\t}\n\n\n\t/**\n\t * This function dispose the tickEntry references for garbage collection\n\t *\n\t * @return {void}\n\t */\n\tdispose(){\n\t\tthis.context = null;\n\t\tthis.func = null;\n\t\tthis.priority = null;\n\t\tthis.executionCount = NaN;\n\t\tthis.notifier = null;\n\t}\n\n\t/**\n\t * This function adds the func to event cycle / request animation frame for execution\n\t *\n\t * @return {void}\n\t */\n\texecuteInCycle(){\n\t\t_checkError(this);\n\n\t\tconst tickEntryInstance = this;\n\t\tconst {func, context} = tickEntryInstance;\n\n\t\tthis.func = function(){\n\t\t\tconst notifier = tickEntryInstance.notifier;\n\t\t\tconst {doneCallback, errorCallback} = notifier;\n\t\t\ttry{\n\t\t\t\tconst result = func.call(context || func['this']);\n\t\t\t\ttickEntryInstance.executionCount++;\n\t\t\t\tdoneCallback && doneCallback.call(context || doneCallback['this'], result);\n\t\t\t} catch (error){\n\t\t\t\terrorCallback && errorCallback.call(context || errorCallback['this'], error);\n\t\t\t\ttickEntryInstance.dispose();\n\t\t\t}\n\t\t};\n\t\taddToSemiInfiniteLoop(this);\n\n\t\tthis.notifier.onProgress = undefined;\n\t\treturn this.notifier;\n\t};\n\n\t/**\n\t * This function adds the loop function to event cycle / request animation frame for execution\n\t *\n\t * @param {number} maxLoopPerFrame indicates loop length that needs to be executed in single frame or tick.\n\t * @param {number} endIndex indicates loop end value\n\t * @param {number} startIndex indicates loop begining value , default value is 0\n\t * @return {void}\n\t */\n\texecuteAsSmallLoopsInCycle(maxLoopPerFrame, endIndex, startIndex = 0){\n\t\t_checkError(this);\n\n\t\tconst tickEntryInstance = this;\n\t\tconst {func, context} = tickEntryInstance;\n\n\t\tlet loopLimit = maxLoopPerFrame;\n\t\tlet i = startIndex;\n\n\t\tthis.func = function(){\n\t\t\tconst notifier = tickEntryInstance.notifier;\n\t\t\tconst {doneCallback, errorCallback, progressCallback} = notifier;\n\t\t\tlet result;\n\t\t\tfor(;i < loopLimit; i++){\n\t\t\t\ttry {\n\t\t\t\t\tresult = func.call(context || func['this'], i);\n\t\t\t\t} catch(error) {\n\t\t\t\t\terrorCallback && errorCallback.call(context || errorCallback['this'], error);\n\t\t\t\t\ttickEntryInstance.dispose();\n\t\t\t\t\treturn;\n\t\t\t\t}\n\t\t\t}\n\t\t\tif(loopLimit < endIndex){\n\t\t\t\tloopLimit = loopLimit + maxLoopPerFrame;\n\t\t\t\tprogressCallback && progressCallback.call(context || progressCallback['this'], i, result);\n\t\t\t\taddToSemiInfiniteLoop(this);\n\t\t\t} else if( i === endIndex){\n\t\t\t\ttickEntryInstance.executionCount++;\n\t\t\t\tdoneCallback && doneCallback.call(context || doneCallback['this'], result);\n\t\t\t}\n\t\t};\n\n\t\taddToSemiInfiniteLoop(this);\n\t\treturn this.notifier;\n\t};\n\n}\n\nTickEntry.HIGH = 0;\nTickEntry.NORMAL = 1;\nTickEntry.LOW = 2;\n\nTickEntry.allowedTickCount = 100;\n",
+    "content": "import addToSemiInfiniteLoop from './semiInfiniteLoop';\nimport Notifier from \"./Notifier\";\n\n/**\n * @private\n * @param {Object} tickEntry\n * @return {void}\n */\nfunction _checkError(tickEntry){\n\tif(!tickEntry){\n\t\tthrow new Error(`Ticker: instance can't be null`);\n\t} else if(!(tickEntry instanceof TickEntry)){\n\t\tconst className = tickEntry.constructor ? tickEntry.constructor.name : typeof tickEntry;\n\t\tthrow new Error(`Ticker: Expecting instance of TickEntry got ${className}`);\n\t} else if(!tickEntry.func){\n\t\tthrow new Error(\"Ticker: function can't be undefined\");\n\t}\n}\n\n\n/**\n * Tick Entry is a wrapper to the function we want to execute later in request animation frame or event cycle\n * @example\n * import Ticker from 'ticker'\n * let tickEntry = new TickEntry(context,listener,callback,priority);\n */\nexport default class TickEntry\n{\n\t/**\n\t * @param {Function} func\n\t * @param {Object} context The \"this\" argument for the func.\n\t * @param {number} priority\n\t */\n\tconstructor(func, context = null, priority = 0)\n\t{\n\t\t/**\n\t\t * @type {Object}\n\t\t */\n\t\tthis.context = context;\n\t\t/**\n\t\t * @type {Function}\n\t\t */\n\t\tthis.func = func;\n\t\t/**\n\t\t * @type {number}\n\t\t */\n\t\tthis.priority = priority;\n\t\t/**\n\t\t * @type {number}\n\t\t */\n\t\tthis.executionCount = 0;\n\t\tthis.notifier = new Notifier();\n\t\t_checkError(this);\n\t}\n\n\tonDone(doneCallback){\n\t\tthis.notifier.doneCallback = doneCallback;\n\t\treturn this.notifier\n\t}\n\n\tonError(errorCallback){\n\t\tthis.notifier.errorCallback = errorCallback;\n\t\treturn this.notifier\n\t}\n\n\n\t/**\n\t * This function dispose the tickEntry references for garbage collection\n\t *\n\t * @return {void}\n\t */\n\tdispose(){\n\t\tthis.context = null;\n\t\tthis.func = null;\n\t\tthis.priority = null;\n\t\tthis.executionCount = NaN;\n\t\tthis.notifier = null;\n\t}\n\n\t/**\n\t * This function adds the func to event cycle / request animation frame for execution\n\t *\n\t * @return {void}\n\t */\n\texecuteInCycle(){\n\t\t_checkError(this);\n\n\t\tconst tickEntryInstance = this;\n\t\tconst {func, context} = tickEntryInstance;\n\n\t\tthis.func = function(){\n\t\t\tconst notifier = tickEntryInstance.notifier;\n\t\t\tconst {doneCallback, errorCallback} = notifier;\n\t\t\ttry{\n\t\t\t\tconst result = func.call(context || func['this']);\n\t\t\t\ttickEntryInstance.func = func; //important:revert back to original function reference once done\n\t\t\t\ttickEntryInstance.executionCount++;\n\t\t\t\tdoneCallback && doneCallback.call(context || doneCallback['this'], result);\n\t\t\t} catch (error){\n\t\t\t\terrorCallback && errorCallback.call(context || errorCallback['this'], error);\n\t\t\t\ttickEntryInstance.dispose();\n\t\t\t}\n\t\t};\n\t\taddToSemiInfiniteLoop(this);\n\n\t\tthis.notifier.onProgress = undefined;\n\t\treturn this.notifier;\n\t};\n\n\t/**\n\t * This function adds the loop function to event cycle / request animation frame for execution\n\t *\n\t * @param {number} maxLoopPerFrame indicates loop length that needs to be executed in single frame or tick.\n\t * @param {number} endIndex indicates loop end value\n\t * @param {number} startIndex indicates loop begining value , default value is 0\n\t * @return {void}\n\t */\n\texecuteAsSmallLoopsInCycle(maxLoopPerFrame, endIndex, startIndex = 0){\n\t\t_checkError(this);\n\n\t\tconst tickEntryInstance = this;\n\t\tconst {func, context} = tickEntryInstance;\n\n\t\tlet loopLimit = maxLoopPerFrame;\n\t\tlet i = startIndex;\n\n\t\tthis.func = function(){\n\t\t\tconst notifier = tickEntryInstance.notifier;\n\t\t\tconst {doneCallback, errorCallback, progressCallback} = notifier;\n\t\t\tlet result;\n\t\t\tfor(;i < loopLimit; i++){\n\t\t\t\ttry {\n\t\t\t\t\tresult = func.call(context || func['this'], i);\n\t\t\t\t} catch(error) {\n\t\t\t\t\terrorCallback && errorCallback.call(context || errorCallback['this'], error);\n\t\t\t\t\ttickEntryInstance.dispose();\n\t\t\t\t\treturn;\n\t\t\t\t}\n\t\t\t}\n\t\t\tif(loopLimit < endIndex){\n\t\t\t\tloopLimit = loopLimit + maxLoopPerFrame;\n\t\t\t\tprogressCallback && progressCallback.call(context || progressCallback['this'], i, result);\n\t\t\t\taddToSemiInfiniteLoop(this);\n\t\t\t} else if( i === endIndex){\n\t\t\t\ttickEntryInstance.executionCount++;\n\t\t\t\tdoneCallback && doneCallback.call(context || doneCallback['this'], result);\n\t\t\t}\n\t\t};\n\n\t\taddToSemiInfiniteLoop(this);\n\t\treturn this.notifier;\n\t};\n\n}\n\nTickEntry.HIGH = 0;\nTickEntry.NORMAL = 1;\nTickEntry.LOW = 2;\n\nTickEntry.allowedTickCount = 100;\n",
     "static": true,
     "longname": "/Users/sanjaykrishna/Projects/GitHub/statetree/ticker/src/lib/TickEntry.js",
     "access": "public",
@@ -1049,7 +1049,7 @@
     "longname": "lib/TickEntry.js~TickEntry#executeAsSmallLoopsInCycle",
     "access": "public",
     "description": "This function adds the loop function to event cycle / request animation frame for execution",
-    "lineNumber": 117,
+    "lineNumber": 118,
     "params": [
       {
         "nullable": null,
@@ -1537,7 +1537,7 @@
     "__docId__": 93,
     "kind": "testFile",
     "name": "test/TickEntry.test.js",
-    "content": "import {expect} from 'chai';\nimport assert from 'assert';\nimport TickEntry from './../src/lib/TickEntry'\n\nlet ticker;\n\nfunction func(){\n\treturn 'called later';\n}\n/** @test {TickEntry} */\ndescribe('API', ()=>{\n\n\tbeforeEach(()=>{\n\t\tticker = new TickEntry(func);\n\t});\n\n\tafterEach(()=>{\n\t\tticker = null;\n\t});\n\n\t/** @test {TickEntry#executeInCycle} */\n\tdescribe('executeInCycle', ()=>{\n\t\tit('Should call function in next animation frame', (done)=>{\n\t\t\tticker.executeInCycle();\n\t\t\texpect(ticker.executionCount).equal(0);\n\t\t\tsetTimeout(()=>{\n\t\t\t\texpect(ticker.executionCount).equal(1);\n\t\t\t\tdone();\n\t\t\t},0);\n\t\t});\n\t\tit('Should call onDone handler with result if provided', (done)=>{\n\t\t\tticker.onDone(function(result){\n\t\t\t\texpect(ticker.executionCount).equal(1);\n\t\t\t\texpect(result).equal('called later');\n\t\t\t\tdone();\n\t\t\t});\n\t\t\tticker.executeInCycle()\n\t\t});\n\t\tit('Should throw error when function is not defined', ()=>{\n\t\t\tticker.func = null;\n\t\t\ttry{\n\t\t\t\tticker.executeInCycle();\n\t\t\t}catch(error){\n\t\t\t\texpect(error.message).equal(\"Ticker: function can't be undefined\");\n\t\t\t}\n\t\t});\n\t\tit('Should throw error when instance is null', ()=>{\n\t\t\ttry{\n\t\t\t\tticker.executeInCycle.call(null);\n\t\t\t}catch(error){\n\t\t\t\texpect(error.message).equal(\"Ticker: instance can't be null\");\n\t\t\t}\n\t\t});\n\t\tit('Should throw error when instance is not Ticker', ()=>{\n\t\t\ttry{\n\t\t\t\tticker.executeInCycle.call(window);\n\t\t\t}catch(error){\n\t\t\t\texpect(error.message).equal(`Ticker: Expecting instance of TickEntry got ${window.constructor.name}`);\n\t\t\t}\n\t\t});\n\t\tit('Should call onError handler when error is thrown', (done)=>{\n\t\t\tticker.func = function(){\n\t\t\t\tthrow new Error(\"Error Thrown\");\n\t\t\t};\n\t\t\tticker.onError(function(error){\n\t\t\t\texpect(error.message).equal('Error Thrown');\n\t\t\t\tdone();\n\t\t\t});\n\t\t\tticker.executeInCycle()\n\t\t});\n\n\t});\n\t/** @test {TickEntry#executeAsSmallLoopsInCycle} */\n\tdescribe('executeAsSmallLoopsInCycle', ()=>{\n\t\tit('Should throw error when function is not defined', ()=>{\n\t\t\tticker.func = null;\n\t\t\ttry{\n\t\t\t\tticker.executeInCycle();\n\t\t\t}catch(error){\n\t\t\t\texpect(error.message).equal(\"Ticker: function can't be undefined\");\n\t\t\t}\n\t\t});\n\n\t\tit('Should call function in next animation frame', (done)=>{\n\t\t\tticker.executeAsSmallLoopsInCycle(1, 1);\n\t\t\tsetTimeout(()=>{\n\t\t\t\texpect(ticker.executionCount).equal(1);\n\t\t\t\tdone();\n\t\t\t},0);\n\t\t});\n\n\t\tit('Should call onProgress and onDone handler', (done)=>{\n\t\t\tvar maxLoopPerFrame = 10;\n\t\t\tvar endIndex = 30;\n\t\t\tlet progressIndex = maxLoopPerFrame;\n\t\t\tticker.executeAsSmallLoopsInCycle(maxLoopPerFrame, endIndex)\n\t\t\t.onProgress(function(index){\n\t\t\t\texpect(progressIndex).equal(index);\n\t\t\t\tprogressIndex = progressIndex + maxLoopPerFrame;\n\t\t\t})\n\t\t\t.onDone(function(){\n\t\t\t\texpect(ticker.executionCount).equal(1);\n\t\t\t\tdone();\n\t\t\t});\n\t\t});\n\n\t\tit('Should call error Handler if there is error in for loop code ', (done)=>{\n\t\t\tticker.func = function(){\n\t\t\t\tthrow new Error(\"Error Thrown\");\n\t\t\t};\n\n\t\t\tticker.executeAsSmallLoopsInCycle(10, 30)\n\t\t\t.onError(function(error){\n\t\t\t\texpect(error.message).equal(\"Error Thrown\");\n\t\t\t\tdone();\n\t\t\t})\n\t\t});\n\t});\n\t/** @test {TickEntry#dispose} */\n\tdescribe('dispose', ()=>{\n\t\tit('Should set context to null', ()=>{\n\t\t\tticker.dispose();\n\t\t\texpect(ticker.context).equal(null);\n\t\t});\n\t\tit('Should set func to null', ()=>{\n\t\t\tticker.dispose();\n\t\t\texpect(ticker.func).equal(null);\n\t\t});\n\t\tit('Should set notifier to null', ()=>{\n\t\t\tticker.dispose();\n\t\t\texpect(ticker.notifier).equal(null);\n\t\t});\n\t\tit('Should set executionCount to NaN', ()=>{\n\t\t\tticker.dispose();\n\t\t\texpect(ticker.executionCount).to.be.NaN;\n\t\t});\n\t})\n});",
+    "content": "import {expect} from 'chai';\nimport assert from 'assert';\nimport TickEntry from './../src/lib/TickEntry'\n\nlet ticker;\n\nfunction func(){\n\treturn 'called later';\n}\n/** @test {TickEntry} */\ndescribe('API', ()=>{\n\n\tbeforeEach(()=>{\n\t\tticker = new TickEntry(func);\n\t});\n\n\tafterEach(()=>{\n\t\tticker = null;\n\t});\n\n\t/** @test {TickEntry#executeInCycle} */\n\tdescribe('executeInCycle', ()=>{\n\t\tit('Should call function in next animation frame', (done)=>{\n\t\t\tticker.executeInCycle();\n\t\t\texpect(ticker.executionCount).equal(0);\n\t\t\tsetTimeout(()=>{\n\t\t\t\texpect(ticker.executionCount).equal(1);\n\t\t\t\tdone();\n\t\t\t},0);\n\t\t});\n\t\tit('function reference has to be retained', (done)=>{\n\t\t\tconst func = ticker.func;\n\t\t\tticker.executeInCycle().onDone(()=>{\n\t\t\t\texpect(ticker.func).equal(func);\n\t\t\t\tdone();\n\t\t\t});\n\t\t\texpect(ticker.func).to.not.equal(func);\n\t\t});\n\t\tit('Should call onDone handler with result if provided', (done)=>{\n\t\t\tticker.onDone(function(result){\n\t\t\t\texpect(ticker.executionCount).equal(1);\n\t\t\t\texpect(result).equal('called later');\n\t\t\t\tdone();\n\t\t\t});\n\t\t\tticker.executeInCycle()\n\t\t});\n\t\tit('Should throw error when function is not defined', ()=>{\n\t\t\tticker.func = null;\n\t\t\ttry{\n\t\t\t\tticker.executeInCycle();\n\t\t\t}catch(error){\n\t\t\t\texpect(error.message).equal(\"Ticker: function can't be undefined\");\n\t\t\t}\n\t\t});\n\t\tit('Should throw error when instance is null', ()=>{\n\t\t\ttry{\n\t\t\t\tticker.executeInCycle.call(null);\n\t\t\t}catch(error){\n\t\t\t\texpect(error.message).equal(\"Ticker: instance can't be null\");\n\t\t\t}\n\t\t});\n\t\tit('Should throw error when instance is not Ticker', ()=>{\n\t\t\ttry{\n\t\t\t\tticker.executeInCycle.call(window);\n\t\t\t}catch(error){\n\t\t\t\texpect(error.message).equal(`Ticker: Expecting instance of TickEntry got ${window.constructor.name}`);\n\t\t\t}\n\t\t});\n\t\tit('Should call onError handler when error is thrown', (done)=>{\n\t\t\tticker.func = function(){\n\t\t\t\tthrow new Error(\"Error Thrown\");\n\t\t\t};\n\t\t\tticker.onError(function(error){\n\t\t\t\texpect(error.message).equal('Error Thrown');\n\t\t\t\tdone();\n\t\t\t});\n\t\t\tticker.executeInCycle()\n\t\t});\n\n\t});\n\t/** @test {TickEntry#executeAsSmallLoopsInCycle} */\n\tdescribe('executeAsSmallLoopsInCycle', ()=>{\n\t\tit('Should throw error when function is not defined', ()=>{\n\t\t\tticker.func = null;\n\t\t\ttry{\n\t\t\t\tticker.executeInCycle();\n\t\t\t}catch(error){\n\t\t\t\texpect(error.message).equal(\"Ticker: function can't be undefined\");\n\t\t\t}\n\t\t});\n\n\t\tit('Should call function in next animation frame', (done)=>{\n\t\t\tticker.executeAsSmallLoopsInCycle(1, 1);\n\t\t\tsetTimeout(()=>{\n\t\t\t\texpect(ticker.executionCount).equal(1);\n\t\t\t\tdone();\n\t\t\t},0);\n\t\t});\n\n\t\tit('Should call onProgress and onDone handler', (done)=>{\n\t\t\tvar maxLoopPerFrame = 10;\n\t\t\tvar endIndex = 30;\n\t\t\tlet progressIndex = maxLoopPerFrame;\n\t\t\tticker.executeAsSmallLoopsInCycle(maxLoopPerFrame, endIndex)\n\t\t\t.onProgress(function(index){\n\t\t\t\texpect(progressIndex).equal(index);\n\t\t\t\tprogressIndex = progressIndex + maxLoopPerFrame;\n\t\t\t})\n\t\t\t.onDone(function(){\n\t\t\t\texpect(ticker.executionCount).equal(1);\n\t\t\t\tdone();\n\t\t\t});\n\t\t});\n\n\t\tit('Should call error Handler if there is error in for loop code ', (done)=>{\n\t\t\tticker.func = function(){\n\t\t\t\tthrow new Error(\"Error Thrown\");\n\t\t\t};\n\n\t\t\tticker.executeAsSmallLoopsInCycle(10, 30)\n\t\t\t.onError(function(error){\n\t\t\t\texpect(error.message).equal(\"Error Thrown\");\n\t\t\t\tdone();\n\t\t\t})\n\t\t});\n\t});\n\t/** @test {TickEntry#dispose} */\n\tdescribe('dispose', ()=>{\n\t\tit('Should set context to null', ()=>{\n\t\t\tticker.dispose();\n\t\t\texpect(ticker.context).equal(null);\n\t\t});\n\t\tit('Should set func to null', ()=>{\n\t\t\tticker.dispose();\n\t\t\texpect(ticker.func).equal(null);\n\t\t});\n\t\tit('Should set notifier to null', ()=>{\n\t\t\tticker.dispose();\n\t\t\texpect(ticker.notifier).equal(null);\n\t\t});\n\t\tit('Should set executionCount to NaN', ()=>{\n\t\t\tticker.dispose();\n\t\t\texpect(ticker.executionCount).to.be.NaN;\n\t\t});\n\t})\n});",
     "static": true,
     "longname": "/Users/sanjaykrishna/Projects/GitHub/statetree/ticker/test/TickEntry.test.js",
     "access": null,
@@ -1599,7 +1599,7 @@
     "static": true,
     "longname": "test/TickEntry.test.js~describe0.describe1.it3",
     "access": null,
-    "description": "Should call onDone handler with result if provided",
+    "description": "function reference has to be retained",
     "lineNumber": 31
   },
   {
@@ -1612,7 +1612,7 @@
     "static": true,
     "longname": "test/TickEntry.test.js~describe0.describe1.it4",
     "access": null,
-    "description": "Should throw error when function is not defined",
+    "description": "Should call onDone handler with result if provided",
     "lineNumber": 39
   },
   {
@@ -1625,7 +1625,7 @@
     "static": true,
     "longname": "test/TickEntry.test.js~describe0.describe1.it5",
     "access": null,
-    "description": "Should throw error when instance is null",
+    "description": "Should throw error when function is not defined",
     "lineNumber": 47
   },
   {
@@ -1638,8 +1638,8 @@
     "static": true,
     "longname": "test/TickEntry.test.js~describe0.describe1.it6",
     "access": null,
-    "description": "Should throw error when instance is not Ticker",
-    "lineNumber": 54
+    "description": "Should throw error when instance is null",
+    "lineNumber": 55
   },
   {
     "__docId__": 101,
@@ -1651,62 +1651,62 @@
     "static": true,
     "longname": "test/TickEntry.test.js~describe0.describe1.it7",
     "access": null,
-    "description": "Should call onError handler when error is thrown",
-    "lineNumber": 61
+    "description": "Should throw error when instance is not Ticker",
+    "lineNumber": 62
   },
   {
     "__docId__": 102,
     "kind": "test",
-    "name": "describe8",
+    "name": "it8",
     "testId": 8,
-    "memberof": "test/TickEntry.test.js~describe0",
-    "testDepth": 1,
+    "memberof": "test/TickEntry.test.js~describe0.describe1",
+    "testDepth": 2,
     "static": true,
-    "longname": "test/TickEntry.test.js~describe0.describe8",
+    "longname": "test/TickEntry.test.js~describe0.describe1.it8",
     "access": null,
-    "description": "executeAsSmallLoopsInCycle",
-    "lineNumber": 74,
-    "testTargets": [
-      "TickEntry#executeAsSmallLoopsInCycle"
-    ]
+    "description": "Should call onError handler when error is thrown",
+    "lineNumber": 69
   },
   {
     "__docId__": 103,
     "kind": "test",
-    "name": "it9",
+    "name": "describe9",
     "testId": 9,
-    "memberof": "test/TickEntry.test.js~describe0.describe8",
-    "testDepth": 2,
+    "memberof": "test/TickEntry.test.js~describe0",
+    "testDepth": 1,
     "static": true,
-    "longname": "test/TickEntry.test.js~describe0.describe8.it9",
+    "longname": "test/TickEntry.test.js~describe0.describe9",
     "access": null,
-    "description": "Should throw error when function is not defined",
-    "lineNumber": 75
+    "description": "executeAsSmallLoopsInCycle",
+    "lineNumber": 82,
+    "testTargets": [
+      "TickEntry#executeAsSmallLoopsInCycle"
+    ]
   },
   {
     "__docId__": 104,
     "kind": "test",
     "name": "it10",
     "testId": 10,
-    "memberof": "test/TickEntry.test.js~describe0.describe8",
+    "memberof": "test/TickEntry.test.js~describe0.describe9",
     "testDepth": 2,
     "static": true,
-    "longname": "test/TickEntry.test.js~describe0.describe8.it10",
+    "longname": "test/TickEntry.test.js~describe0.describe9.it10",
     "access": null,
-    "description": "Should call function in next animation frame",
-    "lineNumber": 84
+    "description": "Should throw error when function is not defined",
+    "lineNumber": 83
   },
   {
     "__docId__": 105,
     "kind": "test",
     "name": "it11",
     "testId": 11,
-    "memberof": "test/TickEntry.test.js~describe0.describe8",
+    "memberof": "test/TickEntry.test.js~describe0.describe9",
     "testDepth": 2,
     "static": true,
-    "longname": "test/TickEntry.test.js~describe0.describe8.it11",
+    "longname": "test/TickEntry.test.js~describe0.describe9.it11",
     "access": null,
-    "description": "Should call onProgress and onDone handler",
+    "description": "Should call function in next animation frame",
     "lineNumber": 92
   },
   {
@@ -1714,80 +1714,93 @@
     "kind": "test",
     "name": "it12",
     "testId": 12,
-    "memberof": "test/TickEntry.test.js~describe0.describe8",
+    "memberof": "test/TickEntry.test.js~describe0.describe9",
     "testDepth": 2,
     "static": true,
-    "longname": "test/TickEntry.test.js~describe0.describe8.it12",
+    "longname": "test/TickEntry.test.js~describe0.describe9.it12",
     "access": null,
-    "description": "Should call error Handler if there is error in for loop code ",
-    "lineNumber": 107
+    "description": "Should call onProgress and onDone handler",
+    "lineNumber": 100
   },
   {
     "__docId__": 107,
     "kind": "test",
-    "name": "describe13",
+    "name": "it13",
     "testId": 13,
-    "memberof": "test/TickEntry.test.js~describe0",
-    "testDepth": 1,
+    "memberof": "test/TickEntry.test.js~describe0.describe9",
+    "testDepth": 2,
     "static": true,
-    "longname": "test/TickEntry.test.js~describe0.describe13",
+    "longname": "test/TickEntry.test.js~describe0.describe9.it13",
     "access": null,
-    "description": "dispose",
-    "lineNumber": 120,
-    "testTargets": [
-      "TickEntry#dispose"
-    ]
+    "description": "Should call error Handler if there is error in for loop code ",
+    "lineNumber": 115
   },
   {
     "__docId__": 108,
     "kind": "test",
-    "name": "it14",
+    "name": "describe14",
     "testId": 14,
-    "memberof": "test/TickEntry.test.js~describe0.describe13",
-    "testDepth": 2,
+    "memberof": "test/TickEntry.test.js~describe0",
+    "testDepth": 1,
     "static": true,
-    "longname": "test/TickEntry.test.js~describe0.describe13.it14",
+    "longname": "test/TickEntry.test.js~describe0.describe14",
     "access": null,
-    "description": "Should set context to null",
-    "lineNumber": 121
+    "description": "dispose",
+    "lineNumber": 128,
+    "testTargets": [
+      "TickEntry#dispose"
+    ]
   },
   {
     "__docId__": 109,
     "kind": "test",
     "name": "it15",
     "testId": 15,
-    "memberof": "test/TickEntry.test.js~describe0.describe13",
+    "memberof": "test/TickEntry.test.js~describe0.describe14",
     "testDepth": 2,
     "static": true,
-    "longname": "test/TickEntry.test.js~describe0.describe13.it15",
+    "longname": "test/TickEntry.test.js~describe0.describe14.it15",
     "access": null,
-    "description": "Should set func to null",
-    "lineNumber": 125
+    "description": "Should set context to null",
+    "lineNumber": 129
   },
   {
     "__docId__": 110,
     "kind": "test",
     "name": "it16",
     "testId": 16,
-    "memberof": "test/TickEntry.test.js~describe0.describe13",
+    "memberof": "test/TickEntry.test.js~describe0.describe14",
     "testDepth": 2,
     "static": true,
-    "longname": "test/TickEntry.test.js~describe0.describe13.it16",
+    "longname": "test/TickEntry.test.js~describe0.describe14.it16",
     "access": null,
-    "description": "Should set notifier to null",
-    "lineNumber": 129
+    "description": "Should set func to null",
+    "lineNumber": 133
   },
   {
     "__docId__": 111,
     "kind": "test",
     "name": "it17",
     "testId": 17,
-    "memberof": "test/TickEntry.test.js~describe0.describe13",
+    "memberof": "test/TickEntry.test.js~describe0.describe14",
     "testDepth": 2,
     "static": true,
-    "longname": "test/TickEntry.test.js~describe0.describe13.it17",
+    "longname": "test/TickEntry.test.js~describe0.describe14.it17",
+    "access": null,
+    "description": "Should set notifier to null",
+    "lineNumber": 137
+  },
+  {
+    "__docId__": 112,
+    "kind": "test",
+    "name": "it18",
+    "testId": 18,
+    "memberof": "test/TickEntry.test.js~describe0.describe14",
+    "testDepth": 2,
+    "static": true,
+    "longname": "test/TickEntry.test.js~describe0.describe14.it18",
     "access": null,
     "description": "Should set executionCount to NaN",
-    "lineNumber": 133
+    "lineNumber": 141
   }
 ]
