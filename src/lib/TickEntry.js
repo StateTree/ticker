@@ -86,8 +86,7 @@ export default class TickEntry
 		_checkError(this);
 
 		const tickEntryInstance = this;
-		const {func, context} = tickEntryInstance;1
-		this.context = tickEntryInstance;
+		const {func, context} = tickEntryInstance;
 
 		this.func = function(){
 			const notifier = tickEntryInstance.notifier;
@@ -98,6 +97,7 @@ export default class TickEntry
 				doneCallback && doneCallback.call(context || doneCallback['this'], result);
 			} catch (error){
 				errorCallback && errorCallback.call(context || errorCallback['this'], error);
+				tickEntryInstance.dispose();
 			}
 		};
 		addToSemiInfiniteLoop(this);
@@ -119,11 +119,10 @@ export default class TickEntry
 
 		const tickEntryInstance = this;
 		const {func, context} = tickEntryInstance;
-		this.context = tickEntryInstance;
 
 		let loopLimit = maxLoopPerFrame;
 		let i = startIndex;
-		this.context = this;
+
 		this.func = function(){
 			const notifier = tickEntryInstance.notifier;
 			const {doneCallback, errorCallback, progressCallback} = notifier;
