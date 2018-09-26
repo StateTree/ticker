@@ -76,8 +76,8 @@ function executeTickEntries(tickEntries){
 	// with map function we cant execute dynamically growing entries.
 	for(let i = 0; i < tickEntries.length; i++){
 		const tickEntry = tickEntries[i];
-		const {func, context} = tickEntry;
-		func.call(context || func['this']);
+		const {func} = tickEntry;
+		func.call(tickEntry);
 	}
 }
 
