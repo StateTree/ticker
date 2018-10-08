@@ -6,9 +6,9 @@
   "scripts": {
     "start": "webpack-dev-server --open --mode development",
     "lint": "eslint ./src --ext .js --cache --fix --ext .jsx --cache --fix",
-    "test": "./node_modules/.bin/mocha test/**/*test.js --timeout 0 --require ./node_modules/babel-register --require test/helpers/*.js -R spec",
+    "test": "nyc ./node_modules/.bin/ava -v",
     "coverage": "NODE_ENV=coverage ./node_modules/.bin/nyc npm run test",
-    "report-coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
+    "report-coverage": "nyc report --reporter=lcov > coverage.lcov && codecov",
     "doc": "./node_modules/.bin/esdoc open ./docs/index.html",
     "prebuild": "rimraf lib && rimraf build && npm run coverage ",
     "build": "./node_modules/.bin/webpack --mode production ",
@@ -16,7 +16,8 @@
     "release:bugfix": "npm version patch -m 'Bumping a patch version: %s'",
     "release:feature": "npm version minor -m 'Bumping a minor version: %s'",
     "release:breakingchange": "npm version major -m 'Bumping a major version: %s'",
-    "postversion": "git push origin HEAD --follow-tags"
+    "postversion": "git push origin HEAD --follow-tags",
+    "standard": "standard index.js"
   },
   "repository": {
     "type": "git",
@@ -36,7 +37,7 @@
     "babel-plugin-istanbul": "^4.1.6",
     "babel-preset-env": "^1.7.0",
     "chai": "^4.1.2",
-    "codecov": "^3.0.4",
+    "codecov": "^1.0.1",
     "esdoc": "^1.1.0",
     "esdoc-standard-plugin": "^1.0.0",
     "eslint": "^5.2.0",
@@ -44,14 +45,26 @@
     "fs-extra": "^7.0.0",
     "jsdom": "^11.12.0",
     "mocha": "^5.2.0",
-    "nyc": "^12.0.2",
+    "nyc": "^10.0.0",
     "rimraf": "^2.6.2",
     "sinon": "^6.1.4",
     "webpack": "^4.16.2",
     "webpack-cli": "^3.1.0",
-    "webpack-dev-server": "^3.1.5"
+    "webpack-dev-server": "^3.1.5",
+    "ava": "^0.16.0",
+    "co-exec": "^1.0",
+    "ghooks": "^1.2.4",
+    "standard": "^8.4.0"
   },
   "files": [
     "lib"
-  ]
+  ],
+  "config": {
+    "ghooks": {
+      "pre-commit": "npm run standard"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  }
 }

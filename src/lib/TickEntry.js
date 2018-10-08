@@ -1,5 +1,6 @@
 import addToSemiInfiniteLoop from './semiInfiniteLoop';
 import Notifier from "./Notifier";
+import {ErrorMsg} from "./contants";
 
 /**
  * @private
@@ -116,6 +117,17 @@ export default class TickEntry
 	 * @return {void}
 	 */
 	executeAsSmallLoopsInCycle(maxLoopPerFrame, endIndex, startIndex = 0){
+		if(maxLoopPerFrame === undefined || typeof maxLoopPerFrame !== 'number'){
+			throw new Error(ErrorMsg.MAX_LOOP_PER_FRAME)
+		}
+
+		if(endIndex === undefined || typeof endIndex !== 'number'){
+			throw new Error(ErrorMsg.END_INDEX)
+		}
+
+		if(typeof startIndex !== 'number'){
+			throw new Error(ErrorMsg.START_INDEX)
+		}
 		_checkError(this);
 
 		const tickEntryInstance = this;
@@ -142,6 +154,7 @@ export default class TickEntry
 				progressCallback && progressCallback.call(context || progressCallback['this'], i, result);
 				addToSemiInfiniteLoop(this);
 			} else if( i === endIndex){
+				tickEntryInstance.func = func; //important:revert back to original function reference once done
 				tickEntryInstance.executionCount++;
 				doneCallback && doneCallback.call(context || doneCallback['this'], result);
 			}

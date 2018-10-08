@@ -1,6 +1,7 @@
 import {expect} from 'chai';
 import assert from 'assert';
 import TickEntry from './../src/lib/TickEntry'
+import {ErrorMsg} from './../src/lib/contants'
 
 let ticker;
 
@@ -28,7 +29,7 @@ describe('API', ()=>{
 				done();
 			},0);
 		});
-		it('function reference has to be retained', (done)=>{
+		it('function reference has to be retained on Done', (done)=>{
 			const func = ticker.func;
 			ticker.executeInCycle().onDone(()=>{
 				expect(ticker.func).equal(func);
@@ -80,14 +81,6 @@ describe('API', ()=>{
 	});
 	/** @test {TickEntry#executeAsSmallLoopsInCycle} */
 	describe('executeAsSmallLoopsInCycle', ()=>{
-		it('Should throw error when function is not defined', ()=>{
-			ticker.func = null;
-			try{
-				ticker.executeInCycle();
-			}catch(error){
-				expect(error.message).equal("Ticker: function can't be undefined");
-			}
-		});
 
 		it('Should call function in next animation frame', (done)=>{
 			ticker.executeAsSmallLoopsInCycle(1, 1);
@@ -96,6 +89,7 @@ describe('API', ()=>{
 				done();
 			},0);
 		});
+
 
 		it('Should call onProgress and onDone handler', (done)=>{
 			var maxLoopPerFrame = 10;
@@ -112,6 +106,15 @@ describe('API', ()=>{
 			});
 		});
 
+		it('function reference has to be retained on Done', (done)=>{
+			const func = ticker.func;
+			ticker.executeAsSmallLoopsInCycle(10, 30).onDone(()=>{
+				expect(ticker.func).equal(func);
+				done();
+			});
+			expect(ticker.func).to.not.equal(func);
+		});
+
 		it('Should call error Handler if there is error in for loop code ', (done)=>{
 			ticker.func = function(){
 				throw new Error("Error Thrown");
@@ -122,6 +125,49 @@ describe('API', ()=>{
 				expect(error.message).equal("Error Thrown");
 				done();
 			})
+		});
+		it('Should throw error when function is not defined', ()=>{
+			ticker.func = null;
+			try{
+				ticker.executeAsSmallLoopsInCycle(34,20);
+			}catch(error){
+				expect(error.message).equal("Ticker: function can't be undefined");
+			}
+		});
+		it('Should throw error when maxLoopPerframe is not defined', ()=>{
+			try{
+				ticker.executeAsSmallLoopsInCycle();
+			}catch(error){
+				expect(error.message).equal(ErrorMsg.MAX_LOOP_PER_FRAME);
+			}
+		});
+		it('Should throw error when maxLoopPerframe is not a number', ()=>{
+			try{
+				ticker.executeAsSmallLoopsInCycle("34");
+			}catch(error){
+				expect(error.message).equal(ErrorMsg.MAX_LOOP_PER_FRAME);
+			}
+		});
+		it('Should throw error when End index is not defined', ()=>{
+			try{
+				ticker.executeAsSmallLoopsInCycle(10);
+			}catch(error){
+				expect(error.message).equal(ErrorMsg.END_INDEX);
+			}
+		});
+		it('Should throw error when End index is not a number', ()=>{
+			try{
+				ticker.executeAsSmallLoopsInCycle(10, "20");
+			}catch(error){
+				expect(error.message).equal(ErrorMsg.END_INDEX);
+			}
+		});
+		it('Should throw error when Start index is not a number', ()=>{
+			try{
+				ticker.executeAsSmallLoopsInCycle(10,30, "45");
+			}catch(error){
+				expect(error.message).equal(ErrorMsg.START_INDEX);
+			}
 		});
 	});
 	/** @test {TickEntry#dispose} */
