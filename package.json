@@ -1,22 +1,18 @@
 {
   "name": "@statetree/ticker",
-  "version": "3.0.2",
+  "version": "3.1.2",
   "description": "Ticker manager for Window request animation frame and NodeJS tick",
   "main": "lib/ticker.js",
   "scripts": {
     "start": "webpack-dev-server --open --mode development",
     "lint": "eslint ./src --ext .js --cache --fix --ext .jsx --cache --fix",
-    "test": "./node_modules/.bin/mocha test/**/*test.js --timeout 0 --require ./node_modules/babel-register --require test/helpers/*.js -R spec",
+    "test": "./node_modules/.bin/mocha test/**/*test.js --timeout 0 --require ./node_modules/@babel/register --require test/helpers/*.js -R spec",
     "coverage": "NODE_ENV=coverage ./node_modules/.bin/nyc npm run test",
-    "report-coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
+    "report-coverage": "nyc report --reporter=lcov > coverage.lcov && codecov",
     "doc": "./node_modules/.bin/esdoc open ./docs/index.html",
     "prebuild": "rimraf lib && rimraf build && npm run coverage ",
     "build": "./node_modules/.bin/webpack --mode production ",
-    "postbuild": "node scripts/postbuild.js && npm run doc && rimraf demo",
-    "release:bugfix": "npm version patch -m 'Bumping a patch version: %s'",
-    "release:feature": "npm version minor -m 'Bumping a minor version: %s'",
-    "release:breakingchange": "npm version major -m 'Bumping a major version: %s'",
-    "postversion": "git push origin HEAD --follow-tags"
+    "standard": "standard index.js"
   },
   "repository": {
     "type": "git",
@@ -29,29 +25,41 @@
   },
   "homepage": "https://statetree.github.io/ticker/docs/",
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.3",
-    "babel-eslint": "^8.2.6",
-    "babel-loader": "^7.1.5",
-    "babel-plugin-istanbul": "^4.1.6",
-    "babel-preset-env": "^1.7.0",
-    "chai": "^4.1.2",
-    "codecov": "^3.0.4",
+    "@babel/cli": "^7.1.2",
+    "@babel/core": "^7.1.2",
+    "@babel/preset-env": "^7.1.0",
+    "@babel/register": "^7.0.0",
+    "babel-eslint": "^10.0.1",
+    "babel-loader": "^8.0.4",
+    "babel-plugin-istanbul": "^5.0.1",
+    "chai": "^4.2.0",
+    "co-exec": "^1.1.0",
+    "codecov": "^3.1.0",
     "esdoc": "^1.1.0",
     "esdoc-standard-plugin": "^1.0.0",
-    "eslint": "^5.2.0",
-    "eslint-loader": "^2.1.0",
+    "eslint": "^5.6.1",
+    "eslint-loader": "^2.1.1",
     "fs-extra": "^7.0.0",
-    "jsdom": "^11.12.0",
+    "ghooks": "^2.0.4",
+    "jsdom": "^12.2.0",
     "mocha": "^5.2.0",
-    "nyc": "^12.0.2",
+    "nyc": "^13.0.1",
     "rimraf": "^2.6.2",
-    "sinon": "^6.1.4",
-    "webpack": "^4.16.2",
-    "webpack-cli": "^3.1.0",
-    "webpack-dev-server": "^3.1.5"
+    "sinon": "^6.3.5",
+    "standard": "^12.0.1",
+    "webpack": "^4.20.2",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.9"
   },
   "files": [
     "lib"
-  ]
+  ],
+  "config": {
+    "ghooks": {
+      "pre-commit": "npm run standard"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  }
 }

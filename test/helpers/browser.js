@@ -1,4 +1,4 @@
-require('babel-register')();
+require('@babel/register')();
 
 //polyfills for testing
 global.window = {};

@@ -1,7 +1,5 @@
 {
-  "presets": [
-    "env"
-  ],
+  "presets": ["@babel/preset-env"],
   "env": {
     "coverage": {
       "plugins": ["istanbul"]
