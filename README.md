@@ -1,6 +1,6 @@
 # Ticker
 [![NPM version](https://img.shields.io/npm/v/ticker.svg?style=flat-square)](https://www.npmjs.com/package/ticker)
-[![Build](https://travis-ci.org/StateTree/ticker.svg?branch=master)](https://travis-ci.org/StateTree/ticker)
+[![Build](https://travis-ci.com/StateTree/ticker.svg?branch=master)](https://travis-ci.org/StateTree/ticker)
 [![codecov.io](https://codecov.io/github/StateTree/ticker/coverage.svg?branch=master)](https://codecov.io/github/StateTree/ticker?branch=master)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 
