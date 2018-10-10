@@ -12,6 +12,7 @@
     "doc": "./node_modules/.bin/esdoc open ./docs/index.html",
     "prebuild": "rimraf lib && rimraf build && npm run coverage ",
     "build": "./node_modules/.bin/webpack --mode production ",
+    "postbuild": "node scripts/postbuild.js",
     "standard": "standard index.js"
   },
   "repository": {
