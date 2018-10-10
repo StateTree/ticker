@@ -12,7 +12,6 @@
     "doc": "./node_modules/.bin/esdoc open ./docs/index.html",
     "prebuild": "rimraf lib && rimraf build && npm run coverage ",
     "build": "./node_modules/.bin/webpack --mode production ",
-    "tag-commit": "git push origin HEAD --follow-tags",
     "standard": "standard index.js"
   },
   "repository": {
