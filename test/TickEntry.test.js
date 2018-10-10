@@ -1,5 +1,4 @@
 import {expect} from 'chai';
-import assert from 'assert';
 import TickEntry from './../src/lib/TickEntry'
 import {ErrorMsg} from './../src/lib/contants'
 
