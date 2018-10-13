@@ -1,5 +1,5 @@
 # Ticker
-[![NPM version](https://img.shields.io/npm/v/ticker.svg?style=flat-square)](https://www.npmjs.com/package/ticker)
+[![NPM version](https://img.shields.io/npm/v/@statetree/ticker.svg?style=flat-square)](https://www.npmjs.com/package/@statetree/ticker)
 [![Build](https://travis-ci.com/StateTree/ticker.svg?branch=master)](https://travis-ci.org/StateTree/ticker)
 [![codecov.io](https://codecov.io/github/StateTree/ticker/coverage.svg?branch=master)](https://codecov.io/github/StateTree/ticker?branch=master)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
@@ -11,6 +11,7 @@
 npm install --save @statetree/ticker
 ```
 
+[docs](https://statetree.github.io/ticker/docs/)
 
 ## What?
 * Executes Functions later in animation frame / event cycle callback
