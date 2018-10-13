@@ -8,6 +8,7 @@ script:
   - npm run coverage
   - npm run report-coverage
   - npm run build
+  - npm run doc
 deploy:
   - provider: pages
     skip_cleanup: true
