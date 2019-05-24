@@ -1,32 +1,32 @@
-import Ticker from "./../lib";
+import Ticker from './../lib';
 
 
 function firstFunction (){
-    console.log("first Function");
+	console.log('first Function');
 }
 
 function secondFunction (){
-	console.log("Second Function");
+	console.log('Second Function');
 }
 
 function thirdFunction (){
-	console.log("Third Function");
+	console.log('Third Function');
 	ticker4.executeInCycle();
 }
 
 function fourthFunction (){
-	console.log("Fourth Function");
+	console.log('Fourth Function');
 
 }
 function fifthFunction (){
-	console.log("Fifth Function");
+	console.log('Fifth Function');
 }
 
 function callBackFunction (){
-	console.log("I am called once per frame last as callback");
+	console.log('I am called once per frame last as callback');
 }
 
-/*var ticker1 = new Ticker(firstFunction, null,2);
+var ticker1 = new Ticker(firstFunction, null,2);
 var ticker2 = new Ticker(secondFunction);
 var ticker3 = new Ticker(thirdFunction, null,1);
 var ticker4 = new Ticker(fourthFunction);
@@ -38,36 +38,33 @@ ticker2.executeInCycle();
 ticker1.executeInCycle();
 ticker4.executeInCycle();
 ticker5.executeInCycle();
-ticker5.onDone(callBackFunction);*/
+ticker5.onDone(callBackFunction);
 
 
 const array = [];
-for(let i= 0 ; i < 100; i++){
+for(let i= 0 ; i < 10000; i++){
 	array[i] = i;
-};
+}
 
 let total = 0;
 function forLoopCode (index){
-	console.log(index )
 	total = total + index;
-	document.getElementById("indexLogger").innerHTML = document.getElementById("indexLogger").innerHTML +"," +index;
-	document.getElementById("logger").innerHTML = total;
+	document.getElementById('indexLogger').innerHTML = document.getElementById('indexLogger').innerHTML +',' +index;
+	document.getElementById('logger').innerHTML = total;
 	return total;
 }
 
 var cbCount = 0;
 function forLoopCodeCallback(executedIndex, result){
-	console.log("forLoopCodeCallback progress - ",executedIndex, result)
 	cbCount = cbCount + 1;
-	document.getElementById("loopLogger").innerHTML =  executedIndex + " - " + cbCount + "-" + result;
+	document.getElementById('loopLogger').innerHTML =  executedIndex + ' - ' + cbCount + '-' + result;
 }
 
-function doneCallback(result){
-	console.log("forLoopCodeCallback done - ",result )
-	document.getElementById("loopLogger").innerHTML =  document.getElementById("loopLogger").innerHTML  + " - " + "Done";
+function doneCallback(){
+	document.getElementById('loopLogger').innerHTML =  document.getElementById('loopLogger').innerHTML  + ' - ' + 'Done';
 }
 
 let loopTicker = new Ticker(forLoopCode);
-loopTicker.executeAsSmallLoopsInCycle(1, 10)
-.onProgress(forLoopCodeCallback)
-.onDone(doneCallback);
+loopTicker.executeAsSmallLoopsInCycle(1, 1000)
+	.onProgress(forLoopCodeCallback)
+	.onDone(doneCallback);

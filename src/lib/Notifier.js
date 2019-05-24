@@ -1,3 +1,7 @@
+
+/*
+* Chainable Class
+* */
 export default class Notifier {
 	constructor(){
 		this.progressCallback;

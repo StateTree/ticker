@@ -1,11 +1,14 @@
 import TickEntry from './TickEntry';
+import {
+	readPrimaryMemory,
+	moveFromSecondaryToPrimary,
+	resetMemory,
+	isMemoryEmpty,
+	addToSecondaryMemory, addToPrimaryMemory
+} from './memory';
 
-let tickID = 0;// for Windows Env
-//[0-HIGH, 1-NORMAL, 2-LOW]
-let priorityEntries = [null, null, null];
-let waitEntries = null;
-
-let tickCount = 0;
+let tickID = 0;// for Browser Env
+let tickCount = 0; // to avoid infinite loop issue, we need to count
 let isExecuting = false;
 
 /**
@@ -24,44 +27,26 @@ function onTick(){
 	tickCount++;
 
 	if(tickCount < TickEntry.allowedTickCount){
-		return coreAlogorithm();
+		return coreAlgorithm();
 	} else {
-		console.warn("Animation frame loop executed to its set limit: ", TickEntry.allowedTickCount);
-		stopSemiInfiniteLoop();
+		console.warn('Animation frame loop executed to its set limit: ', TickEntry.allowedTickCount);
+		stop();
 		return false;
 	}
-
-	return true;
 }
 
-function coreAlogorithm(){
-	executePriorityEntries();
-	moveWaitingEntriesForExecution();
-	if(arePriorityEntriesEmpty()){
-		stopSemiInfiniteLoop();
-		return false;
-	}
-	return true;
-}
-
-/**
- * @private
- * function that executes the entries in each priority
- *
- * @return {void}
- */
-function executePriorityEntries(){
+function coreAlgorithm(){
 	isExecuting = true;
-	for(let index = 0 ; index < priorityEntries.length; index++){
-		let tickEntries = priorityEntries[index];
-		if(tickEntries && tickEntries.length > 0) {
-			executeTickEntries(tickEntries);
-			//Clear them once executed
-			priorityEntries[index] = null;
-		}
-	}
+	readPrimaryMemory(executeEntries);
 	isExecuting = false;
+	moveFromSecondaryToPrimary();
+	if(isMemoryEmpty()){
+		stop();
+		return false;
+	}
+	return true;
 }
+
 
 /**
  * @private
@@ -69,43 +54,17 @@ function executePriorityEntries(){
  *
  * @return {void}
  */
-function executeTickEntries(tickEntries){
+function executeEntries(funcs){
 	// important to use for-loop
 	// tickEntries grows dynamically by one of its entry
 	// for example: let say we have one entry, and executing that entry might adds another entry
 	// with map function we cant execute dynamically growing entries.
-	for(let i = 0; i < tickEntries.length; i++){
-		const tickEntry = tickEntries[i];
-		const {func} = tickEntry;
-		func.call(tickEntry);
+	for(let i = 0; i < funcs.length; i++){
+		const func = funcs[i];
+		func.call(func['this']);
 	}
 }
 
-function moveWaitingEntriesForExecution(){
-	const entriesCount = waitEntries ?  waitEntries.length : 0;
-	if(waitEntries && entriesCount > 0) {
-		for(let index = 0 ; index < entriesCount; index++){
-			let tickEntry = waitEntries[index];
-			const { priority } = tickEntry;
-			if(!priorityEntries[priority]){
-				priorityEntries[priority] = [];
-			}
-			const tickEntries = priorityEntries[priority];
-			tickEntries.push(tickEntry);
-		}
-	}
-	waitEntries = null;
-}
-
-function arePriorityEntriesEmpty(){
-	for(let index = 0 ; index < priorityEntries.length; index++){
-		let tickEntries = priorityEntries[index];
-		if(tickEntries && tickEntries.length > 0) {
-			return false
-		}
-	}
-	return true;
-}
 
 /**
  * @private
@@ -127,7 +86,7 @@ function tickCallback(){
  *
  * @return {void}
  */
-function startSemiInfiniteLoop() {
+function start() {
 	if(window){
 		// will receives timestamp as argument
 		tickID = window.requestAnimationFrame(tickCallback);
@@ -143,17 +102,16 @@ function startSemiInfiniteLoop() {
  *
  * @return {void}
  */
-function stopSemiInfiniteLoop() {
+function stop() {
 	tickCount = 0;
 	isExecuting = false;
-	priorityEntries = [null, null, null];
-	waitEntries = null;
+	resetMemory();
 	if(window){
 		window.cancelAnimationFrame(tickID);
 	} else {
 		clearTimeout(tickID);
 	}
-};
+}
 
 /**
  * @private
@@ -165,29 +123,13 @@ function stopSemiInfiniteLoop() {
  * @param {Object} tickEntry
  * @return {void}
  */
-export default function addToSemiInfiniteLoop(tickEntry) {
-	if(arePriorityEntriesEmpty()){
-		startSemiInfiniteLoop()
+export default function addToSemiInfiniteLoop(func, level) {
+	if(isMemoryEmpty()){
+		start();
 	}
 	if(isExecuting){
-		if(!waitEntries){
-			waitEntries = [];
-		}
-		waitEntries.push(tickEntry);
+		addToSecondaryMemory(func, level);
 	} else {
-		const { priority } = tickEntry;
-		if(!priorityEntries[priority]){
-			priorityEntries[priority] = [];
-		}
-		const tickEntries = priorityEntries[priority];
-		tickEntries.push(tickEntry);
+		addToPrimaryMemory(func, level);
 	}
-
-};
-
-
-
-
-
-
-
+}

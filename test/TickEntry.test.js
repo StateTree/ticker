@@ -34,7 +34,6 @@ describe('API', ()=>{
 				expect(ticker.func).equal(func);
 				done();
 			});
-			expect(ticker.func).to.not.equal(func);
 		});
 		it('Should call onDone handler with result if provided', (done)=>{
 			ticker.onDone(function(result){
@@ -111,7 +110,6 @@ describe('API', ()=>{
 				expect(ticker.func).equal(func);
 				done();
 			});
-			expect(ticker.func).to.not.equal(func);
 		});
 
 		it('Should call error Handler if there is error in for loop code ', (done)=>{

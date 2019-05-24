@@ -15,7 +15,7 @@ npm install --save @statetree/ticker
 
 ## What?
 * Executes Functions later in animation frame / event cycle callback
-* call later: wrapper to request animation frame callback or event cycle, perks are being adding priorty order
+* call later: wrapper to request animation frame callback or event cycle, perks: adding priorty order
 
 ## Why?
 * Cost effective Function can be broken into smaller functions and executed later
@@ -84,13 +84,4 @@ import Ticker from '@statetree/ticker';
 
 ticker.dispose();
 ```
-
-### Core Algorithm
- * Entry added to priority Stack
-    1. If first Entry starts the semi-infinite loop
-    2. if priority order stack entries are executing, entry added to wait stack
- * Executes the entries in the priority order
- * Added wait entries are moved to priority entries for execution
- * If there are no entries in priority, semi-infinite loop is stopped
- * and return boolean flag to remove the callback from animation frame or event cycle.
 

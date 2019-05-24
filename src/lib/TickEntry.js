@@ -1,6 +1,6 @@
-import addToSemiInfiniteLoop from './semiInfiniteLoop';
-import Notifier from "./Notifier";
-import {ErrorMsg} from "./contants";
+import addToSemiInfiniteLoop from './scheduler';
+import Notifier from './Notifier';
+import {ErrorMsg} from './contants';
 
 /**
  * @private
@@ -9,12 +9,12 @@ import {ErrorMsg} from "./contants";
  */
 function _checkError(tickEntry){
 	if(!tickEntry){
-		throw new Error(`Ticker: instance can't be null`);
+		throw new Error('Ticker: instance can\'t be null');
 	} else if(!(tickEntry instanceof TickEntry)){
 		const className = tickEntry.constructor ? tickEntry.constructor.name : typeof tickEntry;
 		throw new Error(`Ticker: Expecting instance of TickEntry got ${className}`);
 	} else if(!tickEntry.func){
-		throw new Error("Ticker: function can't be undefined");
+		throw new Error('Ticker: function can\'t be undefined');
 	}
 }
 
@@ -56,12 +56,12 @@ export default class TickEntry
 
 	onDone(doneCallback){
 		this.notifier.doneCallback = doneCallback;
-		return this.notifier
+		return this.notifier;
 	}
 
 	onError(errorCallback){
 		this.notifier.errorCallback = errorCallback;
-		return this.notifier
+		return this.notifier;
 	}
 
 
@@ -87,26 +87,26 @@ export default class TickEntry
 		_checkError(this);
 
 		const tickEntryInstance = this;
-		const {func, context} = tickEntryInstance;
+		const {func, context, priority} = tickEntryInstance;
 
-		this.func = function(){
+		function loopFunction(){
 			const notifier = tickEntryInstance.notifier;
 			const {doneCallback, errorCallback} = notifier;
 			try{
 				const result = func.call(context || func['this']);
-				tickEntryInstance.func = func; //important:revert back to original function reference once done
 				tickEntryInstance.executionCount++;
 				doneCallback && doneCallback.call(context || doneCallback['this'], result);
 			} catch (error){
 				errorCallback && errorCallback.call(context || errorCallback['this'], error);
 				tickEntryInstance.dispose();
 			}
-		};
-		addToSemiInfiniteLoop(this);
+		}
+
+		addToSemiInfiniteLoop(loopFunction,priority);
 
 		this.notifier.onProgress = undefined;
 		return this.notifier;
-	};
+	}
 
 	/**
 	 * This function adds the loop function to event cycle / request animation frame for execution
@@ -118,25 +118,25 @@ export default class TickEntry
 	 */
 	executeAsSmallLoopsInCycle(maxLoopPerFrame, endIndex, startIndex = 0){
 		if(maxLoopPerFrame === undefined || typeof maxLoopPerFrame !== 'number'){
-			throw new Error(ErrorMsg.MAX_LOOP_PER_FRAME)
+			throw new Error(ErrorMsg.MAX_LOOP_PER_FRAME);
 		}
 
 		if(endIndex === undefined || typeof endIndex !== 'number'){
-			throw new Error(ErrorMsg.END_INDEX)
+			throw new Error(ErrorMsg.END_INDEX);
 		}
 
 		if(typeof startIndex !== 'number'){
-			throw new Error(ErrorMsg.START_INDEX)
+			throw new Error(ErrorMsg.START_INDEX);
 		}
 		_checkError(this);
 
 		const tickEntryInstance = this;
-		const {func, context} = tickEntryInstance;
+		const {func, context, priority} = tickEntryInstance;
 
 		let loopLimit = maxLoopPerFrame;
 		let i = startIndex;
 
-		this.func = function(){
+		function loopFunction(){
 			const notifier = tickEntryInstance.notifier;
 			const {doneCallback, errorCallback, progressCallback} = notifier;
 			let result;
@@ -152,17 +152,16 @@ export default class TickEntry
 			if(loopLimit < endIndex){
 				loopLimit = loopLimit + maxLoopPerFrame;
 				progressCallback && progressCallback.call(context || progressCallback['this'], i, result);
-				addToSemiInfiniteLoop(this);
+				addToSemiInfiniteLoop(loopFunction,priority);
 			} else if( i === endIndex){
-				tickEntryInstance.func = func; //important:revert back to original function reference once done
 				tickEntryInstance.executionCount++;
 				doneCallback && doneCallback.call(context || doneCallback['this'], result);
 			}
-		};
+		}
 
-		addToSemiInfiniteLoop(this);
+		addToSemiInfiniteLoop(loopFunction, priority);
 		return this.notifier;
-	};
+	}
 
 }
 
