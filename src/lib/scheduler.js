@@ -120,7 +120,8 @@ function stop() {
  * if entries are empty starts the semi-infinite loop in event cycle or Animation frame
  * if execution of entries are in progress, the entry is added to waiting queue
  * thus functions are executed in the order they are added to the semi-infinite loop
- * @param {Object} tickEntry
+ * @param {Function} func
+ * @param {number} level
  * @return {void}
  */
 export default function addToSemiInfiniteLoop(func, level) {
