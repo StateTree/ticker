@@ -7,12 +7,10 @@ const paths = {
     output: path.join(__dirname, "./"),
     lib: path.join(__dirname, "./lib"),
     entry: {
-        'demo/index': "./demo/index.js"
+        'demo/index': "./demo/index.js",
+        'index': "./lib/index.js"
     }
 };
-
-const libPath = "lib/" + libraryName;
-paths.entry[libPath] = "./lib/index.js";
 
 const config = {
     context: paths.context,

@@ -1,8 +1,8 @@
 {
   "name": "@statetree/ticker",
-  "version": "3.3.0",
+  "version": "3.4.0",
   "description": "Ticker manager for Window request animation frame and NodeJS tick",
-  "main": "lib/ticker.js",
+  "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --open --mode development",
     "lint": "eslint ./src --ext .js --cache --fix --ext .jsx --cache --fix",
@@ -12,7 +12,12 @@
     "doc": "./node_modules/.bin/esdoc open ./docs/index.html",
     "prebuild": "rimraf lib && rimraf build",
     "build": "./node_modules/.bin/webpack --mode production ",
-    "postbuild": "node scripts/postbuild.js"
+    "postbuild": "node scripts/postbuild.js",
+    "release:master": "git checkout master && git merge --squash --strategy-option theirs develop && git commit -am 'Release Commit' && git push && git checkout develop",
+    "release:bugfix": "npm version patch -m 'Bumped patch version number' && npm run release:master",
+    "release:feature": "npm version minor -m 'Bumped minor version number' && npm run release:master",
+    "release:breakingchange": "npm version major -m 'Bumped major version number' && npm run release:master",
+    "postversion": "git push origin HEAD --follow-tags"
   },
   "repository": {
     "type": "git",
@@ -51,7 +56,9 @@
     "webpack-dev-server": "^3.4.1"
   },
   "files": [
-    "lib"
+    "index.js",
+    "README.md",
+    "LICENSE"
   ],
   "config": {
     "ghooks": {

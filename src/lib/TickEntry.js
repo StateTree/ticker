@@ -1,4 +1,4 @@
-import addToSemiInfiniteLoop from './scheduler';
+import {addToSemiInfiniteLoop} from './scheduler';
 import Notifier from './Notifier';
 import {ErrorMsg} from './contants';
 

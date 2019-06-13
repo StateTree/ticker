@@ -42,7 +42,7 @@ ticker5.onDone(callBackFunction);
 
 
 const array = [];
-for(let i= 0 ; i < 10000; i++){
+for(let i= 0 ; i < 1000; i++){
 	array[i] = i;
 }
 
@@ -65,6 +65,6 @@ function doneCallback(){
 }
 
 let loopTicker = new Ticker(forLoopCode);
-loopTicker.executeAsSmallLoopsInCycle(1, 1000)
+loopTicker.executeAsSmallLoopsInCycle(1, 98)
 	.onProgress(forLoopCodeCallback)
 	.onDone(doneCallback);

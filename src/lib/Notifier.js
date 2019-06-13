@@ -8,19 +8,19 @@ export default class Notifier {
 		this.doneCallback;
 		this.errorCallback;
 	}
+}
 
-	onError(func){
-		this.errorCallback = func;
-		return this;
-	}
+Notifier.prototype.onError = function(func){
+	this.errorCallback = func;
+	return this;
+}
 
-	onProgress(func){
-		this.progressCallback = func;
-		return this;
-	}
+Notifier.prototype.onProgress = function (func){
+	this.progressCallback = func;
+	return this;
+}
 
-	onDone(func){
-		this.doneCallback = func;
-		return this;
-	}
+Notifier.prototype.onDone = function (func){
+	this.doneCallback = func;
+	return this;
 }
