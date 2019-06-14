@@ -93,11 +93,11 @@ export default class TickEntry
 			const notifier = tickEntryInstance.notifier;
 			const {doneCallback, errorCallback} = notifier;
 			try{
-				const result = func.call(context || func['this']);
+				const result = func.call(context);
 				tickEntryInstance.executionCount++;
-				doneCallback && doneCallback.call(context || doneCallback['this'], result);
+				doneCallback && doneCallback(result);
 			} catch (error){
-				errorCallback && errorCallback.call(context || errorCallback['this'], error);
+				errorCallback && errorCallback(error);
 				tickEntryInstance.dispose();
 			}
 		}
@@ -142,20 +142,20 @@ export default class TickEntry
 			let result;
 			for(;i < loopLimit; i++){
 				try {
-					result = func.call(context || func['this'], i);
+					result = func.call(context, i);
 				} catch(error) {
-					errorCallback && errorCallback.call(context || errorCallback['this'], error);
+					errorCallback && errorCallback(error);
 					tickEntryInstance.dispose();
 					return;
 				}
 			}
 			if(loopLimit < endIndex){
 				loopLimit = loopLimit + maxLoopPerFrame;
-				progressCallback && progressCallback.call(context || progressCallback['this'], i, result);
+				progressCallback && progressCallback(i, result);
 				addToSemiInfiniteLoop(loopFunction,priority);
 			} else if( i === endIndex){
 				tickEntryInstance.executionCount++;
-				doneCallback && doneCallback.call(context || doneCallback['this'], result);
+				doneCallback && doneCallback(result);
 			}
 		}
 
