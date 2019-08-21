@@ -97,7 +97,11 @@ export default class TickEntry
 				tickEntryInstance.executionCount++;
 				doneCallback && doneCallback(result);
 			} catch (error){
-				errorCallback && errorCallback(error);
+				if(errorCallback){
+					errorCallback(error);
+				} else {
+					console.log(error)
+				}
 				tickEntryInstance.dispose();
 			}
 		}

@@ -1,6 +1,6 @@
 {
   "name": "@statetree/ticker",
-  "version": "3.4.1",
+  "version": "1.0.0",
   "description": "Ticker manager for Window request animation frame and NodeJS tick",
   "main": "index.js",
   "scripts": {
