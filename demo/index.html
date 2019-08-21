@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>
+        Functions
+    </title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body onload="init()">
+<div>
+    <h2>Demo For Ticker Library</h2>
+    <h4>Whats happening here ?</h4>
+    <ol>
+        <li>Function: Sum of Series 0,1,2 ..... 99999</li>
+        <li>Executing a for loop of 100,000 records</li>
+        <li>In Each frame or Tick we execute only 100 records</li>
+        <li>Try interacting with button | canvas</li>
+        <li>The heavier process won't slow down the interaction</li>
+    </ol>
+    <div>
+        <span>Index : <span id="indexLogger"/></span>
+        <br/>
+        <span>Summation : <span id="logger"/></span>
+    </div>
+    <div>
+        <span>Count of Loop callback that get called after each chunk of loop: <span id="loopLogger"/></span>
+    </div>
+    <br/>
+    <span>
+        1. Interact While Loop is executing: <button onclick="handleOnClick()">Click</button> <span id="clickLog"></span>
+    </span>
+    <br/>
+    <span>
+        2. Interact on Canvas by moving the mouse: <input type="button" value="Clear Screen" id="clr" size="23" onclick="erase()">
+    </span>
+    <div style="border:1px solid black;  width:400px">
+        <canvas id="can" width="400" height="400"></canvas>
+        <img id="canvasimg">
+    </div>
+
+
+</div>
+<script src="index.js"></script>
+<script>
+    var count = 0
+    function handleOnClick(){
+	    count = count + 1;
+	    document.getElementById("clickLog").innerText = "Clicked " + count + " times";
+    }
+
+    var canvas, ctx,
+	    prevX = 0,
+	    currX = 0,
+	    prevY = 0,
+	    currY = 0;
+
+    var x = "orange",
+	    y = 2;
+
+    function init() {
+	    canvas = document.getElementById('can');
+	    ctx = canvas.getContext("2d");
+	    w = canvas.width;
+	    h = canvas.height;
+
+	    canvas.addEventListener("mousemove", function (e) {
+		    findxy('move', e)
+	    }, false);
+	    canvas.addEventListener("mouseout", function (e) {
+		    findxy('out', e)
+	    }, false);
+    }
+
+    function draw() {
+	    ctx.beginPath();
+	    ctx.moveTo(prevX, prevY);
+	    ctx.lineTo(currX, currY);
+	    ctx.strokeStyle = x;
+	    ctx.lineWidth = y;
+	    ctx.stroke();
+	    ctx.closePath();
+    }
+
+    function erase() {
+	    var m = confirm("Want to clear");
+	    if (m) {
+		    ctx.clearRect(0, 0, w, h);
+		    document.getElementById("canvasimg").style.display = "none";
+	    }
+    }
+
+
+
+    function findxy(res, e) {
+	    if (res == "out") {
+		    return;
+	    }
+
+	    if (res == 'move') {
+		    prevX = currX;
+		    prevY = currY;
+		    currX = e.clientX - canvas.offsetLeft;
+		    currY = e.clientY - canvas.offsetTop;
+		    draw();
+	    }
+    }
+
+</script>
+</body>
+</html>

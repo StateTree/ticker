@@ -1,0 +1,50 @@
+{
+  "coverage": "43.47%",
+  "expectCount": 23,
+  "actualCount": 10,
+  "files": {
+    "lib/Notifier.js": {
+      "expectCount": 5,
+      "actualCount": 0,
+      "undocumentLines": [
+        5,
+        6,
+        13,
+        18,
+        23
+      ]
+    },
+    "lib/TickEntry.js": {
+      "expectCount": 13,
+      "actualCount": 10,
+      "undocumentLines": [
+        53,
+        57,
+        62
+      ]
+    },
+    "lib/contants.js": {
+      "expectCount": 1,
+      "actualCount": 0,
+      "undocumentLines": [
+        1
+      ]
+    },
+    "lib/memory.js": {
+      "expectCount": 2,
+      "actualCount": 0,
+      "undocumentLines": [
+        1,
+        97
+      ]
+    },
+    "lib/scheduler.js": {
+      "expectCount": 2,
+      "actualCount": 0,
+      "undocumentLines": [
+        4,
+        99
+      ]
+    }
+  }
+}

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">test/TickEntry.test.js | @statetree/ticker</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="Ticker manager for Window request animation frame and NodeJS tick"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="@statetree/ticker"><meta property="twitter:description" content="Ticker manager for Window request animation frame and NodeJS tick"></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/StateTree/ticker"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/Notifier.js~Notifier.html">Notifier</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/TickEntry.js~TickEntry.html">TickEntry</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-ErrorMsg">ErrorMsg</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-memory">memory</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-addToSemiInfiniteLoop">addToSemiInfiniteLoop</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">test/TickEntry.test.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import {expect} from &apos;chai&apos;;
+import TickEntry from &apos;./../src/lib/TickEntry&apos;
+import {ErrorMsg} from &apos;./../src/lib/contants&apos;
+
+let ticker;
+
+function func(){
+	return &apos;called later&apos;;
+}
+/** @test {TickEntry} */
+describe(&apos;API&apos;, ()=&gt;{
+
+	beforeEach(()=&gt;{
+		ticker = new TickEntry(func);
+	});
+
+	afterEach(()=&gt;{
+		ticker = null;
+	});
+
+	/** @test {TickEntry#executeInCycle} */
+	describe(&apos;executeInCycle&apos;, ()=&gt;{
+		it(&apos;Should call function in next animation frame&apos;, (done)=&gt;{
+			ticker.executeInCycle();
+			expect(ticker.executionCount).equal(0);
+			setTimeout(()=&gt;{
+				expect(ticker.executionCount).equal(1);
+				done();
+			},0);
+		});
+		it(&apos;function reference has to be retained on Done&apos;, (done)=&gt;{
+			const func = ticker.func;
+			ticker.executeInCycle().onDone(()=&gt;{
+				expect(ticker.func).equal(func);
+				done();
+			});
+		});
+		it(&apos;Should call onDone handler with result if provided&apos;, (done)=&gt;{
+			ticker.onDone(function(result){
+				expect(ticker.executionCount).equal(1);
+				expect(result).equal(&apos;called later&apos;);
+				done();
+			});
+			ticker.executeInCycle()
+		});
+		it(&apos;Should throw error when function is not defined&apos;, ()=&gt;{
+			ticker.func = null;
+			try{
+				ticker.executeInCycle();
+			}catch(error){
+				expect(error.message).equal(&quot;Ticker: function can&apos;t be undefined&quot;);
+			}
+		});
+		it(&apos;Should throw error when instance is null&apos;, ()=&gt;{
+			try{
+				ticker.executeInCycle.call(null);
+			}catch(error){
+				expect(error.message).equal(&quot;Ticker: instance can&apos;t be null&quot;);
+			}
+		});
+		it(&apos;Should throw error when instance is not Ticker&apos;, ()=&gt;{
+			try{
+				ticker.executeInCycle.call(window);
+			}catch(error){
+				expect(error.message).equal(`Ticker: Expecting instance of TickEntry got ${window.constructor.name}`);
+			}
+		});
+		it(&apos;Should call onError handler when error is thrown&apos;, (done)=&gt;{
+			ticker.func = function(){
+				throw new Error(&quot;Error Thrown&quot;);
+			};
+			ticker.onError(function(error){
+				expect(error.message).equal(&apos;Error Thrown&apos;);
+				done();
+			});
+			ticker.executeInCycle()
+		});
+
+	});
+	/** @test {TickEntry#executeAsSmallLoopsInCycle} */
+	describe(&apos;executeAsSmallLoopsInCycle&apos;, ()=&gt;{
+
+		it(&apos;Should call function in next animation frame&apos;, (done)=&gt;{
+			ticker.executeAsSmallLoopsInCycle(1, 1);
+			setTimeout(()=&gt;{
+				expect(ticker.executionCount).equal(1);
+				done();
+			},0);
+		});
+
+
+		it(&apos;Should call onProgress and onDone handler&apos;, (done)=&gt;{
+			var maxLoopPerFrame = 10;
+			var endIndex = 30;
+			let progressIndex = maxLoopPerFrame;
+			ticker.executeAsSmallLoopsInCycle(maxLoopPerFrame, endIndex)
+			.onProgress(function(index){
+				expect(progressIndex).equal(index);
+				progressIndex = progressIndex + maxLoopPerFrame;
+			})
+			.onDone(function(){
+				expect(ticker.executionCount).equal(1);
+				done();
+			});
+		});
+
+		it(&apos;function reference has to be retained on Done&apos;, (done)=&gt;{
+			const func = ticker.func;
+			ticker.executeAsSmallLoopsInCycle(10, 30).onDone(()=&gt;{
+				expect(ticker.func).equal(func);
+				done();
+			});
+		});
+
+		it(&apos;Should call error Handler if there is error in for loop code &apos;, (done)=&gt;{
+			ticker.func = function(){
+				throw new Error(&quot;Error Thrown&quot;);
+			};
+
+			ticker.executeAsSmallLoopsInCycle(10, 30)
+			.onError(function(error){
+				expect(error.message).equal(&quot;Error Thrown&quot;);
+				done();
+			})
+		});
+		it(&apos;Should throw error when function is not defined&apos;, ()=&gt;{
+			ticker.func = null;
+			try{
+				ticker.executeAsSmallLoopsInCycle(34,20);
+			}catch(error){
+				expect(error.message).equal(&quot;Ticker: function can&apos;t be undefined&quot;);
+			}
+		});
+		it(&apos;Should throw error when maxLoopPerframe is not defined&apos;, ()=&gt;{
+			try{
+				ticker.executeAsSmallLoopsInCycle();
+			}catch(error){
+				expect(error.message).equal(ErrorMsg.MAX_LOOP_PER_FRAME);
+			}
+		});
+		it(&apos;Should throw error when maxLoopPerframe is not a number&apos;, ()=&gt;{
+			try{
+				ticker.executeAsSmallLoopsInCycle(&quot;34&quot;);
+			}catch(error){
+				expect(error.message).equal(ErrorMsg.MAX_LOOP_PER_FRAME);
+			}
+		});
+		it(&apos;Should throw error when End index is not defined&apos;, ()=&gt;{
+			try{
+				ticker.executeAsSmallLoopsInCycle(10);
+			}catch(error){
+				expect(error.message).equal(ErrorMsg.END_INDEX);
+			}
+		});
+		it(&apos;Should throw error when End index is not a number&apos;, ()=&gt;{
+			try{
+				ticker.executeAsSmallLoopsInCycle(10, &quot;20&quot;);
+			}catch(error){
+				expect(error.message).equal(ErrorMsg.END_INDEX);
+			}
+		});
+		it(&apos;Should throw error when Start index is not a number&apos;, ()=&gt;{
+			try{
+				ticker.executeAsSmallLoopsInCycle(10,30, &quot;45&quot;);
+			}catch(error){
+				expect(error.message).equal(ErrorMsg.START_INDEX);
+			}
+		});
+	});
+	/** @test {TickEntry#dispose} */
+	describe(&apos;dispose&apos;, ()=&gt;{
+		it(&apos;Should set context to null&apos;, ()=&gt;{
+			ticker.dispose();
+			expect(ticker.context).equal(null);
+		});
+		it(&apos;Should set func to null&apos;, ()=&gt;{
+			ticker.dispose();
+			expect(ticker.func).equal(null);
+		});
+		it(&apos;Should set notifier to null&apos;, ()=&gt;{
+			ticker.dispose();
+			expect(ticker.notifier).equal(null);
+		});
+		it(&apos;Should set executionCount to NaN&apos;, ()=&gt;{
+			ticker.dispose();
+			expect(ticker.executionCount).to.be.NaN;
+		});
+	})
+});</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>
